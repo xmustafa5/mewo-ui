@@ -48,6 +48,15 @@
       "categories": ["card"],
       "dependencies": ["motion"],
       "files": [{ "path": "registry/mewo/ui/spotlight-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "scroll-reveal",
+      "type": "registry:ui",
+      "title": "Scroll Reveal",
+      "description": "Fades and slides its children in when they enter the viewport. Powered by Motion.",
+      "categories": ["scroll"],
+      "dependencies": ["motion"],
+      "files": [{ "path": "registry/mewo/ui/scroll-reveal.tsx", "type": "registry:ui" }]
     }
   ]
 }
