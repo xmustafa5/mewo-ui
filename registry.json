@@ -72,6 +72,15 @@
           "to": { "background-position": "300% 50%" }
         }
       }
+    },
+    {
+      "name": "hero-aurora",
+      "type": "registry:block",
+      "title": "Hero — Aurora",
+      "description": "A hero section: aurora backdrop, word-by-word headline, description and two call-to-action buttons.",
+      "categories": ["sections", "hero"],
+      "registryDependencies": ["button", "@mewo/aurora-background", "@mewo/split-text"],
+      "files": [{ "path": "registry/mewo/blocks/hero-aurora.tsx", "type": "registry:component" }]
     }
   ]
 }
