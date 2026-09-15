@@ -30,6 +30,15 @@
           "to": { "transform": "translateX(-100%)" }
         }
       }
+    },
+    {
+      "name": "split-text",
+      "type": "registry:ui",
+      "title": "Split Text",
+      "description": "Characters or words stagger into view when scrolled to. Powered by GSAP and ScrollTrigger.",
+      "categories": ["text"],
+      "dependencies": ["gsap", "@gsap/react"],
+      "files": [{ "path": "registry/mewo/ui/split-text.tsx", "type": "registry:ui" }]
     }
   ]
 }

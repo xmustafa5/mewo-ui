@@ -7,4 +7,5 @@ export type DemoModule = { default: ComponentType; props: PropDoc[] }
 export const demos: Record<string, () => Promise<DemoModule>> = {
   "text-shimmer": () => import("./text-shimmer-demo"),
   marquee: () => import("./marquee-demo"),
+  "split-text": () => import("./split-text-demo"),
 }
