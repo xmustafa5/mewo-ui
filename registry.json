@@ -57,6 +57,21 @@
       "categories": ["scroll"],
       "dependencies": ["motion"],
       "files": [{ "path": "registry/mewo/ui/scroll-reveal.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "aurora-background",
+      "type": "registry:ui",
+      "title": "Aurora Background",
+      "description": "A slowly drifting gradient backdrop with a fade-in for its content. CSS keyframes plus Motion.",
+      "categories": ["background"],
+      "dependencies": ["motion"],
+      "files": [{ "path": "registry/mewo/ui/aurora-background.tsx", "type": "registry:ui" }],
+      "css": {
+        "@keyframes aurora": {
+          "from": { "background-position": "0% 50%" },
+          "to": { "background-position": "300% 50%" }
+        }
+      }
     }
   ]
 }
