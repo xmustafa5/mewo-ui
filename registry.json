@@ -2,5 +2,20 @@
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "mewo",
   "homepage": "https://mewo-ui.vercel.app",
-  "items": []
+  "items": [
+    {
+      "name": "text-shimmer",
+      "type": "registry:ui",
+      "title": "Text Shimmer",
+      "description": "A light sweep that moves across text. CSS only — no dependencies.",
+      "categories": ["text"],
+      "files": [{ "path": "registry/mewo/ui/text-shimmer.tsx", "type": "registry:ui" }],
+      "css": {
+        "@keyframes shimmer": {
+          "from": { "background-position": "200% center" },
+          "to": { "background-position": "-200% center" }
+        }
+      }
+    }
+  ]
 }
