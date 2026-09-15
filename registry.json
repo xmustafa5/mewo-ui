@@ -81,6 +81,16 @@
       "categories": ["sections", "hero"],
       "registryDependencies": ["button", "@mewo/aurora-background", "@mewo/split-text"],
       "files": [{ "path": "registry/mewo/blocks/hero-aurora.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "features-spotlight",
+      "type": "registry:block",
+      "title": "Features — Spotlight",
+      "description": "A features section: shimmering eyebrow, heading, a scroll-revealed grid of spotlight cards and a logo marquee.",
+      "categories": ["sections", "features"],
+      "dependencies": ["lucide-react"],
+      "registryDependencies": ["@mewo/text-shimmer", "@mewo/scroll-reveal", "@mewo/spotlight-card", "@mewo/marquee"],
+      "files": [{ "path": "registry/mewo/blocks/features-spotlight.tsx", "type": "registry:component" }]
     }
   ]
 }

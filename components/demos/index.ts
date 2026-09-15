@@ -12,4 +12,5 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "scroll-reveal": () => import("./scroll-reveal-demo"),
   "aurora-background": () => import("./aurora-background-demo"),
   "hero-aurora": () => import("./hero-aurora-demo"),
+  "features-spotlight": () => import("./features-spotlight-demo"),
 }
