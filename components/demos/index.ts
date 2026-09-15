@@ -6,4 +6,5 @@ export type DemoModule = { default: ComponentType; props: PropDoc[] }
 /** Item name → lazy demo module. Every catalog item must have an entry here. */
 export const demos: Record<string, () => Promise<DemoModule>> = {
   "text-shimmer": () => import("./text-shimmer-demo"),
+  marquee: () => import("./marquee-demo"),
 }

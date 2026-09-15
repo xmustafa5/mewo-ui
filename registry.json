@@ -16,6 +16,20 @@
           "to": { "background-position": "-200% center" }
         }
       }
+    },
+    {
+      "name": "marquee",
+      "type": "registry:ui",
+      "title": "Marquee",
+      "description": "An infinite horizontal scroller with a seamless loop. CSS only — no dependencies.",
+      "categories": ["layout"],
+      "files": [{ "path": "registry/mewo/ui/marquee.tsx", "type": "registry:ui" }],
+      "css": {
+        "@keyframes marquee": {
+          "from": { "transform": "translateX(0)" },
+          "to": { "transform": "translateX(calc(-100% - var(--gap)))" }
+        }
+      }
     }
   ]
 }
