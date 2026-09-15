@@ -8,4 +8,5 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "text-shimmer": () => import("./text-shimmer-demo"),
   marquee: () => import("./marquee-demo"),
   "split-text": () => import("./split-text-demo"),
+  "spotlight-card": () => import("./spotlight-card-demo"),
 }

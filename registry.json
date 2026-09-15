@@ -39,6 +39,15 @@
       "categories": ["text"],
       "dependencies": ["gsap", "@gsap/react"],
       "files": [{ "path": "registry/mewo/ui/split-text.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "spotlight-card",
+      "type": "registry:ui",
+      "title": "Spotlight Card",
+      "description": "A card with a radial glow that follows the pointer. Powered by Motion.",
+      "categories": ["card"],
+      "dependencies": ["motion"],
+      "files": [{ "path": "registry/mewo/ui/spotlight-card.tsx", "type": "registry:ui" }]
     }
   ]
 }
