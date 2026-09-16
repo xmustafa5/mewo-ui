@@ -20,11 +20,24 @@ export interface SplitTextProps extends Omit<React.ComponentProps<"span">, "chil
   as?: "span" | "h1" | "h2" | "h3" | "p"
 }
 
+// Intl.Segmenter's declarations live in lib.es2022.intl, and this file is compiled by whatever
+// `lib` the project it is installed into uses. Declaring the shape here keeps it compiling under
+// ES2017 and up; the runtime check is what decides whether the API is really there.
+type GraphemeSegmenter = { segment(input: string): Iterable<{ segment: string }> }
+type GraphemeSegmenterConstructor = new (
+  locales: undefined,
+  options: { granularity: "grapheme" }
+) => GraphemeSegmenter
+
 export function splitUnits(text: string, by: "chars" | "words"): string[] {
   if (by === "words") return text.split(/(\s+)/).filter((unit) => unit.length > 0)
   // Code points tear emoji, flags and combining marks apart — a unit must be a whole grapheme cluster.
-  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-    const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" })
+  const Segmenter =
+    typeof Intl === "undefined"
+      ? undefined
+      : (Intl as unknown as { Segmenter?: GraphemeSegmenterConstructor }).Segmenter
+  if (Segmenter) {
+    const segmenter = new Segmenter(undefined, { granularity: "grapheme" })
     return Array.from(segmenter.segment(text), (segment) => segment.segment)
   }
   return Array.from(text)
