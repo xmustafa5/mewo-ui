@@ -1,3 +1,4 @@
+import * as React from "react"
 import { render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import { Marquee } from "@/registry/mewo/ui/marquee"
@@ -18,14 +19,48 @@ describe("Marquee", () => {
 
   // aria-hidden hides a track from assistive tech but leaves its links and buttons tabbable,
   // so focus would land in a subtree that announces nothing (WCAG 4.1.2, axe aria-hidden-focus).
-  it("makes every duplicated track inert so its focusable children leave the tab order", () => {
-    render(<Marquee data-testid="m"><a href="#x">logo</a></Marquee>)
+  // Only focusability may be taken away: `inert` would also remove the duplicates from hit-testing
+  // and from text selection, leaving 3 of the 4 visible copies unclickable.
+  it("takes the duplicated tracks out of the tab order without making them inert", () => {
+    render(
+      <Marquee data-testid="m">
+        <a href="#x">logo</a>
+        <button type="button">go</button>
+      </Marquee>
+    )
     const tracks = Array.from(screen.getByTestId("m").children)
-    expect(tracks[0]).not.toHaveAttribute("inert")
+    expect(tracks[0]).not.toHaveAttribute("aria-hidden")
+    expect(tracks[0].querySelector("a")).not.toHaveAttribute("tabindex")
+    expect(tracks[0].querySelector("button")).not.toHaveAttribute("tabindex")
     for (const track of tracks.slice(1)) {
-      expect(track).toHaveAttribute("inert")
       expect(track).toHaveAttribute("aria-hidden", "true")
+      expect(track).not.toHaveAttribute("inert")
+      expect(track.querySelector("a")).toHaveAttribute("tabindex", "-1")
+      expect(track.querySelector("button")).toHaveAttribute("tabindex", "-1")
     }
+  })
+
+  // The duplicates are what the loop paints for most of its cycle, so they have to stay usable:
+  // a pointer event over one must reach the element under the pointer, not a non-inert ancestor.
+  // jsdom has no hit-testing, so this asserts the two attributes that decide it in a browser.
+  it("leaves duplicated content clickable and selectable", () => {
+    render(<Marquee data-testid="m"><a href="#x">logo</a></Marquee>)
+    const root = screen.getByTestId("m")
+    for (const track of Array.from(root.children)) {
+      expect(track).not.toHaveAttribute("inert")
+      expect(track.className).not.toContain("pointer-events-none")
+      expect(track.className).not.toContain("select-none")
+    }
+  })
+
+  // The duplicates are neutralised through a ref on each track, so the root's ref stays the
+  // consumer's: a component that took the root ref for itself would silently stop neutralising.
+  it("keeps the root ref for the consumer", () => {
+    const ref = React.createRef<HTMLDivElement>()
+    render(<Marquee ref={ref} data-testid="m"><a href="#x">logo</a></Marquee>)
+    expect(ref.current).toBe(screen.getByTestId("m"))
+    const tracks = Array.from(screen.getByTestId("m").children)
+    for (const track of tracks.slice(1)) expect(track.querySelector("a")).toHaveAttribute("tabindex", "-1")
   })
 
   it("reverses direction and pauses on hover by default", () => {

@@ -12,6 +12,10 @@ export interface MarqueeProps extends React.ComponentProps<"div"> {
   repeat?: number
 }
 
+// Anything sequentially focusable by default, plus anything an author opted in with tabindex.
+const FOCUSABLE =
+  'a[href], area[href], button, input, select, textarea, summary, iframe, audio[controls], video[controls], [contenteditable]:not([contenteditable="false"]), [tabindex]:not([tabindex="-1"])'
+
 export function Marquee({
   children,
   direction = "left",
@@ -22,6 +26,19 @@ export function Marquee({
   style,
   ...props
 }: MarqueeProps) {
+  // The duplicated tracks are what the loop paints for most of its cycle, so they have to stay
+  // clickable and selectable — `inert` would take all of that away along with focus, retargeting
+  // pointer events to the root and blocking text selection. aria-hidden keeps a duplicate out of
+  // the accessibility tree; tabindex="-1" on its focusable descendants keeps it out of the tab
+  // order, so focus never lands in a subtree that announces nothing (WCAG 4.1.2). A ref callback
+  // declared here is a new function on every render, so React re-runs it whenever the children
+  // change — and it runs during commit, before the first paint.
+  const dropFromTabOrder = (track: HTMLDivElement | null) => {
+    track?.querySelectorAll<HTMLElement>(FOCUSABLE).forEach((element) => {
+      element.tabIndex = -1
+    })
+  }
+
   return (
     <div
       data-slot="marquee"
@@ -32,8 +49,9 @@ export function Marquee({
       {Array.from({ length: repeat }, (_, copy) => (
         <div
           key={copy}
+          ref={copy > 0 ? dropFromTabOrder : undefined}
+          data-marquee-copy={copy > 0 ? "duplicate" : "original"}
           aria-hidden={copy > 0 ? true : undefined}
-          inert={copy > 0 ? true : undefined}
           className={cn(
             "flex shrink-0 items-center gap-[var(--gap)] pr-[var(--gap)]",
             "motion-safe:animate-[mewo-marquee_var(--marquee-duration)_linear_infinite]",
