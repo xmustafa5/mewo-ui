@@ -32,8 +32,16 @@ export default function DocsIndexPage() {
         <h2 className="text-xl font-semibold">Install without the directory</h2>
         <p>Add the namespace to your <code className="font-mono text-sm">components.json</code>, then use the same command:</p>
         <pre className={codeClass}><code>{registriesSnippet}</code></pre>
-        <p>Or point the CLI at an item URL directly:</p>
-        <pre className={codeClass}><code>{`npx shadcn@latest add ${SITE_URL}/r/hero-aurora.json`}</code></pre>
+        <p>
+          Single components can also be installed straight from their URL, with no configuration at all:
+        </p>
+        <pre className={codeClass}><code>{`npx shadcn@latest add ${SITE_URL}/r/text-shimmer.json`}</code></pre>
+        <p>
+          Sections are the exception. They install other mewo components, which they list as{" "}
+          <code className="font-mono text-sm">{NAMESPACE}/&lt;name&gt;</code>, and the CLI can only resolve that from a
+          configured registry — so a section needs the <code className="font-mono text-sm">registries</code> entry above
+          (or the registry directory listing) rather than the URL form.
+        </p>
       </section>
 
       <section className="space-y-4">

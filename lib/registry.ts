@@ -1,4 +1,5 @@
 import registry from "@/registry.json"
+import { NAMESPACE } from "@/lib/site"
 
 export type RegistryFile = { path: string; type: string; target?: string }
 
@@ -29,9 +30,28 @@ export const GROUP_LABELS: Record<Group, string> = {
 export type RegistryGroup = { group: Group; label: string; items: RegistryItem[] }
 
 export function createRegistry(items: RegistryItem[]) {
+  const getItem = (name: string) => items.find((i) => i.name === name)
+
+  /** Every npm package an install pulls in, including the ones its registryDependencies carry. */
+  const getDependencies = (item: RegistryItem): string[] => {
+    const packages = new Set<string>()
+    const seen = new Set<string>()
+    const walk = (current: RegistryItem | undefined) => {
+      if (!current || seen.has(current.name)) return
+      seen.add(current.name)
+      for (const dep of current.dependencies ?? []) packages.add(dep)
+      for (const dep of current.registryDependencies ?? []) {
+        if (dep.startsWith(`${NAMESPACE}/`)) walk(getItem(dep.slice(NAMESPACE.length + 1)))
+      }
+    }
+    walk(item)
+    return [...packages].sort()
+  }
+
   return {
     getItems: () => items,
-    getItem: (name: string) => items.find((i) => i.name === name),
+    getItem,
+    getDependencies,
     isBlock: (item: RegistryItem) => item.type === "registry:block",
     getGroups: (): RegistryGroup[] =>
       GROUP_ORDER.map((group) => ({
@@ -43,4 +63,4 @@ export function createRegistry(items: RegistryItem[]) {
 }
 
 const defaultRegistry = createRegistry(registry.items as RegistryItem[])
-export const { getItems, getItem, isBlock, getGroups } = defaultRegistry
+export const { getItems, getItem, getDependencies, isBlock, getGroups } = defaultRegistry

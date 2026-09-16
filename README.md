@@ -22,7 +22,15 @@ Until mewo is listed in the shadcn registry directory, add the namespace to your
 }
 ```
 
-Or install by URL: `npx shadcn@latest add https://mewo-ui.vercel.app/r/hero-aurora.json`
+Single components can also be installed straight from their URL with no configuration:
+
+```bash
+npx shadcn@latest add https://mewo-ui.vercel.app/r/text-shimmer.json
+```
+
+Sections (`hero-aurora`, `features-spotlight`) install other mewo components, which they list as
+`@mewo/<name>`. The CLI resolves that name only from a configured registry, so sections need the
+`registries` entry above — the URL form fails for them with `Unknown registry "@mewo"`.
 
 ## What's inside (v0.1)
 

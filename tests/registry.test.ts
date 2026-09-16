@@ -3,7 +3,7 @@ import path from "node:path"
 import { describe, expect, it } from "vitest"
 import registry from "@/registry.json"
 import { demos } from "@/components/demos"
-import type { RegistryItem } from "@/lib/registry"
+import { createRegistry, type RegistryItem } from "@/lib/registry"
 
 const items = registry.items as RegistryItem[]
 const ui = items.filter((i) => i.type === "registry:ui")
@@ -101,6 +101,12 @@ describe("registry.json", () => {
         expect(allowed, `${item.name} imports ${spec}`).toBe(true)
       }
     }
+  })
+
+  it("sections report the npm packages their registryDependencies carry", () => {
+    const { getDependencies, getItem } = createRegistry(items)
+    expect(getDependencies(getItem("hero-aurora")!)).toEqual(["@gsap/react", "gsap", "motion"])
+    expect(getDependencies(getItem("features-spotlight")!)).toEqual(["lucide-react", "motion"])
   })
 
   it("dependencies list exactly the npm packages the file imports", () => {

@@ -9,7 +9,7 @@ import { ComponentPreview } from "@/components/site/component-preview"
 import { DependencyBadges } from "@/components/site/dependency-badges"
 import { InstallCommand } from "@/components/site/install-command"
 import { PropsTable } from "@/components/site/props-table"
-import { getItem, getItems, isBlock } from "@/lib/registry"
+import { getDependencies, getItem, getItems, isBlock } from "@/lib/registry"
 import { displaySource } from "@/lib/source"
 
 export function generateStaticParams() {
@@ -38,7 +38,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
         <p className="text-xs uppercase tracking-wider text-muted-foreground">{isBlock(item) ? "Section" : "Component"}</p>
         <h1 className="text-3xl font-bold tracking-tight">{item.title}</h1>
         <p className="text-lg text-muted-foreground">{item.description}</p>
-        <DependencyBadges dependencies={item.dependencies} />
+        <DependencyBadges dependencies={getDependencies(item)} />
       </header>
 
       {isBlock(item) ? (
@@ -51,7 +51,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Install</h2>
-        <InstallCommand name={item.name} />
+        <InstallCommand name={item.name} isBlock={isBlock(item)} />
       </section>
 
       <section className="space-y-3">
