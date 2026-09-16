@@ -22,6 +22,11 @@ export interface SplitTextProps extends Omit<React.ComponentProps<"span">, "chil
 
 export function splitUnits(text: string, by: "chars" | "words"): string[] {
   if (by === "words") return text.split(/(\s+)/).filter((unit) => unit.length > 0)
+  // Code points tear emoji, flags and combining marks apart — a unit must be a whole grapheme cluster.
+  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+    const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" })
+    return Array.from(segmenter.segment(text), (segment) => segment.segment)
+  }
   return Array.from(text)
 }
 
@@ -72,14 +77,19 @@ export function SplitText({
     {
       ref,
       "data-slot": "split-text",
-      "aria-label": children,
       className: cn("inline-block", className),
       ...props,
     },
+    // role=generic (span, div) and role=paragraph prohibit aria-label, so the text is carried
+    // by a screen-reader-only copy instead. That works for every value of `as`.
+    <span key="label" className="sr-only">
+      {children}
+    </span>,
     units.map((unit, index) => (
       <span key={index} aria-hidden className="inline-block overflow-hidden align-bottom">
         <span data-split-unit className="inline-block">
-          {/^\s+$/.test(unit) ? " " : unit}
+          {/* A collapsible U+0020 alone in an inline-block is trimmed to zero width, so words run together. */}
+          {/^\s+$/.test(unit) ? "\u00a0".repeat(unit.length) : unit}
         </span>
       </span>
     ))
