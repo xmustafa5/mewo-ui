@@ -43,15 +43,17 @@ export function ScrollReveal({
   ...props
 }: ScrollRevealProps) {
   const reduceMotion = useReducedMotion()
-  const offset = reduceMotion ? { x: 0, y: 0 } : revealOffset(direction, distance)
 
   return (
     <motion.div
       data-slot="scroll-reveal"
-      initial={{ opacity: 0, ...offset }}
+      // `initial` must not depend on reduced motion: it is serialised into the SSR markup,
+      // which the server always renders unreduced. A zero-duration transition snaps a
+      // reduced-motion visitor straight to the final state instead of animating to it.
+      initial={{ opacity: 0, ...revealOffset(direction, distance) }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once, margin: "-10%" }}
-      transition={{ duration, delay, ease: "easeOut" }}
+      transition={reduceMotion ? { duration: 0 } : { duration, delay, ease: "easeOut" }}
       className={cn(className)}
       {...props}
     >

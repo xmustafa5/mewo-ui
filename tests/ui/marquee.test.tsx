@@ -3,12 +3,29 @@ import { describe, expect, it } from "vitest"
 import { Marquee } from "@/registry/mewo/ui/marquee"
 
 describe("Marquee", () => {
-  it("renders children twice for a seamless loop, second copy aria-hidden", () => {
+  it("repeats children enough times to cover the container, first copy only in the a11y tree", () => {
     render(<Marquee><span>logo</span></Marquee>)
     const copies = screen.getAllByText("logo")
-    expect(copies).toHaveLength(2)
+    expect(copies).toHaveLength(4)
     expect(copies[0].parentElement).not.toHaveAttribute("aria-hidden")
-    expect(copies[1].parentElement).toHaveAttribute("aria-hidden", "true")
+    for (const copy of copies.slice(1)) expect(copy.parentElement).toHaveAttribute("aria-hidden", "true")
+  })
+
+  it("takes a repeat count", () => {
+    render(<Marquee repeat={2}><span>logo</span></Marquee>)
+    expect(screen.getAllByText("logo")).toHaveLength(2)
+  })
+
+  // aria-hidden hides a track from assistive tech but leaves its links and buttons tabbable,
+  // so focus would land in a subtree that announces nothing (WCAG 4.1.2, axe aria-hidden-focus).
+  it("makes every duplicated track inert so its focusable children leave the tab order", () => {
+    render(<Marquee data-testid="m"><a href="#x">logo</a></Marquee>)
+    const tracks = Array.from(screen.getByTestId("m").children)
+    expect(tracks[0]).not.toHaveAttribute("inert")
+    for (const track of tracks.slice(1)) {
+      expect(track).toHaveAttribute("inert")
+      expect(track).toHaveAttribute("aria-hidden", "true")
+    }
   })
 
   it("reverses direction and pauses on hover by default", () => {

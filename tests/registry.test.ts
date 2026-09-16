@@ -55,9 +55,9 @@ describe("registry.json", () => {
     for (const item of items) expect(read(item.files[0].path).startsWith('"use client"'), item.name).toBe(true)
   })
 
-  it("css keys are @keyframes or @utility blocks", () => {
+  it("css keys are @keyframes, @utility or @media blocks", () => {
     for (const item of items) {
-      for (const key of Object.keys(item.css ?? {})) expect(key, item.name).toMatch(/^@(keyframes|utility) /)
+      for (const key of Object.keys(item.css ?? {})) expect(key, item.name).toMatch(/^@(keyframes|utility|media) /)
     }
   })
 

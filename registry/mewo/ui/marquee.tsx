@@ -8,6 +8,8 @@ export interface MarqueeProps extends React.ComponentProps<"div"> {
   /** Seconds for one full loop. */
   speed?: number
   pauseOnHover?: boolean
+  /** Copies of the children in the track. The loop is only seamless while (repeat - 1) copies cover the container. */
+  repeat?: number
 }
 
 export function Marquee({
@@ -15,6 +17,7 @@ export function Marquee({
   direction = "left",
   speed = 30,
   pauseOnHover = true,
+  repeat = 4,
   className,
   style,
   ...props
@@ -26,10 +29,11 @@ export function Marquee({
       style={{ "--marquee-duration": `${speed}s`, ...style } as React.CSSProperties}
       {...props}
     >
-      {[0, 1].map((copy) => (
+      {Array.from({ length: repeat }, (_, copy) => (
         <div
           key={copy}
-          aria-hidden={copy === 1 ? true : undefined}
+          aria-hidden={copy > 0 ? true : undefined}
+          inert={copy > 0 ? true : undefined}
           className={cn(
             "flex shrink-0 items-center gap-[var(--gap)] pr-[var(--gap)]",
             "motion-safe:animate-[mewo-marquee_var(--marquee-duration)_linear_infinite]",

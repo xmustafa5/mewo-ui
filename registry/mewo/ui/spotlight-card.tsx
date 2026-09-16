@@ -5,13 +5,13 @@ import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from "mot
 import { cn } from "@/lib/utils"
 
 export interface SpotlightCardProps extends React.ComponentProps<"div"> {
-  /** Any CSS colour. Defaults to a soft white glow. */
+  /** Any CSS colour. Defaults to a soft tint of the theme foreground, so it shows in light and dark. */
   spotlightColor?: string
 }
 
 export function SpotlightCard({
   children,
-  spotlightColor = "rgba(255,255,255,0.15)",
+  spotlightColor = "color-mix(in oklch, var(--color-foreground) 12%, transparent)",
   className,
   onPointerMove,
   ...props
@@ -39,7 +39,7 @@ export function SpotlightCard({
     >
       <motion.div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 motion-reduce:hidden"
         style={{ background }}
       />
       <div className="relative">{children}</div>

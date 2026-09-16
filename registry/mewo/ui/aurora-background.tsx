@@ -29,10 +29,13 @@ export function AuroraBackground({ children, showRadialMask = true, className, .
         />
       </div>
       <motion.div
+        data-slot="aurora-content"
         className="relative z-10 flex w-full flex-col items-center"
-        initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+        // `initial` must not depend on reduced motion: it is serialised into the SSR markup,
+        // which the server always renders unreduced. Only the transition changes.
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut" }}
       >
         {children}
       </motion.div>
