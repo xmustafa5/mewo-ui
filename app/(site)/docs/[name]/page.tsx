@@ -40,9 +40,15 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
         <DependencyBadges dependencies={item.dependencies} />
       </header>
 
-      <ComponentPreview code={code}>
-        <Demo />
-      </ComponentPreview>
+      {isBlock(item) ? (
+        <ComponentPreview code={code}>
+          <Demo />
+        </ComponentPreview>
+      ) : (
+        <ComponentPreview code={code}>
+          <Demo />
+        </ComponentPreview>
+      )}
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Install</h2>
