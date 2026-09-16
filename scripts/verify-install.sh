@@ -6,6 +6,8 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PORT="${PORT:-3999}"
 WORK="${VERIFY_DIR:-$(mktemp -d)}"
+# Only a directory we made ourselves is ours to delete; an explicit VERIFY_DIR is kept for debugging.
+KEEP_WORK="${VERIFY_DIR:+1}"
 SERVER_PID=""
 
 # `npx next start &` backgrounds the npm-exec wrapper, not next-server itself:
@@ -41,8 +43,13 @@ cleanup() {
     fi
     if ! port_free; then
       echo "✘ port $PORT still bound after cleanup" >&2
-      exit 1
+      status=1
     fi
+  fi
+  if [[ -z "$KEEP_WORK" ]]; then
+    rm -rf "$WORK"
+  else
+    echo "▶ scratch directory kept at $WORK"
   fi
   exit "$status"
 }
