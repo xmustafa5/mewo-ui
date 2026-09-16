@@ -3,6 +3,7 @@ import path from "node:path"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { demos } from "@/components/demos"
+import { BlockPreview } from "@/components/site/block-preview"
 import { CodeBlock } from "@/components/site/code-block"
 import { ComponentPreview } from "@/components/site/component-preview"
 import { DependencyBadges } from "@/components/site/dependency-badges"
@@ -41,9 +42,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
       </header>
 
       {isBlock(item) ? (
-        <ComponentPreview code={code}>
-          <Demo />
-        </ComponentPreview>
+        <BlockPreview name={item.name} code={code} />
       ) : (
         <ComponentPreview code={code}>
           <Demo />
