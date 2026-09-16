@@ -90,21 +90,30 @@ export function SplitText({
     {
       ref,
       "data-slot": "split-text",
+      // Every unit is aria-hidden, so the text reaches assistive tech once as the root's accessible
+      // name — and stays in the DOM once, so textContent, innerText and a copy of the selection all
+      // return it once. role=generic (span) and role=paragraph (p) prohibit aria-label, so those two
+      // are exposed as an image with a text alternative; a heading can name itself.
+      role: Tag === "span" || Tag === "p" ? "img" : undefined,
+      "aria-label": children,
       className: cn("inline-block", className),
       ...props,
     },
-    // role=generic (span, div) and role=paragraph prohibit aria-label, so the text is carried
-    // by a screen-reader-only copy instead. That works for every value of `as`.
-    <span key="label" className="sr-only">
-      {children}
-    </span>,
-    units.map((unit, index) => (
-      <span key={index} aria-hidden className="inline-block overflow-hidden align-bottom">
-        <span data-split-unit className="inline-block">
-          {/* A collapsible U+0020 alone in an inline-block is trimmed to zero width, so words run together. */}
-          {/^\s+$/.test(unit) ? "\u00a0".repeat(unit.length) : unit}
+    units.map((unit, index) =>
+      // Whitespace is emitted as a bare text node, not as a unit of its own: inside an inline-block
+      // a lone collapsible space is trimmed to zero width and words run together, while an
+      // inline-block of U+00A0 is never trimmed at a line end and pushes wrapped centred lines
+      // off-centre. Between the wrappers it is an ordinary space in the parent's inline formatting
+      // context — full width mid-line, trimmed at a line end.
+      /^\s+$/.test(unit) ? (
+        unit
+      ) : (
+        <span key={index} aria-hidden className="inline-block overflow-hidden align-bottom">
+          <span data-split-unit className="inline-block">
+            {unit}
+          </span>
         </span>
-      </span>
-    ))
+      )
+    )
   )
 }
