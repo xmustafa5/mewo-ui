@@ -23,7 +23,7 @@ export function AuroraBackground({ children, showRadialMask = true, className, .
           className={cn(
             "absolute -inset-[10%] opacity-50 blur-[40px] will-change-transform",
             "bg-[length:300%_200%] bg-[linear-gradient(100deg,#3b82f6_10%,#a5b4fc_20%,#93c5fd_30%,#ddd6fe_40%,#60a5fa_50%,#3b82f6_60%)]",
-            "motion-safe:animate-[aurora_60s_linear_infinite]",
+            "motion-safe:animate-[mewo-aurora_60s_linear_infinite]",
             showRadialMask && "[mask-image:radial-gradient(ellipse_at_100%_0%,black_10%,transparent_70%)]"
           )}
         />

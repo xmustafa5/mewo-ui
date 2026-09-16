@@ -32,7 +32,7 @@ export function Marquee({
           aria-hidden={copy === 1 ? true : undefined}
           className={cn(
             "flex shrink-0 items-center gap-[var(--gap)] pr-[var(--gap)]",
-            "motion-safe:animate-[marquee_var(--marquee-duration)_linear_infinite]",
+            "motion-safe:animate-[mewo-marquee_var(--marquee-duration)_linear_infinite]",
             direction === "right" && "[animation-direction:reverse]",
             pauseOnHover && "group-hover:[animation-play-state:paused]"
           )}

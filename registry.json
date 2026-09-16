@@ -11,9 +11,9 @@
       "categories": ["text"],
       "files": [{ "path": "registry/mewo/ui/text-shimmer.tsx", "type": "registry:ui" }],
       "css": {
-        "@keyframes shimmer": {
+        "@keyframes mewo-shimmer": {
           "from": { "background-position": "200% center" },
-          "to": { "background-position": "-200% center" }
+          "to": { "background-position": "0% center" }
         }
       }
     },
@@ -25,7 +25,7 @@
       "categories": ["layout"],
       "files": [{ "path": "registry/mewo/ui/marquee.tsx", "type": "registry:ui" }],
       "css": {
-        "@keyframes marquee": {
+        "@keyframes mewo-marquee": {
           "from": { "transform": "translateX(0)" },
           "to": { "transform": "translateX(-100%)" }
         }
@@ -67,7 +67,7 @@
       "dependencies": ["motion"],
       "files": [{ "path": "registry/mewo/ui/aurora-background.tsx", "type": "registry:ui" }],
       "css": {
-        "@keyframes aurora": {
+        "@keyframes mewo-aurora": {
           "from": { "background-position": "0% 50%" },
           "to": { "background-position": "300% 50%" }
         }

@@ -61,6 +61,27 @@ describe("registry.json", () => {
     }
   })
 
+  it("keyframe names are namespaced so they cannot overwrite a consumer's own", () => {
+    for (const item of items) {
+      for (const key of Object.keys(item.css ?? {})) {
+        const keyframes = key.match(/^@keyframes (.+)$/)
+        if (keyframes) expect(keyframes[1], item.name).toMatch(/^mewo-/)
+      }
+    }
+  })
+
+  it("every animation a file references is declared in that item's css", () => {
+    for (const item of items) {
+      const used = new Set(Array.from(read(item.files[0].path).matchAll(/animate-\[([a-z0-9-]+)_/g), (m) => m[1]))
+      const declared = new Set(
+        Object.keys(item.css ?? {})
+          .map((key) => key.match(/^@keyframes (.+)$/)?.[1])
+          .filter((name): name is string => Boolean(name))
+      )
+      expect(declared, item.name).toEqual(used)
+    }
+  })
+
   it("ui items import only allowed modules and never other ui items", () => {
     for (const item of ui) {
       for (const spec of importsOf(read(item.files[0].path))) {
