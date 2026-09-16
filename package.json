@@ -1,7 +1,9 @@
 {
-  "name": "mewi-ui",
+  "name": "mewo-ui",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "repository": { "type": "git", "url": "https://github.com/xmustafa5/mewo-ui.git" },
   "scripts": {
     "dev": "next dev",
     "predev": "npm run registry:build",

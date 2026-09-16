@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mewo
 
-## Getting Started
+Animated React components and page sections, distributed as a [shadcn registry](https://ui.shadcn.com/docs/registry). Install an item and its source code is copied into your project — you own it.
 
-First, run the development server:
+**Site & docs:** https://mewo-ui.vercel.app
+
+## Install
+
+Requires a project with shadcn initialised (`npx shadcn@latest init`) and Tailwind CSS v4.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npx shadcn@latest add @mewo/hero-aurora
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Until mewo is listed in the shadcn registry directory, add the namespace to your `components.json` first:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```json
+{
+  "registries": {
+    "@mewo": "https://mewo-ui.vercel.app/r/{name}.json"
+  }
+}
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Or install by URL: `npx shadcn@latest add https://mewo-ui.vercel.app/r/hero-aurora.json`
 
-## Learn More
+## What's inside (v0.1)
 
-To learn more about Next.js, take a look at the following resources:
+| Item | Kind | Needs |
+|---|---|---|
+| `text-shimmer` | component | — |
+| `marquee` | component | — |
+| `split-text` | component | gsap, @gsap/react |
+| `spotlight-card` | component | motion |
+| `scroll-reveal` | component | motion |
+| `aurora-background` | component | motion |
+| `hero-aurora` | section | aurora-background, split-text, button |
+| `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Every item respects `prefers-reduced-motion`. Each installs only the dependency it uses.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Development
 
-## Deploy on Vercel
+```bash
+npm install
+npm run dev            # generates public/r and app/registry.css, then starts Next.js
+npm test               # vitest
+npm run lint && npm run typecheck
+npm run verify:install # installs every item into a fresh Next app from a local server, then runs tsc
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Adding a component
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Write it at `registry/mewo/ui/<name>.tsx` (starts with `"use client"`, accepts `className`, honours reduced motion). Sections go in `registry/mewo/blocks/` and import components as `@/registry/mewo/ui/<name>`.
+2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`.
+3. Add `components/demos/<name>-demo.tsx` (default export = demo, `props` = props table) and register it in `components/demos/index.ts`.
+4. Add a test under `tests/`. `npm test` also checks the catalog invariants.
+5. `npm run verify:install`.
+
+The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
+
+## Registry directory checklist
+
+After the site is deployed and green:
+
+1. Fork [shadcn-ui/ui](https://github.com/shadcn-ui/ui) and add to `apps/v4/registry/directory.json`:
+   ```json
+   { "name": "@mewo", "homepage": "https://mewo-ui.vercel.app", "url": "https://mewo-ui.vercel.app/r/{name}.json", "description": "Animated React components and sections powered by Motion and GSAP." }
+   ```
+2. Run `pnpm validate:registries` in that repo.
+3. Open the PR. Once merged, `npx shadcn@latest add @mewo/<name>` works everywhere with no configuration.
+
+## License
+
+MIT © xmustafa5
