@@ -7,9 +7,10 @@ import { BlockPreview } from "@/components/site/block-preview"
 import { CodeBlock } from "@/components/site/code-block"
 import { ComponentPreview } from "@/components/site/component-preview"
 import { DependencyBadges } from "@/components/site/dependency-badges"
+import { DropInWarning } from "@/components/site/dropin-warning"
 import { InstallCommand } from "@/components/site/install-command"
 import { PropsTable } from "@/components/site/props-table"
-import { getDependencies, getItem, getItems, isBlock } from "@/lib/registry"
+import { getDependencies, getItem, getItems, isBlock, isDropIn } from "@/lib/registry"
 import { displaySource } from "@/lib/source"
 
 export function generateStaticParams() {
@@ -51,6 +52,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
 
       <section className="space-y-3">
         <h2 className="text-xl font-semibold">Install</h2>
+        {isDropIn(item) ? <DropInWarning name={item.name} /> : null}
         <InstallCommand name={item.name} isBlock={isBlock(item)} />
       </section>
 

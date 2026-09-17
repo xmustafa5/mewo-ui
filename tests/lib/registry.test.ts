@@ -39,6 +39,13 @@ describe("createRegistry", () => {
     expect(reg.isBlock(reg.getItem("a")!)).toBe(false)
   })
 
+  it("isDropIn flags only the primitives group, the one whose items overwrite a shadcn file", () => {
+    const dropins = createRegistry([ui("tabs", "primitives"), ui("a", "text"), block("hero")])
+    expect(dropins.isDropIn(dropins.getItem("tabs")!)).toBe(true)
+    expect(dropins.isDropIn(dropins.getItem("a")!)).toBe(false)
+    expect(dropins.isDropIn(dropins.getItem("hero")!)).toBe(false)
+  })
+
   it("getDependencies walks registryDependencies so a section reports what it really installs", () => {
     expect(reg.getDependencies(reg.getItem("hero")!)).toEqual(["gsap", "lucide-react", "motion"])
     expect(reg.getDependencies(reg.getItem("a")!)).toEqual(["gsap"])
