@@ -42,7 +42,10 @@ function CollapsibleContent({ className, ...props }: CollapsiblePrimitive.Panel.
       render={({ children, ...renderProps }, state) => (
         <div {...renderProps}>
           <motion.div
-            initial={false}
+            // Base UI's Panel defaults to `keepMounted: false`, so this mounts with `open`
+            // already true. `initial={false}` would render straight at the target and the fade
+            // would only ever run on close; an explicit transparent start makes it fade in too.
+            initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: state.open ? 1 : 0 }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
           >
