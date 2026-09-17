@@ -32,7 +32,7 @@ Sections (`hero-aurora`, `features-spotlight`) install other mewo components, wh
 `@mewo/<name>`. The CLI resolves that name only from a configured registry, so sections need the
 `registries` entry above — the URL form fails for them with `Unknown registry "@mewo"`.
 
-## What's inside (v0.1)
+## What's inside
 
 | Item | Kind | Needs |
 |---|---|---|
