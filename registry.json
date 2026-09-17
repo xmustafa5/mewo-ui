@@ -114,6 +114,15 @@
       "categories": ["primitives"],
       "dependencies": ["motion", "@base-ui/react", "class-variance-authority"],
       "files": [{ "path": "registry/mewo/ui/tabs.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Drop-in replacement for shadcn's collapsible, which ships with no animation at all. Adds eased height and a content fade. Same exports, same props.",
+      "categories": ["primitives"],
+      "dependencies": ["motion", "@base-ui/react"],
+      "files": [{ "path": "registry/mewo/ui/collapsible.tsx", "type": "registry:ui" }]
     }
   ]
 }
