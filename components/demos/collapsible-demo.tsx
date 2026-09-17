@@ -4,13 +4,13 @@ import type { PropDoc } from "./types"
 
 export default function CollapsibleDemo() {
   return (
-    <Collapsible className="w-full max-w-sm rounded-lg border p-4">
-      <CollapsibleTrigger className="w-full">
+    <Collapsible className="flex w-full max-w-sm flex-col rounded-lg border p-4">
+      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md text-left text-sm font-medium outline-none transition-colors hover:underline focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-disabled:pointer-events-none aria-disabled:opacity-50">
         What does this replace?
         <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" />
       </CollapsibleTrigger>
       <CollapsibleContent>
-        <div className="pt-3 text-muted-foreground">
+        <div className="pt-3 text-sm text-muted-foreground">
           <p>shadcn&apos;s collapsible renders the Base UI panel with no styling and no animation, so it appears at full height instantly.</p>
           <p className="mt-2">This one animates its height and fades the content in.</p>
         </div>

@@ -29,16 +29,27 @@ describe("Collapsible", () => {
     expect(screen.getByTestId("content")).toHaveClass("overflow-hidden")
   })
 
-  it("merges className on every part", () => {
+  it("gates the height transition behind prefers-reduced-motion, like the library's other animations", () => {
+    render(<Fixture />)
+    fireEvent.click(screen.getByRole("button", { name: "Toggle" }))
+    expect(screen.getByTestId("content")).toHaveClass("motion-safe:transition-[height]")
+  })
+
+  it("merges className on every part without forcing any layout of its own on the root or trigger", () => {
     render(
       <Collapsible className="c-root" data-testid="root">
         <CollapsibleTrigger className="c-trigger">T</CollapsibleTrigger>
         <CollapsibleContent className="c-content" data-testid="content">X</CollapsibleContent>
       </Collapsible>
     )
-    expect(screen.getByTestId("root")).toHaveClass("c-root")
-    expect(screen.getByRole("button", { name: "T" })).toHaveClass("c-trigger")
-    fireEvent.click(screen.getByRole("button", { name: "T" }))
+    const root = screen.getByTestId("root")
+    const trigger = screen.getByRole("button", { name: "T" })
+    // Unlike the content panel, the root and trigger ship with no base classes of their
+    // own — matching shadcn's unstyled convention — so the consumer's className is all
+    // that should appear here.
+    expect(root.className).toBe("c-root")
+    expect(trigger.className).toBe("c-trigger")
+    fireEvent.click(trigger)
     expect(screen.getByTestId("content")).toHaveClass("c-content")
   })
 

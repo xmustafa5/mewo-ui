@@ -9,7 +9,7 @@ function Collapsible({ className, ...props }: CollapsiblePrimitive.Root.Props) {
   return (
     <CollapsiblePrimitive.Root
       data-slot="collapsible"
-      className={cn("flex w-full flex-col", className)}
+      className={cn(className)}
       {...props}
     />
   )
@@ -19,10 +19,7 @@ function CollapsibleTrigger({ className, ...props }: CollapsiblePrimitive.Trigge
   return (
     <CollapsiblePrimitive.Trigger
       data-slot="collapsible-trigger"
-      className={cn(
-        "flex items-center justify-between rounded-md text-left text-sm font-medium outline-none transition-colors hover:underline focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-disabled:pointer-events-none aria-disabled:opacity-50",
-        className
-      )}
+      className={cn(className)}
       {...props}
     />
   )
@@ -34,7 +31,7 @@ function CollapsibleContent({ className, children, ...props }: CollapsiblePrimit
     <CollapsiblePrimitive.Panel
       data-slot="collapsible-content"
       className={cn(
-        "h-(--collapsible-panel-height) overflow-hidden text-sm transition-[height] duration-200 ease-out data-ending-style:h-0 data-starting-style:h-0",
+        "h-(--collapsible-panel-height) overflow-hidden motion-safe:transition-[height] motion-safe:duration-200 motion-safe:ease-out data-ending-style:h-0 data-starting-style:h-0",
         className
       )}
       render={(renderProps, state) => (
