@@ -6,18 +6,27 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { motion, useReducedMotion } from "motion/react"
 import { cn } from "@/lib/utils"
 
+/**
+ * Scopes the indicator's Motion `layoutId` to one `<Tabs>` instance so two unrelated
+ * `<Tabs>` roots on the same page don't share a projection node. Internal only.
+ */
+const TabsIndicatorIdContext = React.createContext<string | undefined>(undefined)
+
 function Tabs({
   className,
   orientation = "horizontal",
   ...props
 }: TabsPrimitive.Root.Props) {
+  const id = React.useId()
   return (
-    <TabsPrimitive.Root
-      data-slot="tabs"
-      data-orientation={orientation}
-      className={cn("group/tabs flex gap-2 data-horizontal:flex-col", className)}
-      {...props}
-    />
+    <TabsIndicatorIdContext.Provider value={id}>
+      <TabsPrimitive.Root
+        data-slot="tabs"
+        data-orientation={orientation}
+        className={cn("group/tabs flex gap-2 data-horizontal:flex-col", className)}
+        {...props}
+      />
+    </TabsIndicatorIdContext.Provider>
   )
 }
 
@@ -57,9 +66,12 @@ function TabsList({
  */
 function TabsIndicator() {
   const reduceMotion = useReducedMotion()
+  const tabsId = React.useContext(TabsIndicatorIdContext)
+  const layoutId = tabsId ? `mewo-tab-indicator-${tabsId}` : "mewo-tab-indicator"
   return (
     <motion.span
-      layoutId="mewo-tab-indicator"
+      layoutId={layoutId}
+      data-layout-id={layoutId}
       data-slot="tabs-indicator"
       aria-hidden="true"
       transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 32 }}

@@ -43,16 +43,46 @@ describe("Tabs", () => {
 
   it("merges className on every part", () => {
     render(
-      <Tabs defaultValue="a" className="t-root">
+      <Tabs defaultValue="a" className="t-root" data-testid="r">
         <TabsList className="t-list" data-testid="l">
           <TabsTrigger value="a" className="t-trigger">A</TabsTrigger>
         </TabsList>
         <TabsContent value="a" className="t-content" data-testid="c">X</TabsContent>
       </Tabs>
     )
+    expect(screen.getByTestId("r")).toHaveClass("t-root")
     expect(screen.getByTestId("l")).toHaveClass("t-list")
     expect(screen.getByRole("tab", { name: "A" })).toHaveClass("t-trigger")
     expect(screen.getByTestId("c")).toHaveClass("t-content")
+  })
+
+  it("scopes the indicator's layout id per Tabs instance so unrelated roots don't share a projection node", () => {
+    render(
+      <>
+        <Tabs defaultValue="a">
+          <TabsList>
+            <TabsTrigger value="a">One A</TabsTrigger>
+            <TabsTrigger value="b">One B</TabsTrigger>
+          </TabsList>
+          <TabsContent value="a">One panel A</TabsContent>
+          <TabsContent value="b">One panel B</TabsContent>
+        </Tabs>
+        <Tabs defaultValue="a">
+          <TabsList>
+            <TabsTrigger value="a">Two A</TabsTrigger>
+            <TabsTrigger value="b">Two B</TabsTrigger>
+          </TabsList>
+          <TabsContent value="a">Two panel A</TabsContent>
+          <TabsContent value="b">Two panel B</TabsContent>
+        </Tabs>
+      </>
+    )
+    const indicators = document.querySelectorAll("[data-slot='tabs-indicator']")
+    expect(indicators).toHaveLength(2)
+    const ids = Array.from(indicators, (el) => el.getAttribute("data-layout-id"))
+    expect(ids[0]).toBeTruthy()
+    expect(ids[1]).toBeTruthy()
+    expect(ids[0]).not.toEqual(ids[1])
   })
 
   it("supports vertical orientation", () => {
