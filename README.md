@@ -44,8 +44,32 @@ Sections (`hero-aurora`, `features-spotlight`) install other mewo components, wh
 | `aurora-background` | component | motion |
 | `hero-aurora` | section | aurora-background, split-text, button |
 | `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
+| `tabs` | drop-in | motion, @base-ui/react, class-variance-authority |
+| `collapsible` | drop-in | motion, @base-ui/react |
 
 Every item respects `prefers-reduced-motion`. Each installs only the dependency it uses.
+
+## Drop-in replacements
+
+Some mewo items replace a shadcn component of the same name. Installing one **overwrites**
+`components/ui/<name>.tsx` in your project:
+
+```bash
+npx shadcn@latest add @mewo/tabs
+```
+
+Your imports, props and JSX keep working — the exports and prop types are identical to
+shadcn's. The only change is that things move:
+
+- **tabs** — shadcn's highlight jumps between tabs. mewo's slides.
+- **collapsible** — shadcn's collapsible ships with no animation at all; the panel appears at
+  full height instantly. mewo's animates the height and fades the content in. mewo's root and
+  trigger ship unstyled — no base classes, exactly like shadcn's — so installing it cannot move
+  an existing layout; only the panel carries classes, and those are what make the height
+  animate.
+
+Verified against **shadcn CLI 4.21.0**. If shadcn changes these components' API, a mewo drop-in
+installed over the new version may diverge — check this line before upgrading.
 
 ## Development
 
