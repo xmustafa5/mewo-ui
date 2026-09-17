@@ -105,6 +105,15 @@
       "dependencies": ["lucide-react"],
       "registryDependencies": ["@mewo/text-shimmer", "@mewo/scroll-reveal", "@mewo/spotlight-card", "@mewo/marquee"],
       "files": [{ "path": "registry/mewo/blocks/features-spotlight.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Drop-in replacement for shadcn's tabs. Adds an indicator that slides between tabs instead of jumping. Same exports, same props.",
+      "categories": ["primitives"],
+      "dependencies": ["motion", "@base-ui/react", "class-variance-authority"],
+      "files": [{ "path": "registry/mewo/ui/tabs.tsx", "type": "registry:ui" }]
     }
   ]
 }
