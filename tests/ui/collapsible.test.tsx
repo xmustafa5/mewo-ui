@@ -53,6 +53,23 @@ describe("Collapsible", () => {
     expect(screen.getByTestId("content")).toHaveClass("c-content")
   })
 
+  it("keeps the children of a consumer-supplied render prop", () => {
+    // `render` is Base UI's replacement for Radix's `asChild` and a first-class prop on
+    // `Collapsible.Panel.Props`. A consumer's `render` overrides ours, so the body must reach
+    // Base UI through the props rather than being captured by our own render callback.
+    render(
+      <Collapsible defaultOpen>
+        <CollapsibleTrigger>Toggle</CollapsibleTrigger>
+        <CollapsibleContent render={<section />} data-testid="content">
+          BODY
+        </CollapsibleContent>
+      </Collapsible>
+    )
+    const content = screen.getByTestId("content")
+    expect(content.tagName).toBe("SECTION")
+    expect(content).toHaveTextContent("BODY")
+  })
+
   it("marks its parts with data-slot attributes", () => {
     render(<Fixture />)
     expect(document.querySelector("[data-slot='collapsible']")).toBeInTheDocument()

@@ -86,7 +86,14 @@ function TabsIndicator() {
   )
 }
 
-function TabsTrigger({ className, children, ...props }: TabsPrimitive.Tab.Props) {
+/**
+ * `children` is read off the render callback's props rather than destructured out of the
+ * component's own props. Destructuring it would strip it before Base UI ever saw it, so a
+ * consumer's own `render` — `<TabsTrigger render={<Link/>}>`, the routed-tabs pattern, which
+ * overrides ours because `{...props}` is spread last — would render an empty element. This way
+ * a consumer `render` keeps its children and only loses the decorative indicator.
+ */
+function TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {
   return (
     <TabsPrimitive.Tab
       data-slot="tabs-trigger"
@@ -94,10 +101,10 @@ function TabsTrigger({ className, children, ...props }: TabsPrimitive.Tab.Props)
         "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-1.5 py-0.5 text-sm font-medium whitespace-nowrap text-foreground/60 transition-colors group-data-vertical/tabs:w-full group-data-vertical/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 has-data-[icon=inline-end]:pr-1 has-data-[icon=inline-start]:pl-1 aria-disabled:pointer-events-none aria-disabled:opacity-50 dark:text-muted-foreground dark:hover:text-foreground data-active:text-foreground dark:data-active:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
-      render={(renderProps, state) => (
+      render={({ children, ...renderProps }, state) => (
         <button type="button" {...renderProps}>
           {state.active ? <TabsIndicator /> : null}
-          <span className="relative z-10 inline-flex items-center gap-1.5">{children as React.ReactNode}</span>
+          <span className="relative z-10 inline-flex items-center gap-1.5">{children}</span>
         </button>
       )}
       {...props}

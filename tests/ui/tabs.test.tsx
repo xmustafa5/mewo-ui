@@ -85,6 +85,25 @@ describe("Tabs", () => {
     expect(ids[0]).not.toEqual(ids[1])
   })
 
+  it("keeps the children of a consumer-supplied render prop", () => {
+    // `render` is Base UI's replacement for Radix's `asChild`, and `<TabsTrigger render={<Link/>}>`
+    // is the standard routed-tabs pattern. A consumer's `render` overrides ours, so the label must
+    // reach Base UI through the props rather than being captured by our own render callback.
+    render(
+      <Tabs defaultValue="a">
+        <TabsList>
+          <TabsTrigger value="a" render={<a href="#routed" />} nativeButton={false}>
+            Routed
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">Panel A</TabsContent>
+      </Tabs>
+    )
+    const trigger = document.querySelector("[data-slot='tabs-trigger']") as HTMLElement
+    expect(trigger.tagName).toBe("A")
+    expect(trigger).toHaveTextContent("Routed")
+  })
+
   it("supports vertical orientation", () => {
     render(
       <Tabs defaultValue="a" orientation="vertical" data-testid="root">

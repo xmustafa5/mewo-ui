@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
 import { motion, useReducedMotion } from "motion/react"
 import { cn } from "@/lib/utils"
@@ -25,7 +24,13 @@ function CollapsibleTrigger({ className, ...props }: CollapsiblePrimitive.Trigge
   )
 }
 
-function CollapsibleContent({ className, children, ...props }: CollapsiblePrimitive.Panel.Props) {
+/**
+ * `children` is read off the render callback's props rather than destructured out of the
+ * component's own props. Destructuring it would strip it before Base UI ever saw it, so a
+ * consumer's own `render` — `<CollapsibleContent render={<section/>}>`, which overrides ours
+ * because `{...props}` is spread last — would render an empty element.
+ */
+function CollapsibleContent({ className, ...props }: CollapsiblePrimitive.Panel.Props) {
   const reduceMotion = useReducedMotion()
   return (
     <CollapsiblePrimitive.Panel
@@ -34,14 +39,14 @@ function CollapsibleContent({ className, children, ...props }: CollapsiblePrimit
         "h-(--collapsible-panel-height) overflow-hidden motion-safe:transition-[height] motion-safe:duration-200 motion-safe:ease-out data-ending-style:h-0 data-starting-style:h-0",
         className
       )}
-      render={(renderProps, state) => (
+      render={({ children, ...renderProps }, state) => (
         <div {...renderProps}>
           <motion.div
             initial={false}
             animate={{ opacity: state.open ? 1 : 0 }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
           >
-            {children as React.ReactNode}
+            {children}
           </motion.div>
         </div>
       )}
