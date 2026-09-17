@@ -12,13 +12,34 @@ const blocks = items.filter((i) => i.type === "registry:block")
 const read = (p: string) => readFileSync(path.join(process.cwd(), p), "utf8")
 const importsOf = (src: string) => Array.from(src.matchAll(/from\s+"([^"]+)"/g), (m) => m[1])
 
-const UI_ALLOWED = new Set(["react", "@/lib/utils", "motion/react", "gsap", "gsap/ScrollTrigger", "@gsap/react", "lucide-react"])
+const UI_ALLOWED = new Set([
+  "react",
+  "@/lib/utils",
+  "motion/react",
+  "gsap",
+  "gsap/ScrollTrigger",
+  "@gsap/react",
+  "lucide-react",
+  "@base-ui/react/tabs",
+  "@base-ui/react/collapsible",
+  "class-variance-authority",
+])
+
+/** Items that replace a shadcn component of the same name. Only these may import Base UI. */
+const DROPIN_EXPORTS: Record<string, string[]> = {
+  tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent", "tabsListVariants"],
+  collapsible: ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"],
+}
+
 const PACKAGE_OF: Record<string, string> = {
   "motion/react": "motion",
   gsap: "gsap",
   "gsap/ScrollTrigger": "gsap",
   "@gsap/react": "@gsap/react",
   "lucide-react": "lucide-react",
+  "@base-ui/react/tabs": "@base-ui/react",
+  "@base-ui/react/collapsible": "@base-ui/react",
+  "class-variance-authority": "class-variance-authority",
 }
 
 describe("registry.json", () => {
@@ -113,6 +134,35 @@ describe("registry.json", () => {
     for (const item of items) {
       const expected = new Set(importsOf(read(item.files[0].path)).map((s) => PACKAGE_OF[s]).filter(Boolean))
       expect(new Set(item.dependencies ?? []), item.name).toEqual(expected)
+    }
+  })
+
+  it("primitives is an ordered group with a label", async () => {
+    const { GROUP_ORDER, GROUP_LABELS } = await import("@/lib/registry")
+    expect(GROUP_ORDER).toContain("primitives")
+    expect(GROUP_ORDER.indexOf("primitives")).toBe(GROUP_ORDER.indexOf("sections") + 1)
+    expect(GROUP_LABELS.primitives).toBe("Primitives")
+  })
+
+  it("only drop-in items may import Base UI", () => {
+    for (const item of items) {
+      const src = read(item.files[0].path)
+      const usesBaseUi = importsOf(src).some((s) => s.startsWith("@base-ui/react"))
+      if (usesBaseUi) {
+        expect(DROPIN_EXPORTS, `${item.name} imports Base UI but is not a drop-in`).toHaveProperty(item.name)
+      }
+    }
+  })
+
+  it("drop-in items export exactly what the shadcn component they replace exports", () => {
+    for (const [name, expected] of Object.entries(DROPIN_EXPORTS)) {
+      const item = items.find((i) => i.name === name)
+      if (!item) continue
+      const src = read(item.files[0].path)
+      const line = src.split("\n").find((l) => l.startsWith("export {"))
+      expect(line, `${name} must have a single named export block`).toBeDefined()
+      const actual = line!.replace("export {", "").replace("}", "").split(",").map((s) => s.trim()).filter(Boolean)
+      expect(new Set(actual), name).toEqual(new Set(expected))
     }
   })
 })

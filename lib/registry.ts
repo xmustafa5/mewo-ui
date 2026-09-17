@@ -15,11 +15,12 @@ export type RegistryItem = {
   css?: Record<string, unknown>
 }
 
-export const GROUP_ORDER = ["sections", "text", "card", "scroll", "background", "layout"] as const
+export const GROUP_ORDER = ["sections", "primitives", "text", "card", "scroll", "background", "layout"] as const
 export type Group = (typeof GROUP_ORDER)[number]
 
 export const GROUP_LABELS: Record<Group, string> = {
   sections: "Sections",
+  primitives: "Primitives",
   text: "Text",
   card: "Cards",
   scroll: "Scroll",
