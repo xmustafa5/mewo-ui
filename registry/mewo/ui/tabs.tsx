@@ -76,8 +76,11 @@ function TabsIndicator() {
       aria-hidden="true"
       transition={reduceMotion ? { duration: 0 } : { type: "spring", stiffness: 380, damping: 32 }}
       className={cn(
-        "pointer-events-none absolute z-0 rounded-md bg-background shadow-sm dark:bg-input/30",
-        "group-data-[variant=default]/tabs-list:inset-0",
+        "pointer-events-none absolute z-0 rounded-md bg-background shadow-sm",
+        // The dark treatment belongs to the pill of the `default` variant only. Left unscoped it
+        // also hit the `line` variant's underline and, being emitted later at equal specificity,
+        // beat `bg-foreground` — turning a 2px near-white rule into ~4.5% white in dark theme.
+        "group-data-[variant=default]/tabs-list:inset-0 group-data-[variant=default]/tabs-list:dark:bg-input/30",
         "group-data-[variant=line]/tabs-list:rounded-none group-data-[variant=line]/tabs-list:bg-foreground group-data-[variant=line]/tabs-list:shadow-none",
         "group-data-[variant=line]/tabs-list:group-data-horizontal/tabs:inset-x-0 group-data-[variant=line]/tabs-list:group-data-horizontal/tabs:bottom-[-5px] group-data-[variant=line]/tabs-list:group-data-horizontal/tabs:h-0.5",
         "group-data-[variant=line]/tabs-list:group-data-vertical/tabs:inset-y-0 group-data-[variant=line]/tabs-list:group-data-vertical/tabs:-right-1 group-data-[variant=line]/tabs-list:group-data-vertical/tabs:w-0.5"

@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { fireEvent, render, screen } from "@testing-library/react"
 import { describe, expect, it } from "vitest"
 import { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants } from "@/registry/mewo/ui/tabs"
 
@@ -102,6 +102,27 @@ describe("Tabs", () => {
     const trigger = document.querySelector("[data-slot='tabs-trigger']") as HTMLElement
     expect(trigger.tagName).toBe("A")
     expect(trigger).toHaveTextContent("Routed")
+  })
+
+  it("moves the indicator to the newly active trigger, keeping the same layout id", () => {
+    render(<Fixture />)
+    const first = screen.getByRole("tab", { name: "Account" })
+    const second = screen.getByRole("tab", { name: "Password" })
+    const before = document.querySelector("[data-slot='tabs-indicator']") as HTMLElement
+    expect(first).toContainElement(before)
+    const layoutId = before.getAttribute("data-layout-id")
+    expect(layoutId).toBeTruthy()
+
+    fireEvent.click(second)
+
+    const indicators = document.querySelectorAll("[data-slot='tabs-indicator']")
+    expect(indicators).toHaveLength(1)
+    const after = indicators[0] as HTMLElement
+    expect(second).toContainElement(after)
+    expect(first).not.toContainElement(after)
+    // Same layoutId across the switch is what lets Motion's shared-layout engine animate one
+    // element between two positions instead of cross-fading two unrelated ones.
+    expect(after.getAttribute("data-layout-id")).toBe(layoutId)
   })
 
   it("supports vertical orientation", () => {
