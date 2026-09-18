@@ -2,35 +2,35 @@
 
 Animated React components and page sections, distributed as a [shadcn registry](https://ui.shadcn.com/docs/registry). Install an item and its source code is copied into your project — you own it.
 
-**Site & docs:** https://mewo-ui.vercel.app
+**Site & docs:** https://www.mewo-ui.com
 
 ## Install
 
 Requires a project with shadcn initialised (`npx shadcn@latest init`) and Tailwind CSS v4.
 
+mewo is listed in the shadcn registry directory as `@mewo`, so installing needs no configuration:
+
 ```bash
 npx shadcn@latest add @mewo/hero-aurora
 ```
 
-Until mewo is listed in the shadcn registry directory, add the namespace to your `components.json` first:
+Single components can also be installed straight from their URL:
+
+```bash
+npx shadcn@latest add https://www.mewo-ui.com/r/text-shimmer.json
+```
+
+Sections (`hero-aurora`, `features-spotlight`) install other mewo components, which they list as
+`@mewo/<name>`. The CLI resolves that name through the registry directory; on older CLI versions
+that predate the directory, add the namespace to your `components.json` first:
 
 ```json
 {
   "registries": {
-    "@mewo": "https://mewo-ui.vercel.app/r/{name}.json"
+    "@mewo": "https://www.mewo-ui.com/r/{name}.json"
   }
 }
 ```
-
-Single components can also be installed straight from their URL with no configuration:
-
-```bash
-npx shadcn@latest add https://mewo-ui.vercel.app/r/text-shimmer.json
-```
-
-Sections (`hero-aurora`, `features-spotlight`) install other mewo components, which they list as
-`@mewo/<name>`. The CLI resolves that name only from a configured registry, so sections need the
-`registries` entry above — the URL form fails for them with `Unknown registry "@mewo"`.
 
 ## What's inside (v0.1)
 
@@ -67,16 +67,10 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 
 The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
 
-## Registry directory checklist
+## Registry directory
 
-After the site is deployed and green:
-
-1. Fork [shadcn-ui/ui](https://github.com/shadcn-ui/ui) and add to `apps/v4/registry/directory.json`:
-   ```json
-   { "name": "@mewo", "homepage": "https://mewo-ui.vercel.app", "url": "https://mewo-ui.vercel.app/r/{name}.json", "description": "Animated React components and sections powered by Motion and GSAP." }
-   ```
-2. Run `pnpm validate:registries` in that repo.
-3. Open the PR. Once merged, `npx shadcn@latest add @mewo/<name>` works everywhere with no configuration.
+mewo is listed in the [shadcn registry directory](https://ui.shadcn.com/docs/registry/directory)
+as `@mewo` (added in [shadcn-ui/ui#11924](https://github.com/shadcn-ui/ui/pull/11924)).
 
 ## License
 
