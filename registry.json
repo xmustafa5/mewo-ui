@@ -122,7 +122,14 @@
       "description": "Drop-in replacement for shadcn's collapsible, which ships with no animation at all. Adds eased height and a content fade. Same exports, same props.",
       "categories": ["primitives"],
       "dependencies": ["motion", "@base-ui/react"],
-      "files": [{ "path": "registry/mewo/ui/collapsible.tsx", "type": "registry:ui" }]
+      "files": [{ "path": "registry/mewo/ui/collapsible.tsx", "type": "registry:ui" }],
+      "css": {
+        "@media (scripting: none)": {
+          "[data-slot=\"collapsible-content-fade\"]": {
+            "opacity": "1 !important"
+          }
+        }
+      }
     }
   ]
 }

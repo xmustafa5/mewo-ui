@@ -42,10 +42,16 @@ function CollapsibleContent({ className, ...props }: CollapsiblePrimitive.Panel.
       render={({ children, ...renderProps }, state) => (
         <div {...renderProps}>
           <motion.div
+            data-slot="collapsible-content-fade"
             // Base UI's Panel defaults to `keepMounted: false`, so this mounts with `open`
-            // already true. `initial={false}` would render straight at the target and the fade
-            // would only ever run on close; an explicit transparent start makes it fade in too.
-            initial={reduceMotion ? false : { opacity: 0 }}
+            // already true. An explicit transparent start makes it fade in on every mount, not
+            // just on close. `initial` must not depend on reduced motion: it is serialised into
+            // the SSR markup, which the server always renders unreduced (`useReducedMotion`
+            // returns `null` there), so gating it here would make the server and a
+            // reduced-motion client disagree on this element's first style — same reasoning as
+            // aurora-background and scroll-reveal. The zero-duration transition below is what
+            // snaps a reduced-motion visitor straight to the final state instead of animating.
+            initial={{ opacity: 0 }}
             animate={{ opacity: state.open ? 1 : 0 }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.18, ease: "easeOut" }}
           >
