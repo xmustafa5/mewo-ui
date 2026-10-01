@@ -50,6 +50,14 @@
       "files": [{ "path": "registry/mewo/ui/spotlight-card.tsx", "type": "registry:ui" }]
     },
     {
+      "name": "gradient-carousel",
+      "type": "registry:ui",
+      "title": "Gradient Carousel",
+      "description": "A looping 3D card carousel you turn by wheel, drag or arrow keys, over a blurred gradient drawn in the colours of the centre image. No dependencies.",
+      "categories": ["card"],
+      "files": [{ "path": "registry/mewo/ui/gradient-carousel.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "scroll-reveal",
       "type": "registry:ui",
       "title": "Scroll Reveal",

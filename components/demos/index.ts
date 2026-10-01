@@ -9,6 +9,7 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   marquee: () => import("./marquee-demo"),
   "split-text": () => import("./split-text-demo"),
   "spotlight-card": () => import("./spotlight-card-demo"),
+  "gradient-carousel": () => import("./gradient-carousel-demo"),
   "scroll-reveal": () => import("./scroll-reveal-demo"),
   "scroll-portal": () => import("./scroll-portal-demo"),
   "tile-reveal": () => import("./tile-reveal-demo"),
