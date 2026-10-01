@@ -40,6 +40,7 @@ that predate the directory, add the namespace to your `components.json` first:
 | `marquee` | component | — |
 | `split-text` | component | gsap, @gsap/react |
 | `spotlight-card` | component | motion |
+| `gradient-carousel` | component | — |
 | `scroll-reveal` | component | motion |
 | `scroll-portal` | component | — |
 | `tile-reveal` | component | — |
