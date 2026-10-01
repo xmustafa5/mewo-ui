@@ -13,6 +13,7 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "scroll-portal": () => import("./scroll-portal-demo"),
   "tile-reveal": () => import("./tile-reveal-demo"),
   "scroll-mask": () => import("./scroll-mask-demo"),
+  "text-scroll-highlight": () => import("./text-scroll-highlight-demo"),
   "aurora-background": () => import("./aurora-background-demo"),
   "hero-aurora": () => import("./hero-aurora-demo"),
   "features-spotlight": () => import("./features-spotlight-demo"),
