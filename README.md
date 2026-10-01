@@ -41,6 +41,9 @@ that predate the directory, add the namespace to your `components.json` first:
 | `split-text` | component | gsap, @gsap/react |
 | `spotlight-card` | component | motion |
 | `scroll-reveal` | component | motion |
+| `scroll-portal` | component | — |
+| `tile-reveal` | component | — |
+| `scroll-mask` | component | — |
 | `aurora-background` | component | motion |
 | `hero-aurora` | section | aurora-background, split-text, button |
 | `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
