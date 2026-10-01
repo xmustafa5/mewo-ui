@@ -145,6 +145,28 @@
       }
     },
     {
+      "name": "text-scroll-highlight",
+      "type": "registry:ui",
+      "title": "Text Scroll Highlight",
+      "description": "Text whose words light up one by one with the scroll, either as it moves up the screen or pinned in place like a subtitle. No dependencies.",
+      "categories": ["scroll"],
+      "files": [{ "path": "registry/mewo/ui/text-scroll-highlight.tsx", "type": "registry:ui" }],
+      "css": {
+        "@media (scripting: none)": {
+          "[data-slot=\"text-scroll-highlight-word\"]": {
+            "opacity": "1 !important"
+          },
+          "[data-slot=\"text-scroll-highlight-pin\"]": {
+            "height": "auto !important"
+          },
+          "[data-slot=\"text-scroll-highlight-stage\"]": {
+            "position": "static !important",
+            "height": "auto !important"
+          }
+        }
+      }
+    },
+    {
       "name": "aurora-background",
       "type": "registry:ui",
       "title": "Aurora Background",

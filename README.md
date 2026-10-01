@@ -45,6 +45,7 @@ that predate the directory, add the namespace to your `components.json` first:
 | `scroll-portal` | component | — |
 | `tile-reveal` | component | — |
 | `scroll-mask` | component | — |
+| `text-scroll-highlight` | component | — |
 | `aurora-background` | component | motion |
 | `hero-aurora` | section | aurora-background, split-text, button |
 | `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
