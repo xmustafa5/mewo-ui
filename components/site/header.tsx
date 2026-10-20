@@ -1,23 +1,57 @@
 import Link from "next/link"
+import { ArrowRight } from "lucide-react"
+import { GitHubIcon } from "@/components/site/icons"
+import { MewoMark } from "@/components/site/mewo-mark"
+import { Search } from "@/components/site/search"
 import { ThemeToggle } from "@/components/site/theme-toggle"
+import { getSearchEntries } from "@/lib/navigation"
 import { GITHUB_URL, SITE_NAME } from "@/lib/site"
+
+const navLinkClass =
+  "rounded-lg px-2.5 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
-        <Link href="/" className="font-semibold tracking-tight">
-          {SITE_NAME}
+    <header className="sticky top-0 z-40 border-b border-border/70 bg-background/75 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-360 items-center gap-3 px-4 sm:px-6">
+        <Link href="/" className="flex items-center gap-2.5 rounded-lg pr-1" aria-label={`${SITE_NAME} home`}>
+          <MewoMark className="h-5.5 w-auto" />
+          <span className="text-[17px] font-semibold tracking-tight">{SITE_NAME}</span>
         </Link>
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/docs" className="text-muted-foreground hover:text-foreground">
+        <span aria-hidden className="text-lg font-light text-muted-foreground/50 max-md:hidden">
+          /
+        </span>
+        <nav aria-label="Main" className="flex items-center gap-0.5 max-md:hidden">
+          <Link href="/docs" className={navLinkClass}>
             Docs
           </Link>
-          <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground">
-            GitHub
-          </a>
-          <ThemeToggle />
+          <Link href="/docs/components" className={navLinkClass}>
+            Components
+          </Link>
+          <Link href="/docs/hero-aurora" className={navLinkClass}>
+            Sections
+          </Link>
         </nav>
+        <div className="ml-auto flex items-center gap-2">
+          <Search entries={getSearchEntries()} />
+          <ThemeToggle />
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-9 items-center gap-2 rounded-lg border bg-card/60 px-2.5 text-sm font-medium transition-colors hover:bg-accent"
+          >
+            <GitHubIcon className="size-4" />
+            <span className="max-sm:sr-only">GitHub</span>
+          </a>
+          <Link
+            href="/docs/components"
+            className="group inline-flex h-9 items-center gap-1.5 rounded-lg bg-brand px-3.5 text-sm font-medium text-brand-foreground shadow-[inset_0_1px_0_rgb(255_255_255/0.2)] transition-[filter] hover:brightness-110 max-lg:hidden"
+          >
+            Browse components
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />
+          </Link>
+        </div>
       </div>
     </header>
   )

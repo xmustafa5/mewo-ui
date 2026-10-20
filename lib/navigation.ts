@@ -1,0 +1,29 @@
+import { getGroups, type RegistryItem } from "@/lib/registry"
+import type { SearchEntry } from "@/components/site/search"
+
+export const DOCS_PAGES = [
+  { href: "/docs", title: "Introduction", description: "What mewo is and how installing works." },
+  { href: "/docs/components", title: "All components", description: "Every component and section, by category." },
+] as const
+
+/** Every page search can land on: the docs pages, then each item in sidebar order. */
+export function getSearchEntries(): SearchEntry[] {
+  const docs = DOCS_PAGES.map((page) => ({ ...page, section: "Docs" }))
+  const items = getGroups().flatMap((group) =>
+    group.items.map((item) => ({
+      href: `/docs/${item.name}`,
+      title: item.title,
+      section: group.label,
+      description: item.description,
+    }))
+  )
+  return [...docs, ...items]
+}
+
+/** The items either side of `name` in sidebar order, for the previous/next links under a page. */
+export function getNeighbours(name: string): { previous?: RegistryItem; next?: RegistryItem } {
+  const ordered = getGroups().flatMap((group) => group.items)
+  const index = ordered.findIndex((item) => item.name === name)
+  if (index === -1) return {}
+  return { previous: ordered[index - 1], next: ordered[index + 1] }
+}

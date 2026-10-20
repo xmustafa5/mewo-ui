@@ -11,6 +11,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-text: var(--brand-text);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,73 +52,85 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * mewo identity: the cat's cobalt (#1821fb) is the one brand colour. Neutrals carry a trace of
+ * its hue (266) so greys read as part of the same family instead of a stock grey ramp. On dark
+ * surfaces the cobalt is too deep for small text, so text accents use --brand-text, a lighter
+ * tint of the same hue; fills and the mark itself always use --brand.
+ */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --brand: oklch(0.467 0.296 266.1);
+  --brand-foreground: oklch(1 0 0);
+  --brand-text: oklch(0.467 0.296 266.1);
+  --background: oklch(0.993 0.002 270);
+  --foreground: oklch(0.17 0.03 268);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.17 0.03 268);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.17 0.03 268);
+  --primary: oklch(0.467 0.296 266.1);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.963 0.006 270);
+  --secondary-foreground: oklch(0.21 0.03 268);
+  --muted: oklch(0.963 0.006 270);
+  --muted-foreground: oklch(0.5 0.022 268);
+  --accent: oklch(0.955 0.02 268);
+  --accent-foreground: oklch(0.3 0.12 266);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: oklch(0.912 0.01 270);
+  --input: oklch(0.912 0.01 270);
+  --ring: oklch(0.56 0.24 266);
+  --chart-1: oklch(0.467 0.296 266.1);
+  --chart-2: oklch(0.6 0.2 266);
+  --chart-3: oklch(0.72 0.13 268);
+  --chart-4: oklch(0.82 0.07 268);
+  --chart-5: oklch(0.9 0.03 268);
+  --radius: 0.75rem;
+  --sidebar: oklch(0.985 0.003 270);
+  --sidebar-foreground: oklch(0.17 0.03 268);
+  --sidebar-primary: oklch(0.467 0.296 266.1);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.955 0.02 268);
+  --sidebar-accent-foreground: oklch(0.21 0.03 268);
+  --sidebar-border: oklch(0.912 0.01 270);
+  --sidebar-ring: oklch(0.56 0.24 266);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --brand: oklch(0.467 0.296 266.1);
+  --brand-foreground: oklch(1 0 0);
+  --brand-text: oklch(0.74 0.15 270);
+  --background: oklch(0.135 0.012 272);
+  --foreground: oklch(0.97 0.004 270);
+  --card: oklch(0.168 0.014 272);
+  --card-foreground: oklch(0.97 0.004 270);
+  --popover: oklch(0.18 0.016 272);
+  --popover-foreground: oklch(0.97 0.004 270);
+  --primary: oklch(0.467 0.296 266.1);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.22 0.016 272);
+  --secondary-foreground: oklch(0.97 0.004 270);
+  --muted: oklch(0.21 0.015 272);
+  --muted-foreground: oklch(0.7 0.016 270);
+  --accent: oklch(0.24 0.04 268);
+  --accent-foreground: oklch(0.97 0.004 270);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 13%);
+  --ring: oklch(0.62 0.2 266);
+  --chart-1: oklch(0.62 0.24 266);
+  --chart-2: oklch(0.74 0.15 270);
+  --chart-3: oklch(0.5 0.2 266);
+  --chart-4: oklch(0.4 0.14 268);
+  --chart-5: oklch(0.3 0.08 268);
+  --sidebar: oklch(0.155 0.013 272);
+  --sidebar-foreground: oklch(0.97 0.004 270);
+  --sidebar-primary: oklch(0.467 0.296 266.1);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.24 0.04 268);
+  --sidebar-accent-foreground: oklch(0.97 0.004 270);
+  --sidebar-border: oklch(1 0 0 / 9%);
+  --sidebar-ring: oklch(0.62 0.2 266);
 }
 
 @layer base {
@@ -128,6 +143,96 @@
   html {
     @apply font-sans;
   }
+  ::selection {
+    background-color: color-mix(in oklch, var(--brand) 35%, transparent);
+  }
+}
+
+/* A dot lattice for preview stages and hero panels. */
+@utility bg-dots {
+  background-image: radial-gradient(color-mix(in oklch, var(--foreground) 13%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+/* The pixel grid the cat's stepped squares come from, as faint graph paper. */
+@utility bg-pixel-grid {
+  background-image:
+    linear-gradient(color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklch, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+@keyframes mewo-pixel-pulse {
+  0%,
+  100% {
+    opacity: 0.12;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* The mascot's own pixels only dim, so the mark never looks broken mid-pulse. */
+@keyframes mewo-pixel-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes mewo-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* A blink squashes the eye whites up into the lid line; the pupils vanish with them. */
+@keyframes mewo-blink {
+  0%,
+  94%,
+  100% {
+    transform: scaleY(1);
+  }
+  97% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes mewo-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mewo-slide {
+  0%,
+  15% {
+    transform: translateX(0);
+  }
+  50%,
+  65% {
+    transform: translateX(var(--slide-to, 100%));
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Line numbers for code windows: shiki wraps every line in span.line. */
+.code-lines code {
+  counter-reset: line;
+}
+.code-lines .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2ch;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: color-mix(in oklch, var(--muted-foreground) 55%, transparent);
 }
 
 /* shiki: follow the site theme via the CSS variables it emits */

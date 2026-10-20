@@ -29,3 +29,5 @@ class MockObserver {
 window.IntersectionObserver = MockObserver as unknown as typeof IntersectionObserver
 window.ResizeObserver = MockObserver as unknown as typeof ResizeObserver
 window.scrollTo = vi.fn()
+// The site search keeps the highlighted result in view; jsdom does no layout, so no scrollIntoView.
+Element.prototype.scrollIntoView = vi.fn()

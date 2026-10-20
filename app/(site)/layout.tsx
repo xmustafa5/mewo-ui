@@ -1,3 +1,4 @@
+import { Footer } from "@/components/site/footer"
 import { Header } from "@/components/site/header"
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
@@ -5,6 +6,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
     <>
       <Header />
       <main className="flex flex-1 flex-col">{children}</main>
+      <Footer />
     </>
   )
 }
