@@ -47,6 +47,9 @@ that predate the directory, add the namespace to your `components.json` first:
 | `scroll-mask` | component | — |
 | `text-scroll-highlight` | component | — |
 | `aurora-background` | component | motion |
+| `pattern-waves` | component | ogl |
+| `grainient` | component | — |
+| `dot-grid` | component | — |
 | `hero-aurora` | section | aurora-background, split-text, button |
 | `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
 | `tabs` | drop-in | motion, @base-ui/react, class-variance-authority |
@@ -75,6 +78,13 @@ shadcn's. The only change is that things move:
 
 Verified against **shadcn CLI 4.21.0**. If shadcn changes these components' API, a mewo drop-in
 installed over the new version may diverge — check this line before upgrading.
+
+## Background Studio
+
+[mewo-ui.com/studio](https://www.mewo-ui.com/studio) tunes any background live, lays sample content over it,
+and exports the code, an image or a video. Every background runs in its own iframe on a clock the studio
+controls, so pausing is exact and exports render frame by frame at any size. How that works, why the
+backgrounds stay cheap, and how to add one to the studio: [docs/background-studio.md](docs/background-studio.md).
 
 ## Development
 

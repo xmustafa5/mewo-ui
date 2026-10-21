@@ -6,9 +6,14 @@ export const DOCS_PAGES = [
   { href: "/docs/components", title: "All components", description: "Every component and section, by category." },
 ] as const
 
-/** Every page search can land on: the docs pages, then each item in sidebar order. */
+export const TOOL_PAGES = [
+  { href: "/studio", title: "Background Studio", description: "Tune a background live, then export the code, an image or a video." },
+] as const
+
+/** Every page search can land on: the docs pages, the tools, then each item in sidebar order. */
 export function getSearchEntries(): SearchEntry[] {
   const docs = DOCS_PAGES.map((page) => ({ ...page, section: "Docs" }))
+  const tools = TOOL_PAGES.map((page) => ({ ...page, section: "Tools" }))
   const items = getGroups().flatMap((group) =>
     group.items.map((item) => ({
       href: `/docs/${item.name}`,
@@ -17,7 +22,7 @@ export function getSearchEntries(): SearchEntry[] {
       description: item.description,
     }))
   )
-  return [...docs, ...items]
+  return [...docs, ...tools, ...items]
 }
 
 /** The items either side of `name` in sidebar order, for the previous/next links under a page. */

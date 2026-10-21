@@ -31,6 +31,9 @@ export function Header() {
           <Link href="/docs/hero-aurora" className={navLinkClass}>
             Sections
           </Link>
+          <Link href="/studio" className={navLinkClass}>
+            Studio
+          </Link>
         </nav>
         <div className="ml-auto flex items-center gap-2">
           <Search entries={getSearchEntries()} />

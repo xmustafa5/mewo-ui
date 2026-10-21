@@ -10,6 +10,7 @@ const columns = [
       { label: "Introduction", href: "/docs" },
       { label: "All components", href: "/docs/components" },
       { label: "Sections", href: "/docs/hero-aurora" },
+      { label: "Background Studio", href: "/studio" },
     ],
   },
   {
