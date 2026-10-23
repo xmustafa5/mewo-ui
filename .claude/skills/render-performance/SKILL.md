@@ -95,9 +95,31 @@ CSS and Motion components are cheap by default and expensive by accident. Check:
 - `will-change-transform` only on the elements that move, and never on dozens of large ones at once: each
   is a GPU texture.
 - A blur on a card is fine; a blur on a full-section element that also animates is not. If the design
-  needs a soft, moving, full-area gradient, that is a shader (Grainient already is one).
+  needs a soft, moving, full-area gradient, that is a shader (Grainient already is one, and
+  `aurora-background` became one).
+- **To move a mask, move the element that wears it.** A mask, clip or highlight that sweeps, grows or
+  slides does not need its gradient animated. Give an element a static mask, move that element with a
+  transform, and give its content the inverse transform so the content holds still on screen. Everything
+  is then compositor work. `text-shimmer` slides a soft-edged window over a counter-sliding copy of the
+  text; `scroll-mask` scales, slides and splits its panes this way (see `maskPanes` and `maskPoses`).
+  A copy of text made for this is generated content (`content: attr(data-text)`) inside an `aria-hidden`
+  element, so the string is in the DOM once.
+- **Never transform an element whose background has several layers.** Chrome repaints such an element on
+  every change of its own transform, even a pure translate, where a one-layer background does not repaint
+  at all (measured: 180 paints in 1.5 s against 0). Put the layered background (a scrim over a photo,
+  say) on an untransformed child and transform the wrapper.
+- **Check what an animation is actually running.** Keyframes declared in `registry.json` reach the docs
+  site through the generated `app/registry.css`, which is rebuilt only when `npm run dev` starts or on
+  `npm run registry:build`. After editing an item's `css`, run `npm run registry:build`, or every
+  measurement taken against the running server describes the old keyframes.
 
 ## 4. Review an existing component
+
+When a number does not move the way it should, ask Chrome before guessing. A performance trace says why
+an animation was not composited (`blink.animations` events carry `compositeFailed` and the unsupported
+property; start the trace before the page loads, an infinite animation reports only when it starts), and
+which DOM node every `Paint` event belongs to (`args.data.nodeId`, resolved with `DOM.describeNode`).
+Then reproduce the suspect in a blank page with one ingredient changed at a time.
 
 1. Classify it with the table in section 1 and say which row it is in and which row it should be in.
 2. Run `node scripts/measure-render.mjs <name>` with `npm run dev` up. Record `raf idle`, `raf away`,

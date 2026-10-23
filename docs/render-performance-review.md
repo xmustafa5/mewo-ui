@@ -94,7 +94,7 @@ second and 2.5% of a core, forever, from one heading. Motion's loop sleeps when 
 registry item drops `gsap` and `@gsap/react` as dependencies. The same ticker is why `hero-aurora`
 measures 67 rAF a second.
 
-**scroll-mask: move iris, wipe, curtain and type to WebGL; keep slats and grid.** Slats and grid animate
+**scroll-mask: move iris, wipe, curtain and type off animated masks; keep slats and grid.** (Done in the DOM rather than WebGL; see section 6.) Slats and grid animate
 `transform` and `opacity` per piece, which composites. The other four rebuild a 15-stop gradient
 `mask-image` on a viewport-sized image layer every frame, which repaints the whole frame each frame. The
 tool shows 0 at idle because the work only happens while scrolling, and that is precisely when frames
@@ -151,3 +151,58 @@ cost are invisible to the tool: a CSS animation that repaints a blurred layer sh
 `cpu`, but its GPU cost does not. For those, the keyframe property and the element size are the
 evidence, and they are quoted above. Pass `GPU=1` to run on this machine's Intel GPU through ANGLE
 Vulkan when relative WebGL numbers matter.
+
+## 6. Results
+
+Done on 2026-10-23, on branch `feat/background-studio`. Each cell reads: rAF idle / paints idle / rAF away /
+paints away / paints while scrolling (per second) / CPU idle / CPU away (cores). Paints are Chrome's `Paint`
+trace events; the first version of the tool could not see them, which is why section 2 has no paint column.
+
+| Item | Before | After |
+|---|---|---|
+| aurora-background | 0 / 120 / 0 / 121 / 123 / 0.065 / 0.090 | 60 / 0 / 0 / 0 / 0 / 0.039 / 0.001 |
+| text-shimmer | 0 / 121 / 0 / 121 / 107 / 0.091 / 0.081 | 0 / 0 / 0 / 0 / 0 / 0.003 / 0.004 |
+| split-text | 64 / 0 / 64 / 0 / 0 / 0.023 / 0.020 | 0 / 0 / 0 / 0 / 0 / 0.001 / 0.000 |
+| scroll-mask | 0 / 0 / 0 / 0 / 90 / 0.000 / 0.000 | 0 / 0 / 0 / 0 / 14 / 0.001 / 0.000 |
+| gradient-carousel | 60 / 0 / 0 / 0 / 0 / 0.029 / 0.000 | 0 / 0 / 0 / 0 / 0 / 0.001 / 0.000 |
+| text-scroll-highlight | 0 / 0 / 0 / 0 / 161 / 0.001 / 0.000 | 0 / 0 / 0 / 0 / 161 / 0.001 / 0.001 |
+| pattern-waves | 60 / 0 / 0 / 0 / 0 / 0.023 / 0.013 | 60 / 0 / 0 / 0 / 0 / 0.025 / 0.001 |
+| features-spotlight | 0 / 97 / 0 / 121 / 119 / 0.249 / 0.054 | 0 / 0 / 0 / 0 / 0 / 0.004 / 0.006 |
+| hero-aurora | 39 / 55 / 25 / 42 / 44 / 0.013 / 0.010 | 60 / 0 / 60 / 0 / 0 / 0.040 / 0.028 |
+| marquee | 0 / 0 / 0 / 0 / 0 / 0.002 / 0.001 | 0 / 0 / 0 / 0 / 0 / 0.002 / 0.000 |
+
+**What changed, item by item.**
+
+- **aurora-background** is a WebGL 2 shader that reproduces the CSS gradient's stops, angle, drift speed
+  and radial mask, drawn at a quarter of the resolution. The blurred CSS gradient stays as the first paint
+  and as the fallback for reduced motion, no WebGL, and a lost context. Repaints went from 120 a second to
+  none; the GPU loop stops off-screen. Public props unchanged.
+- **text-shimmer** slides a soft-edged window over a copy of the text that slides back the same distance,
+  so only `transform` animates and the compositor runs it. The copy is generated content, so the string
+  is in the DOM once. The light band is half the text's width against about 60% before. Repaints went
+  from 120 a second to none, CPU from 9% of a core to 0.3%.
+- **split-text** runs on Motion with one viewport observer for the whole string. The permanent 64 rAF a
+  second is gone, and the item no longer depends on `gsap` or `@gsap/react`. When `once` is off, leaving
+  the viewport now sends every unit back together instead of reversing the stagger.
+- **scroll-mask** did not move to WebGL. A WebGL texture cannot be made from a cross-origin image served
+  without CORS headers, so a WebGL path would always have needed the current DOM path as a fallback.
+  Instead every mask variant now uses panes with a mask painted once, moved by a transform, with the image
+  counter-transformed so it holds still (`maskPanes`, `maskPoses`, unit-tested). Over the demo's full
+  scroll, paints fell from 280 to 42 in 2.5 s, and the remaining ones are one-time first paints and page
+  layers. Wipe, curtain and type match the old frames almost exactly; the iris's soft edge now scales with
+  the circle, with the scale chosen so the circle reads the same size throughout.
+  Two Chrome facts came out of this, both now rules in the skill: an element with a multi-layer background
+  repaints on every change to its own transform, and a stale `app/registry.css` makes measurements of
+  edited keyframes meaningless.
+- **gradient-carousel** stops its loop when the cards stop. The backdrop drifts only while the cards move.
+- **pattern-waves** keeps one colour-probe canvas instead of making one per parse.
+- **text-scroll-highlight** no longer measures on scroll while it is more than half a viewport away.
+
+**New finding.** `text-scroll-highlight` repaints its paragraph about 160 times a second while it is being
+scrolled, because each word's `opacity` is written and the words are inline. It costs nothing at rest
+or off-screen. Making each word its own layer would trade the repaint for one GPU texture per word, which
+is worse for long text. Left as is, noted for the next review.
+
+**Not comparable.** `hero-aurora`'s preview page is only as tall as the hero, so it can never scroll out of
+view and its "away" columns measure it on screen. The `style while scrolling` column (not shown) is
+dominated by the docs page itself: `marquee`, which does nothing on scroll, shows 60 a second.

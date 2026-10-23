@@ -1,17 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it, vi } from "vitest"
-
-vi.mock("gsap", () => ({
-  default: {
-    registerPlugin: vi.fn(),
-    matchMedia: () => ({ add: vi.fn(), revert: vi.fn() }),
-    from: vi.fn(),
-    set: vi.fn(),
-  },
-}))
-vi.mock("gsap/ScrollTrigger", () => ({ ScrollTrigger: { name: "ScrollTrigger" } }))
-vi.mock("@gsap/react", () => ({ useGSAP: vi.fn() }))
-
+import { describe, expect, it } from "vitest"
 import { HeroAurora } from "@/registry/mewo/blocks/hero-aurora"
 
 describe("HeroAurora", () => {

@@ -12,8 +12,12 @@
       "files": [{ "path": "registry/mewo/ui/text-shimmer.tsx", "type": "registry:ui" }],
       "css": {
         "@keyframes mewo-shimmer": {
-          "from": { "background-position": "200% center" },
-          "to": { "background-position": "0% center" }
+          "from": { "transform": "translateX(-100%)" },
+          "to": { "transform": "translateX(300%)" }
+        },
+        "@keyframes mewo-shimmer-text": {
+          "from": { "transform": "translateX(50%)" },
+          "to": { "transform": "translateX(-150%)" }
         }
       }
     },
@@ -35,10 +39,18 @@
       "name": "split-text",
       "type": "registry:ui",
       "title": "Split Text",
-      "description": "Characters or words stagger into view when scrolled to. Powered by GSAP and ScrollTrigger.",
+      "description": "Characters or words stagger into view when scrolled to. Powered by Motion.",
       "categories": ["text"],
-      "dependencies": ["gsap", "@gsap/react"],
-      "files": [{ "path": "registry/mewo/ui/split-text.tsx", "type": "registry:ui" }]
+      "dependencies": ["motion"],
+      "files": [{ "path": "registry/mewo/ui/split-text.tsx", "type": "registry:ui" }],
+      "css": {
+        "@media (scripting: none)": {
+          "[data-split-unit]": {
+            "opacity": "1 !important",
+            "transform": "none !important"
+          }
+        }
+      }
     },
     {
       "name": "spotlight-card",
@@ -130,9 +142,8 @@
           "[data-slot=\"scroll-mask\"]": {
             "height": "100vh !important"
           },
-          "[data-slot=\"scroll-mask-layer\"]": {
-            "-webkit-mask-image": "none !important",
-            "mask-image": "none !important"
+          "[data-slot=\"scroll-mask-static\"]": {
+            "display": "block !important"
           },
           "[data-slot=\"scroll-mask-piece\"]": {
             "opacity": "1 !important",
@@ -170,15 +181,11 @@
       "name": "aurora-background",
       "type": "registry:ui",
       "title": "Aurora Background",
-      "description": "A slowly drifting gradient backdrop with a fade-in for its content. CSS keyframes plus Motion.",
+      "description": "A slowly drifting gradient backdrop with a fade-in for its content. A WebGL 2 shader, with a static CSS gradient wherever WebGL is unavailable.",
       "categories": ["background"],
       "dependencies": ["motion"],
       "files": [{ "path": "registry/mewo/ui/aurora-background.tsx", "type": "registry:ui" }],
       "css": {
-        "@keyframes mewo-aurora": {
-          "from": { "background-position": "0% 50%" },
-          "to": { "background-position": "300% 50%" }
-        },
         "@media (scripting: none)": {
           "[data-slot=\"aurora-content\"]": {
             "opacity": "1 !important",

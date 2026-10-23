@@ -180,9 +180,13 @@ const clamp = (value: number, min: number, max: number) => Math.min(Math.max(val
 
 const luminance = (rgba: number[]) => 0.2126 * rgba[0] + 0.7152 * rgba[1] + 0.0722 * rgba[2]
 
+// One 2D context resolves every CSS colour; a new canvas per parse would be garbage on every render.
+let colorProbe: CanvasRenderingContext2D | null = null
+
 const parseColor = (value: string, fallback: Rgba): Rgba => {
   try {
-    const ctx = document.createElement("canvas").getContext("2d")
+    colorProbe ??= document.createElement("canvas").getContext("2d")
+    const ctx = colorProbe
     if (!ctx) return fallback
     ctx.fillStyle = "#000000"
     ctx.fillStyle = value

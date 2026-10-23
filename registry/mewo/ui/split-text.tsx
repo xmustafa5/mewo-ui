@@ -1,12 +1,8 @@
 "use client"
 
 import * as React from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { useGSAP } from "@gsap/react"
+import { motion, useInView, useReducedMotion, type Transition, type Variants } from "motion/react"
 import { cn } from "@/lib/utils"
-
-gsap.registerPlugin(ScrollTrigger, useGSAP)
 
 export interface SplitTextProps extends Omit<React.ComponentProps<"span">, "children"> {
   children: string
@@ -43,6 +39,19 @@ export function splitUnits(text: string, by: "chars" | "words"): string[] {
   return Array.from(text)
 }
 
+// A quartic ease-out: the curve GSAP calls power3.out.
+const EASE = [0.165, 0.84, 0.44, 1] as const
+
+const UNIT: Variants = {
+  hidden: { y: "110%", opacity: 0 },
+  shown: { y: "0%", opacity: 1 },
+}
+
+/*
+ * One viewport observer watches the whole string and every unit follows it, so the cost is one
+ * IntersectionObserver however long the text. Motion's frame loop runs only while units are moving and
+ * sleeps once the entrance has played: there is no ticker left running for the life of the page.
+ */
 export function SplitText({
   children,
   by = "chars",
@@ -54,36 +63,22 @@ export function SplitText({
   ...props
 }: SplitTextProps) {
   const ref = React.useRef<HTMLElement>(null)
-  const units = React.useMemo(() => splitUnits(children, by), [children, by])
+  const reduceMotion = useReducedMotion()
+  // "Top of the text 85% of the way down the viewport" is where the entrance starts.
+  const inView = useInView(ref, { once, margin: "0px 0px -15% 0px" })
 
-  useGSAP(
-    () => {
-      const root = ref.current
-      if (!root) return
-      const targets = root.querySelectorAll<HTMLElement>("[data-split-unit]")
-      const mm = gsap.matchMedia()
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.from(targets, {
-          yPercent: 110,
-          opacity: 0,
-          stagger,
-          delay,
-          duration: 0.6,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: root,
-            start: "top 85%",
-            toggleActions: once ? "play none none none" : "play none none reverse",
-          },
-        })
-      })
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(targets, { yPercent: 0, opacity: 1 })
-      })
-      return () => mm.revert()
-    },
-    { scope: ref, dependencies: [units, stagger, delay, once] }
-  )
+  // Each unit's place in the stagger, counting only the units that animate.
+  const units = React.useMemo(() => {
+    let order = 0
+    return splitUnits(children, by).map((text) => ({ text, order: /^\s+$/.test(text) ? -1 : order++ }))
+  }, [children, by])
+
+  const transitionFor = (order: number): Transition => {
+    if (reduceMotion) return { duration: 0 }
+    // Leaving the viewport (only when `once` is off) sends every unit back at once.
+    if (!inView) return { duration: 0.3, ease: EASE }
+    return { duration: 0.6, ease: EASE, delay: delay + stagger * order }
+  }
 
   return React.createElement(
     Tag,
@@ -99,19 +94,28 @@ export function SplitText({
       className: cn("inline-block", className),
       ...props,
     },
-    units.map((unit, index) =>
+    units.map(({ text, order }, index) =>
       // Whitespace is emitted as a bare text node, not as a unit of its own: inside an inline-block
       // a lone collapsible space is trimmed to zero width and words run together, while an
       // inline-block of U+00A0 is never trimmed at a line end and pushes wrapped centred lines
       // off-centre. Between the wrappers it is an ordinary space in the parent's inline formatting
       // context — full width mid-line, trimmed at a line end.
-      /^\s+$/.test(unit) ? (
-        unit
+      order < 0 ? (
+        text
       ) : (
         <span key={index} aria-hidden className="inline-block overflow-hidden align-bottom">
-          <span data-split-unit className="inline-block">
-            {unit}
-          </span>
+          <motion.span
+            data-split-unit
+            className="inline-block"
+            variants={UNIT}
+            // `initial` is serialised into the SSR markup; the registry's scripting-off rule shows the
+            // text where no script will ever run to reveal it.
+            initial="hidden"
+            animate={inView ? "shown" : "hidden"}
+            transition={transitionFor(order)}
+          >
+            {text}
+          </motion.span>
         </span>
       )
     )

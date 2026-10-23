@@ -158,14 +158,30 @@ export function TextScrollHighlight({
     observer.observe(root)
     // Content loading in above the text moves it without a scroll; the page growing gives that away.
     observer.observe(scroller ?? document.body)
+
+    // Far from the viewport the scroll cannot change the highlight, so it is not even measured.
+    let near = true
+    const onScroll = () => {
+      if (near) update()
+    }
+    const proximity = new IntersectionObserver(
+      ([entry]) => {
+        near = entry.isIntersecting
+        // Settle where the scroll left it, so a fast fling past still ends fully lit or fully dim.
+        update()
+      },
+      { root: scroller, rootMargin: "50% 0px" }
+    )
+    proximity.observe(section ?? root)
     // Scroll events do not bubble; capturing on the window hears a nested scroller too.
-    window.addEventListener("scroll", update, { passive: true, capture: true })
+    window.addEventListener("scroll", onScroll, { passive: true, capture: true })
     window.addEventListener("resize", resize)
 
     return () => {
       cancelAnimationFrame(raf)
       observer.disconnect()
-      window.removeEventListener("scroll", update, { capture: true })
+      proximity.disconnect()
+      window.removeEventListener("scroll", onScroll, { capture: true })
       window.removeEventListener("resize", resize)
     }
   }, [count, dim, pin, scrollLength, start, end, spread, scrub])

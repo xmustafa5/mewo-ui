@@ -269,17 +269,19 @@ export function GradientCarousel({
       last = now
       const frames = dt * 60
 
-      if (Math.abs(velocity) > MIN_VELOCITY) {
+      const gliding = Math.abs(velocity) > MIN_VELOCITY
+      if (gliding) {
         // The exact distance covered while the velocity decays, whatever the frame rate.
         position += (velocity * (Math.pow(friction, frames) - 1)) / Math.log(friction) / step
         velocity *= Math.pow(friction, frames)
+        // The backdrop drifts while the cards move, so a carousel at rest draws nothing at all.
+        clock += dt
       } else {
         velocity = 0
       }
 
-      clock += dt
       show()
-      raf = visible ? requestAnimationFrame(tick) : 0
+      raf = visible && gliding ? requestAnimationFrame(tick) : 0
     }
 
     const wake = () => {
@@ -353,7 +355,7 @@ export function GradientCarousel({
       show()
     })
     resizeObserver.observe(root)
-    // The backdrop drifts for as long as the carousel is on screen, and no longer.
+    // Off screen a glide pauses where it is, and carries on when the carousel is back.
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting
       if (visible) wake()

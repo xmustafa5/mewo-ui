@@ -1,17 +1,5 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it, vi } from "vitest"
-
-vi.mock("gsap", () => ({
-  default: {
-    registerPlugin: vi.fn(),
-    matchMedia: () => ({ add: vi.fn(), revert: vi.fn() }),
-    from: vi.fn(),
-    set: vi.fn(),
-  },
-}))
-vi.mock("gsap/ScrollTrigger", () => ({ ScrollTrigger: { name: "ScrollTrigger" } }))
-vi.mock("@gsap/react", () => ({ useGSAP: vi.fn() }))
-
+import { describe, expect, it } from "vitest"
 import { SplitText, splitUnits } from "@/registry/mewo/ui/split-text"
 
 const root = () => document.querySelector('[data-slot="split-text"]') as HTMLElement
@@ -99,6 +87,15 @@ describe("SplitText", () => {
     expect(root().tagName).toBe("P")
     expect(root()).toHaveAttribute("role", "img")
     expect(root()).toHaveAccessibleName("Introducing mewo")
+  })
+
+  // The hidden pose is in the markup the server sends, so nothing flashes before the entrance plays.
+  it("starts every unit below its line and transparent until it scrolls into view", () => {
+    render(<SplitText by="words">hello world</SplitText>)
+    for (const unit of unitsOf(root())) {
+      expect(unit.style.opacity).toBe("0")
+      expect(unit.style.transform).toContain("translateY(110%)")
+    }
   })
 
   it("renders the requested element and forwards className", () => {

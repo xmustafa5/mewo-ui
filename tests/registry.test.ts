@@ -128,7 +128,7 @@ describe("registry.json", () => {
 
   it("sections report the npm packages their registryDependencies carry", () => {
     const { getDependencies, getItem } = createRegistry(items)
-    expect(getDependencies(getItem("hero-aurora")!)).toEqual(["@gsap/react", "gsap", "motion"])
+    expect(getDependencies(getItem("hero-aurora")!)).toEqual(["motion"])
     expect(getDependencies(getItem("features-spotlight")!)).toEqual(["lucide-react", "motion"])
   })
 

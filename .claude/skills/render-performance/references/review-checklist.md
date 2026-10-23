@@ -30,6 +30,10 @@ Answer every line for the component under review. A "no" on a **must** line is a
   when the eased value reaches the target.
 - **should** Components far from the viewport do no work per scroll event (gate with `IntersectionObserver`).
 - **should** `will-change` only on the moving elements, and not on many large ones.
+- **must** No transformed element carries a multi-layer `background` (it repaints on every transform
+  change); the layered background goes on an untransformed child.
+- **should** A moving mask or highlight is a static mask on a transformed element with counter-transformed
+  content, not an animated gradient.
 - **should** Motion's `whileInView` / GSAP ScrollTrigger handle visibility; no hand-rolled observer on top.
 
 ## Canvas 2D and WebGL components
@@ -58,6 +62,8 @@ From `node scripts/measure-render.mjs <name>` (dev server up):
 | `raf idle` | 0 for a DOM component; 0 for a canvas component with `speed={0}`; otherwise the frame rate |
 | `layout/s` while idle | 0 for anything that is not scroll-driven and being scrolled |
 | `canvas` | the contexts you expect, nothing extra (a stray `2d` is often a colour probe left on every render) |
+| `paint idle/away` | 0 for every component; a repainting CSS animation shows here and nowhere else |
+| `paint scroll` | 0 from the component's own layers; attribute any paints by node before accepting them |
 
 Note what the tool cannot see: a CSS animation that repaints. Read the keyframes for those.
 

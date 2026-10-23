@@ -1,6 +1,12 @@
 import { render, screen } from "@testing-library/react"
-import { describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { AuroraBackground } from "@/registry/mewo/ui/aurora-background"
+
+// jsdom has no WebGL: the same path a browser without it takes.
+beforeEach(() => {
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null)
+})
+afterEach(() => vi.restoreAllMocks())
 
 describe("AuroraBackground", () => {
   it("renders children over the aurora layer", () => {
@@ -15,6 +21,16 @@ describe("AuroraBackground", () => {
     expect(layer().className).toContain("mask-image")
     rerender(<AuroraBackground data-testid="a" showRadialMask={false}>x</AuroraBackground>)
     expect(layer().className).not.toContain("mask-image")
+  })
+
+  // The CSS gradient is the first paint and the fallback; the shader only ever replaces it.
+  it("keeps the static gradient and adds no canvas when WebGL is unavailable", () => {
+    render(<AuroraBackground data-testid="a">x</AuroraBackground>)
+    const fallback = screen.getByTestId("a").querySelector('[data-slot="aurora-fallback"]') as HTMLElement
+    expect(fallback).not.toBeNull()
+    expect(fallback.style.display).toBe("")
+    expect(fallback.className).not.toContain("animate-")
+    expect(screen.getByTestId("a").querySelector("canvas")).toBeNull()
   })
 
   it("forwards className to the root", () => {
