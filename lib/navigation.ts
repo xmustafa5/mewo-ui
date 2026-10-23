@@ -3,7 +3,7 @@ import type { SearchEntry } from "@/components/site/search"
 
 export const DOCS_PAGES = [
   { href: "/docs", title: "Introduction", description: "What mewo is and how installing works." },
-  { href: "/docs/components", title: "All components", description: "Every component and section, by category." },
+  { href: "/docs/components", title: "Components", description: "Every component and section, with a preview of each." },
 ] as const
 
 export const TOOL_PAGES = [

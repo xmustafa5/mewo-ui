@@ -14,7 +14,7 @@ const groups = [
 describe("Sidebar filtering", () => {
   it("counts every item in the filter placeholder", () => {
     render(<Sidebar groups={groups} />)
-    expect(screen.getByRole("searchbox", { name: "Filter components" })).toHaveAttribute("placeholder", "Filter 4 components…")
+    expect(screen.getByRole("searchbox", { name: "Filter components" })).toHaveAttribute("placeholder", "Filter 4 items…")
   })
 
   it("narrows the list by title and drops groups left empty", () => {

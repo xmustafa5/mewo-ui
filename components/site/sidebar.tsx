@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { BookOpen, ChevronDown, Search as SearchIcon, type LucideIcon } from "lucide-react"
+import { BookOpen, ChevronDown, Search as SearchIcon, SlidersHorizontal, type LucideIcon } from "lucide-react"
 import { AllIcon, GROUP_ICONS } from "@/components/site/icons"
 import type { Group } from "@/lib/registry"
 import { cn } from "@/lib/utils"
@@ -53,6 +53,9 @@ export function Sidebar({ groups }: { groups: SidebarGroup[] }) {
         <PageLink href="/docs/components" icon={AllIcon} active={pathname === "/docs/components"}>
           Browse all components
         </PageLink>
+        <PageLink href="/studio" icon={SlidersHorizontal} active={pathname === "/studio"}>
+          Background Studio
+        </PageLink>
       </div>
 
       <button
@@ -95,7 +98,7 @@ export function Sidebar({ groups }: { groups: SidebarGroup[] }) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder={`Filter ${total} components…`}
+            placeholder={`Filter ${total} items…`}
             aria-label="Filter components"
             className="h-9 w-full rounded-xl border bg-background/60 pr-3 pl-8 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30"
           />

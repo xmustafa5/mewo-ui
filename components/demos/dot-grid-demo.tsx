@@ -1,13 +1,20 @@
 import { DotGrid } from "@/registry/mewo/ui/dot-grid"
+import { ByTheme } from "./by-theme"
 import type { PropDoc } from "./types"
 
 export default function DotGridDemo() {
   return (
-    <div className="relative h-80 w-full overflow-hidden rounded-xl bg-[#0b0c12]">
-      <DotGrid className="absolute inset-0" />
-      <div className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+    <div className="relative h-80 w-full overflow-hidden rounded-xl bg-background">
+      <ByTheme
+        dark={<DotGrid className="absolute inset-0" />}
+        light={<DotGrid className="absolute inset-0" baseColor="#d4d4d8" activeColor="#18181b" glow={0.25} />}
+      />
+      <div
+        data-demo-overlay
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-foreground"
+      >
         <h2 className="text-3xl font-bold tracking-tight">Dot Grid</h2>
-        <p className="mt-2 text-white/70">Move the pointer to push the dots. Click for a shockwave.</p>
+        <p className="mt-2 text-muted-foreground">Move the pointer to push the dots. Click for a shockwave.</p>
       </div>
     </div>
   )

@@ -1,13 +1,21 @@
 import { PatternWaves } from "@/registry/mewo/ui/pattern-waves"
+import { ByTheme } from "./by-theme"
 import type { PropDoc } from "./types"
 
 export default function PatternWavesDemo() {
   return (
     <div className="relative h-80 w-full overflow-hidden rounded-xl">
-      <PatternWaves className="absolute inset-0" backgroundColor="#0b0c12" />
-      <div className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+      {/* The same light values the Background Studio uses, so the waves read on either page colour. */}
+      <ByTheme
+        dark={<PatternWaves className="absolute inset-0" backgroundColor="#0b0c12" />}
+        light={<PatternWaves className="absolute inset-0" color="#18181b" backgroundColor="#fcfcfe" />}
+      />
+      <div
+        data-demo-overlay
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-foreground"
+      >
         <h2 className="text-3xl font-bold tracking-tight">Pattern Waves</h2>
-        <p className="mt-2 text-white/70">Move the pointer. Click for a ripple.</p>
+        <p className="mt-2 text-muted-foreground">Move the pointer. Click for a ripple.</p>
       </div>
     </div>
   )

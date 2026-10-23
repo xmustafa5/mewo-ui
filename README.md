@@ -99,10 +99,11 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 ### Adding a component
 
 1. Write it at `registry/mewo/ui/<name>.tsx` (starts with `"use client"`, accepts `className`, honours reduced motion). Sections go in `registry/mewo/blocks/` and import components as `@/registry/mewo/ui/<name>`.
-2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`.
+2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`, and `"meta": { "added": "YYYY-MM-DD" }`. Items added within 14 days of the latest release get the New badge.
 3. Add `components/demos/<name>-demo.tsx` (default export = demo, `props` = props table) and register it in `components/demos/index.ts`.
 4. Add a test under `tests/`. `npm test` also checks the catalog invariants.
 5. `npm run verify:install`.
+6. Film the catalog card. With `npm run dev` running, `node scripts/capture-previews.mjs <name>` writes a poster (`.webp`) and a hover clip (`.webm` + `.mp4`) per theme to `public/previews/`. How the demo is framed lives in `lib/preview-framing.ts`; a component that only shows its motion after a click, scroll or pointer move also needs a recipe in the script. Until it is filmed, its card shows a placeholder.
 
 The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
 

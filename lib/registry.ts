@@ -13,6 +13,8 @@ export type RegistryItem = {
   registryDependencies?: string[]
   files: RegistryFile[]
   css?: Record<string, unknown>
+  /** Site-only facts about the item. `added` is the ISO date it joined the catalog. */
+  meta?: { added?: string }
 }
 
 export const GROUP_ORDER = ["sections", "primitives", "text", "card", "scroll", "background", "layout"] as const
@@ -33,6 +35,10 @@ export type RegistryGroup = { group: Group; label: string; items: RegistryItem[]
 /** The catalog group whose members replace a shadcn component of the same name. */
 const DROPIN_GROUP: Group = "primitives"
 
+/** Items added within this many days of the newest one carry a "New" badge: the latest release. */
+const NEW_WINDOW_DAYS = 14
+const DAY_MS = 24 * 60 * 60 * 1000
+
 export function createRegistry(items: RegistryItem[]) {
   const getItem = (name: string) => items.find((i) => i.name === name)
 
@@ -52,8 +58,16 @@ export function createRegistry(items: RegistryItem[]) {
     return [...packages].sort()
   }
 
+  const addedTimes = items.map((item) => Date.parse(item.meta?.added ?? "")).filter((time) => !Number.isNaN(time))
+  const latest = addedTimes.length ? Math.max(...addedTimes) : Number.NaN
+
   return {
     getItems: () => items,
+    /** True for the latest release: added within two weeks of the newest item. Deterministic, no clock. */
+    isNew: (item: RegistryItem) => {
+      const added = Date.parse(item.meta?.added ?? "")
+      return !Number.isNaN(added) && latest - added <= NEW_WINDOW_DAYS * DAY_MS
+    },
     getItem,
     getDependencies,
     isBlock: (item: RegistryItem) => item.type === "registry:block",
@@ -74,4 +88,4 @@ export function createRegistry(items: RegistryItem[]) {
 }
 
 const defaultRegistry = createRegistry(registry.items as RegistryItem[])
-export const { getItems, getItem, getDependencies, isBlock, isDropIn, getGroups } = defaultRegistry
+export const { getItems, getItem, getDependencies, isBlock, isDropIn, isNew, getGroups } = defaultRegistry

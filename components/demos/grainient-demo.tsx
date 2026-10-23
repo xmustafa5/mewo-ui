@@ -1,13 +1,20 @@
 import { Grainient } from "@/registry/mewo/ui/grainient"
+import { ByTheme } from "./by-theme"
 import type { PropDoc } from "./types"
 
 export default function GrainientDemo() {
   return (
     <div className="relative h-80 w-full overflow-hidden rounded-xl">
-      <Grainient className="absolute inset-0" />
-      <div className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
+      <ByTheme
+        dark={<Grainient className="absolute inset-0" />}
+        light={<Grainient className="absolute inset-0" lightMode />}
+      />
+      <div
+        data-demo-overlay
+        className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-foreground"
+      >
         <h2 className="text-3xl font-bold tracking-tight">Grainient</h2>
-        <p className="mt-2 text-white/75">Move the pointer to stir it. Click to swirl.</p>
+        <p className="mt-2 text-muted-foreground">Move the pointer to stir it. Click to swirl.</p>
       </div>
     </div>
   )

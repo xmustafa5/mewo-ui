@@ -70,6 +70,11 @@ describe("registry.json", () => {
     }
   })
 
+  // The catalog's "Newest" sort and "New" badge read this; a missing date would sink an item to the bottom.
+  it("every item records the ISO date it was added", () => {
+    for (const item of items) expect(item.meta?.added, item.name).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+  })
+
   it("every item has a demo", () => {
     for (const item of items) expect(demos, `demo for ${item.name}`).toHaveProperty(item.name)
   })
