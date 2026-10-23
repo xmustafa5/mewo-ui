@@ -15,7 +15,8 @@ export function Header() {
     <header className="sticky top-0 z-40 border-b border-border/70 bg-background/75 backdrop-blur-xl">
       <div className="flex h-16 w-full items-center gap-3 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5 rounded-lg pr-1" aria-label={`${SITE_NAME} home`}>
-          <MewoMark className="h-5.5 w-auto" />
+          {/* Ink, like React Bits' header mark: white on dark, near-black on light. */}
+          <MewoMark eyes="var(--background)" className="h-5.5 w-auto text-foreground" />
           <span className="text-[17px] font-semibold tracking-tight">{SITE_NAME}</span>
         </Link>
         <span aria-hidden className="text-lg font-light text-muted-foreground/50 max-md:hidden">

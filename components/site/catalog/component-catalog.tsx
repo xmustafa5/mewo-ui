@@ -53,13 +53,21 @@ function SelectField({
 export function ComponentCatalog({
   entries,
   groups,
+  title = "Components",
+  summary = `${entries.length} animated components and sections`,
+  defaultSort = "newest",
 }: {
   entries: CatalogEntry[]
+  /** The categories to offer. A page for a single category passes none and the picker is left out. */
   groups: { value: string; label: string }[]
+  title?: string
+  /** The line under the title while nothing is filtered. */
+  summary?: string
+  defaultSort?: SortMode
 }) {
   const [query, setQuery] = React.useState("")
   const [group, setGroup] = React.useState(ALL_GROUPS)
-  const [sort, setSort] = React.useState<SortMode>("newest")
+  const [sort, setSort] = React.useState<SortMode>(defaultSort)
   const [newOnly, setNewOnly] = React.useState(false)
   const names = React.useMemo(() => entries.map((entry) => entry.name), [entries])
   const unseen = useNewSinceLastVisit(names)
@@ -81,7 +89,7 @@ export function ComponentCatalog({
     <div className="@container space-y-6">
       <header className="flex flex-col gap-5 @3xl:flex-row @3xl:items-end @3xl:justify-between">
         <div>
-          <h1 className="text-[2rem] leading-tight font-semibold tracking-[-0.03em]">Components</h1>
+          <h1 className="text-[2rem] leading-tight font-semibold tracking-[-0.03em]">{title}</h1>
           <p className="mt-1 text-sm text-muted-foreground" aria-live="polite">
             {showUnseen ? (
               <button
@@ -95,7 +103,7 @@ export function ComponentCatalog({
             ) : filtering ? (
               `${visible.length} ${visible.length === 1 ? "component" : "components"} found`
             ) : (
-              `${entries.length} animated components and sections`
+              summary
             )}
           </p>
         </div>
@@ -115,13 +123,15 @@ export function ComponentCatalog({
               className={cn(fieldClass, "w-full pr-3 pl-8 placeholder:text-muted-foreground")}
             />
           </label>
-          <SelectField
-            label="Category"
-            value={group}
-            onChange={setGroup}
-            options={[{ value: ALL_GROUPS, label: "All components" }, ...groups]}
-            className="@xl:w-44"
-          />
+          {groups.length > 0 ? (
+            <SelectField
+              label="Category"
+              value={group}
+              onChange={setGroup}
+              options={[{ value: ALL_GROUPS, label: "All components" }, ...groups]}
+              className="@xl:w-44"
+            />
+          ) : null}
           <SelectField
             label="Sort"
             value={sort}

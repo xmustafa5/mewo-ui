@@ -48,7 +48,13 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
             Components
           </Link>
           <ChevronRight className="size-3.5" aria-hidden />
-          <span>{group ? GROUP_LABELS[group] : isBlock(item) ? "Sections" : "Components"}</span>
+          {group ? (
+            <Link href={`/docs/category/${group}`} className="transition-colors hover:text-foreground">
+              {GROUP_LABELS[group]}
+            </Link>
+          ) : (
+            <span>{isBlock(item) ? "Sections" : "Components"}</span>
+          )}
         </nav>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">{item.title}</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{item.description}</p>

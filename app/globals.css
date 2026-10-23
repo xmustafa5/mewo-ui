@@ -6,6 +6,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Wide enough for the docs' right rail beside the page, React Bits' cut-off. */
+  --breakpoint-rail: 82.5rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
