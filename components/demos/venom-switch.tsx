@@ -1,15 +1,20 @@
 "use client"
 
 import * as React from "react"
+import { BODY_PATH, EYE_PATHS, MARK_VIEWBOX, PIXEL_PATHS } from "@/components/site/mewo-mark"
 import { Venom } from "@/registry/mewo/ui/venom"
 
-function Spider() {
+/**
+ * The mewo cat as a silhouette. Venom only reads an icon's shape, so the eyes are cut out of the body
+ * (even-odd fill) rather than painted white: the symbiote then grows around them and they stay empty.
+ */
+function MewoSilhouette() {
   return (
-    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth={4} strokeLinecap="round" strokeLinejoin="round">
-      <ellipse cx="32" cy="23" rx="6.5" ry="7.5" fill="currentColor" />
-      <ellipse cx="32" cy="40" rx="8.5" ry="12" fill="currentColor" />
-      <path d="M27 21 17 11 11 3M26 27 13 22 4 26M26 34 13 37 6 45M27 39 18 47 14 59" />
-      <path d="M37 21 47 11 53 3M38 27 51 22 60 26M38 34 51 37 58 45M37 39 46 47 50 59" />
+    <svg viewBox={`${MARK_VIEWBOX.x} ${MARK_VIEWBOX.y} ${MARK_VIEWBOX.width} ${MARK_VIEWBOX.height}`}>
+      <path fillRule="evenodd" d={[BODY_PATH, ...EYE_PATHS].join(" ")} />
+      {PIXEL_PATHS.map((d) => (
+        <path key={d} d={d} />
+      ))}
     </svg>
   )
 }
@@ -23,7 +28,7 @@ export function VenomSwitch() {
         <Venom className="absolute inset-0" text="VENOM" />
       ) : (
         <Venom className="absolute inset-0" scale={0.78}>
-          <Spider />
+          <MewoSilhouette />
         </Venom>
       )}
       <div
