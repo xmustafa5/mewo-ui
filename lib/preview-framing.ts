@@ -28,6 +28,7 @@ const FRAMING: Record<string, Framing> = {
   "text-scroll-highlight": { kind: "fill", zoom: 1.5 },
   "text-shimmer": { kind: "center", zoom: 2.2 },
   "split-text": { kind: "center", zoom: 1.7 },
+  venom: { kind: "fill" },
   marquee: { kind: "center", zoom: 1.9 },
   "spotlight-card": { kind: "center", zoom: 2.2 },
   "scroll-reveal": { kind: "center", zoom: 2 },

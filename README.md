@@ -39,6 +39,7 @@ that predate the directory, add the namespace to your `components.json` first:
 | `text-shimmer` | component | — |
 | `marquee` | component | — |
 | `split-text` | component | motion |
+| `venom` | component | — |
 | `spotlight-card` | component | motion |
 | `gradient-carousel` | component | — |
 | `scroll-reveal` | component | motion |

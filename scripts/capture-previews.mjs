@@ -112,6 +112,14 @@ const RECIPES = {
     poster: (page) => page.mouse.move(400, 250),
     clip: (page) => sweep(page, CLIP_SECONDS * 1000 - 200, { rx: 220, ry: 90 }),
   },
+  // Tendrils only reach out for a pointer near the word: the poster catches them closing on one.
+  venom: {
+    poster: async (page) => {
+      await page.mouse.move(700, 110)
+      await sleep(1600)
+    },
+    clip: (page) => sweep(page, CLIP_SECONDS * 1000 - 200, { rx: 380, ry: 190 }),
+  },
   "pattern-waves": { settle: 3000, clip: (page) => sweep(page, CLIP_SECONDS * 1000 - 200) },
   grainient: {
     clip: async (page) => {

@@ -8,6 +8,7 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "text-shimmer": () => import("./text-shimmer-demo"),
   marquee: () => import("./marquee-demo"),
   "split-text": () => import("./split-text-demo"),
+  venom: () => import("./venom-demo"),
   "spotlight-card": () => import("./spotlight-card-demo"),
   "gradient-carousel": () => import("./gradient-carousel-demo"),
   "scroll-reveal": () => import("./scroll-reveal-demo"),

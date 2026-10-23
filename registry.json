@@ -56,6 +56,15 @@
       }
     },
     {
+      "name": "venom",
+      "type": "registry:ui",
+      "title": "Venom",
+      "description": "A living symbiote covers your text or SVG, crawls over it and sends writhing tendrils after the pointer. WebGL 2, no dependencies.",
+      "categories": ["text"],
+      "meta": { "added": "2026-10-23" },
+      "files": [{ "path": "registry/mewo/ui/venom.tsx", "type": "registry:ui" }]
+    },
+    {
       "name": "spotlight-card",
       "type": "registry:ui",
       "title": "Spotlight Card",
