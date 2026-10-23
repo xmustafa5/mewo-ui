@@ -43,3 +43,7 @@ next-env.d.ts
 # generated registry artefacts
 /public/r/
 /app/registry.css
+
+# Local Claude Code files
+CLAUDE.local.md
+.claude/settings.local.json

@@ -6,7 +6,7 @@ import { getGroups, isNew } from "@/lib/registry"
 /** Server only: reads `public/previews` at build time. */
 const PREVIEWS = path.join(/* turbopackIgnore: true */ process.cwd(), "public", "previews")
 
-/** An item shows its poster only when `scripts/capture-previews.mjs` has filmed it in both themes. */
+/** An item shows its poster only when `public/previews` holds one for both themes. */
 export const hasPreview = (name: string) =>
   ["dark", "light"].every((theme) => fs.existsSync(path.join(PREVIEWS, `${name}-${theme}.webp`)))
 

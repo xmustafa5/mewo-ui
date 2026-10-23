@@ -1,6 +1,6 @@
 /**
  * How each item is framed on its `/preview/<name>` page, which is also what the catalog's posters and hover
- * clips are filmed from (`scripts/capture-previews.mjs`). The frame is the card's 16:9 shape.
+ * clips show. The frame is the card's 16:9 shape.
  *
  * - `fill`: the demo is stretched to the whole frame, at `zoom` if given. For backgrounds and for demos that
  *   are a box already (the carousel, and the scroll demos, which scroll inside a box of their own).

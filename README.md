@@ -84,8 +84,7 @@ installed over the new version may diverge — check this line before upgrading.
 
 [mewo-ui.com/studio](https://www.mewo-ui.com/studio) tunes any background live, lays sample content over it,
 and exports the code, an image or a video. Every background runs in its own iframe on a clock the studio
-controls, so pausing is exact and exports render frame by frame at any size. How that works, why the
-backgrounds stay cheap, and how to add one to the studio: [docs/background-studio.md](docs/background-studio.md).
+controls, so pausing is exact and exports render frame by frame at any size.
 
 ## Development
 
@@ -104,7 +103,6 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 3. Add `components/demos/<name>-demo.tsx` (default export = demo, `props` = props table) and register it in `components/demos/index.ts`.
 4. Add a test under `tests/`. `npm test` also checks the catalog invariants.
 5. `npm run verify:install`.
-6. Film the catalog card. With `npm run dev` running, `node scripts/capture-previews.mjs <name>` writes a poster (`.webp`) and a hover clip (`.webm` + `.mp4`) per theme to `public/previews/`. How the demo is framed lives in `lib/preview-framing.ts`; a component that only shows its motion after a click, scroll or pointer move also needs a recipe in the script. Until it is filmed, its card shows a placeholder.
 
 The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
 

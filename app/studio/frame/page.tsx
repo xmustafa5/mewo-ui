@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Background preview", robots: { index
 
 /**
  * The document the studio's preview iframe loads. It is deliberately bare: one background, its own clock,
- * and a bridge on `window` for the studio to drive it. See `docs/background-studio.md`.
+ * and a bridge on `window` for the studio to drive it.
  */
 export default function StudioFramePage() {
   return <FrameLoader />
