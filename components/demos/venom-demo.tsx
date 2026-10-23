@@ -4,8 +4,8 @@ import type { PropDoc } from "./types"
 export default function VenomDemo() {
   return (
     // Covers the whole preview frame, padding included, so the tendrils have all of it to reach across. The
-    // symbiote is black in both themes; the dark theme gets a lifted backdrop so its silhouette still reads.
-    <div className="absolute inset-0 overflow-hidden bg-zinc-100 dark:bg-zinc-800">
+    // symbiote is black in both themes, so both themes get the same light backdrop for its silhouette to read on.
+    <div className="absolute inset-0 overflow-hidden bg-zinc-100">
       <VenomSwitch />
     </div>
   )
