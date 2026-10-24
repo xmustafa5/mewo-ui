@@ -24,4 +24,5 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "features-spotlight": () => import("./features-spotlight-demo"),
   tabs: () => import("./tabs-demo"),
   collapsible: () => import("./collapsible-demo"),
+  "album-rail": () => import("./album-rail-demo"),
 }

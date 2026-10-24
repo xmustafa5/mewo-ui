@@ -34,6 +34,7 @@ const FRAMING: Record<string, Framing> = {
   "scroll-reveal": { kind: "center", zoom: 2 },
   tabs: { kind: "center", zoom: 2.1, fit: true },
   collapsible: { kind: "center", zoom: 2.1 },
+  "album-rail": { kind: "center", zoom: 1 },
   "hero-aurora": { kind: "page", zoom: 1 },
   "features-spotlight": { kind: "page", zoom: 0.9 },
 }
