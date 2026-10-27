@@ -37,6 +37,20 @@ const FRAMING: Record<string, Framing> = {
   "album-rail": { kind: "center", zoom: 1 },
   "hero-aurora": { kind: "page", zoom: 1 },
   "features-spotlight": { kind: "page", zoom: 0.9 },
+  // the story pieces: each demo is a box of its own (a scroll box, a pinned stage, a contained frame), so it fills the card
+  "zoom-panel": { kind: "fill" },
+  "chapter-nav": { kind: "fill" },
+  "glass-panel": { kind: "fill" },
+  "scroll-captions": { kind: "fill" },
+  "rising-captions": { kind: "fill" },
+  "zoom-picture": { kind: "fill" },
+  "date-timeline": { kind: "fill" },
+  "picture-cloud": { kind: "fill" },
+  "picture-wave": { kind: "fill" },
+  "picture-orbit": { kind: "fill" },
+  "picture-trail": { kind: "fill" },
+  "names-duel": { kind: "fill" },
+  "portrait-pair": { kind: "fill" },
 }
 
 export function framingFor(name: string, isBlock: boolean): Framing {

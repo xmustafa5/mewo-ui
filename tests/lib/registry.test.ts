@@ -58,4 +58,23 @@ describe("createRegistry", () => {
     expect(groups[1].items.map((i) => i.name)).toEqual(["a", "c"])
     expect(groups[0].label).toBe("Sections")
   })
+
+  it("an unlisted item keeps its page and its dependencies but leaves the catalog, the groups and the New window", () => {
+    const withUnlisted = createRegistry([
+      ui("a", "text"),
+      { ...ui("plain", "text", ["gsap"]), meta: { added: "2026-10-27", unlisted: true } },
+      { ...ui("b", "scroll"), meta: { added: "2026-10-01" } },
+      block("hero", ["@mewo/plain"]),
+    ])
+    expect(withUnlisted.getItems().map((i) => i.name)).toEqual(["a", "b", "hero"])
+    expect(withUnlisted.getAllItems().map((i) => i.name)).toEqual(["a", "plain", "b", "hero"])
+    expect(withUnlisted.getItem("plain")?.name).toBe("plain")
+    expect(withUnlisted.isUnlisted(withUnlisted.getItem("plain")!)).toBe(true)
+    expect(withUnlisted.isUnlisted(withUnlisted.getItem("a")!)).toBe(false)
+    expect(withUnlisted.getGroups().flatMap((g) => g.items.map((i) => i.name))).toEqual(["hero", "a", "b"])
+    // a section that uses an unlisted item still reports what it installs
+    expect(withUnlisted.getDependencies(withUnlisted.getItem("hero")!)).toEqual(["gsap"])
+    // "b" is the newest listed item, so it is New although "plain" was added later
+    expect(withUnlisted.isNew(withUnlisted.getItem("b")!)).toBe(true)
+  })
 })

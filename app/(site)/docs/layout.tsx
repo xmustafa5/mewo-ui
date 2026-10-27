@@ -1,7 +1,7 @@
 import { DocsRail } from "@/components/site/docs-rail"
 import { Sidebar } from "@/components/site/sidebar"
 import { hasPreview } from "@/lib/catalog"
-import { getGroups, getItems, isDropIn, isNew } from "@/lib/registry"
+import { getAllItems, getGroups, isDropIn, isNew } from "@/lib/registry"
 
 /**
  * The docs shell, measured from React Bits': a 256px sidebar 16px from the left edge, a 300px rail 32px
@@ -29,7 +29,8 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
       </aside>
       <div className="mx-auto w-full max-w-[67.5rem] min-w-0 lg:pt-4">{children}</div>
       <aside className="mx-auto w-full max-w-[67.5rem] max-lg:hidden rail:sticky rail:top-20 rail:col-start-3 rail:row-start-1 rail:max-h-[calc(100dvh-6rem)] rail:max-w-none rail:self-start rail:overflow-y-auto rail:[scrollbar-width:none]">
-        <DocsRail itemNames={getItems().map((item) => item.name)} />
+        {/* every item's page has the rail's section links, the unlisted ones included */}
+        <DocsRail itemNames={getAllItems().map((item) => item.name)} />
       </aside>
     </div>
   )

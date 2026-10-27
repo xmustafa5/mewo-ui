@@ -13,12 +13,14 @@ import { PageNav, SectionHeading } from "@/components/site/docs-ui"
 import { DropInWarning } from "@/components/site/dropin-warning"
 import { InstallCommand } from "@/components/site/install-command"
 import { PropsTable } from "@/components/site/props-table"
+import { UnlistedNote } from "@/components/site/unlisted-note"
 import { getNeighbours } from "@/lib/navigation"
-import { GROUP_LABELS, getDependencies, getItem, getItems, isBlock, isDropIn, type Group } from "@/lib/registry"
+import { GROUP_LABELS, getAllItems, getDependencies, getItem, isBlock, isDropIn, isUnlisted, type Group } from "@/lib/registry"
 import { displaySource } from "@/lib/source"
 
+// unlisted items have a page too: only the catalog, the sidebar and search leave them out
 export function generateStaticParams() {
-  return getItems().map((item) => ({ name: item.name }))
+  return getAllItems().map((item) => ({ name: item.name }))
 }
 
 export async function generateMetadata({ params }: PageProps<"/docs/[name]">): Promise<Metadata> {
@@ -37,6 +39,8 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
   const source = displaySource(await readFile(path.join(process.cwd(), item.files[0].path), "utf8"))
   const code = <CodeBlock code={source} />
   const group = item.categories?.[0] as Group | undefined
+  const unlisted = isUnlisted(item)
+  // an unlisted item is in no group page, so it has no neighbours and its crumb does not link
   const { previous, next } = getNeighbours(item.name)
 
   // The section links and the repo card sit in the docs layout's right rail.
@@ -48,12 +52,12 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
             Components
           </Link>
           <ChevronRight className="size-3.5" aria-hidden />
-          {group ? (
+          {group && !unlisted ? (
             <Link href={`/docs/category/${group}`} className="transition-colors hover:text-foreground">
               {GROUP_LABELS[group]}
             </Link>
           ) : (
-            <span>{isBlock(item) ? "Sections" : "Components"}</span>
+            <span>{group ? GROUP_LABELS[group] : isBlock(item) ? "Sections" : "Components"}</span>
           )}
         </nav>
         <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">{item.title}</h1>
@@ -64,8 +68,14 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
               Drop-in replacement
             </span>
           ) : null}
+          {unlisted ? (
+            <span className="inline-flex items-center rounded-lg bg-accent px-2.5 py-1 text-xs font-medium text-accent-foreground">
+              Unlisted
+            </span>
+          ) : null}
           <DependencyBadges dependencies={getDependencies(item)} />
         </div>
+        {unlisted ? <UnlistedNote className="mt-5 max-w-2xl" /> : null}
       </header>
 
       {isBlock(item) ? (
@@ -92,7 +102,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
         {code}
       </section>
 
-      <PageNav previous={previous} next={next} />
+      {previous || next ? <PageNav previous={previous} next={next} /> : null}
     </article>
   )
 }

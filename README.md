@@ -99,7 +99,7 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 ### Adding a component
 
 1. Write it at `registry/mewo/ui/<name>.tsx` (starts with `"use client"`, accepts `className`, honours reduced motion). Sections go in `registry/mewo/blocks/` and import components as `@/registry/mewo/ui/<name>`.
-2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`, and `"meta": { "added": "YYYY-MM-DD" }`. Items added within 14 days of the latest release get the New badge.
+2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`, and `"meta": { "added": "YYYY-MM-DD" }`. Items added within 14 days of the latest release get the New badge. A simple piece that ships with a site built with mewo can add `"unlisted": true` to `meta`: it keeps its page at `/docs/<name>` and installs like any item, but the catalog, the sidebar, search and the counts leave it out.
 3. Add `components/demos/<name>-demo.tsx` (default export = demo, `props` = props table) and register it in `components/demos/index.ts`.
 4. Add a test under `tests/`. `npm test` also checks the catalog invariants.
 5. `npm run verify:install`.

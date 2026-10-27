@@ -3,12 +3,13 @@ import { notFound } from "next/navigation"
 import { demos } from "@/components/demos"
 import { PreviewStage } from "@/components/site/preview-stage"
 import { framingFor } from "@/lib/preview-framing"
-import { getItem, getItems, isBlock } from "@/lib/registry"
+import { getAllItems, getItem, isBlock } from "@/lib/registry"
 
 export const metadata: Metadata = { robots: { index: false } }
 
+// unlisted items are previewed too: a section's page opens its demo here
 export function generateStaticParams() {
-  return getItems().map((item) => ({ name: item.name }))
+  return getAllItems().map((item) => ({ name: item.name }))
 }
 
 /**

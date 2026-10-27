@@ -23,14 +23,25 @@ const UI_ALLOWED = new Set([
   "ogl",
   "@base-ui/react/tabs",
   "@base-ui/react/collapsible",
+  "@base-ui/react/dialog",
   "class-variance-authority",
 ])
 
-/** Items that replace a shadcn component of the same name. Only these may import Base UI. */
+/** Items that replace a shadcn component of the same name. These may import Base UI. */
 const DROPIN_EXPORTS: Record<string, string[]> = {
   tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent", "tabsListVariants"],
   collapsible: ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"],
 }
+
+/**
+ * Compound items built on a Base UI part (a panel on its Dialog), the other kind that may import Base UI. Their
+ * export block is pinned like a drop-in's, so a part cannot be added or renamed unnoticed.
+ */
+const COMPOUND_EXPORTS: Record<string, string[]> = {
+  "glass-panel": ["GlassPanel", "GlassPanelTrigger", "GlassPanelContent", "GlassPanelTitle", "GlassPanelFooter", "GlassPanelClose"],
+}
+
+const BASE_UI_EXPORTS = { ...DROPIN_EXPORTS, ...COMPOUND_EXPORTS }
 
 const PACKAGE_OF: Record<string, string> = {
   "motion/react": "motion",
@@ -41,6 +52,7 @@ const PACKAGE_OF: Record<string, string> = {
   ogl: "ogl",
   "@base-ui/react/tabs": "@base-ui/react",
   "@base-ui/react/collapsible": "@base-ui/react",
+  "@base-ui/react/dialog": "@base-ui/react",
   "class-variance-authority": "class-variance-authority",
 }
 
@@ -73,6 +85,11 @@ describe("registry.json", () => {
   // The catalog's "Newest" sort and "New" badge read this; a missing date would sink an item to the bottom.
   it("every item records the ISO date it was added", () => {
     for (const item of items) expect(item.meta?.added, item.name).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+  })
+
+  // `unlisted` keeps a simple piece out of the catalog; any value but `true` would be a typo that lists it.
+  it("meta.unlisted, when present, is exactly true", () => {
+    for (const item of items) if ("unlisted" in (item.meta ?? {})) expect(item.meta?.unlisted, item.name).toBe(true)
   })
 
   it("every item has a demo", () => {
@@ -151,18 +168,18 @@ describe("registry.json", () => {
     expect(GROUP_LABELS.primitives).toBe("Primitives")
   })
 
-  it("only drop-in items may import Base UI", () => {
+  it("only drop-in items and the listed compound items may import Base UI", () => {
     for (const item of items) {
       const src = read(item.files[0].path)
       const usesBaseUi = importsOf(src).some((s) => s.startsWith("@base-ui/react"))
       if (usesBaseUi) {
-        expect(DROPIN_EXPORTS, `${item.name} imports Base UI but is not a drop-in`).toHaveProperty(item.name)
+        expect(BASE_UI_EXPORTS, `${item.name} imports Base UI but is neither a drop-in nor a listed compound item`).toHaveProperty(item.name)
       }
     }
   })
 
-  it("drop-in items export exactly what the shadcn component they replace exports", () => {
-    for (const [name, expected] of Object.entries(DROPIN_EXPORTS)) {
+  it("drop-in and compound items export exactly the parts they are known for", () => {
+    for (const [name, expected] of Object.entries(BASE_UI_EXPORTS)) {
       const item = items.find((i) => i.name === name)
       if (!item) continue
       const src = read(item.files[0].path)
