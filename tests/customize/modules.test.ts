@@ -23,8 +23,9 @@ describe("customize modules", () => {
     }
   })
 
-  it("control every key as a documented prop, unless it is demo-only, with the documented default", async () => {
-    for (const [name, load] of Object.entries(customize)) {
+  // one test per piece, so a file in progress fails alone
+  describe.each(Object.entries(customize))("%s", (name, load) => {
+    it("controls every key as a documented prop, unless it is demo-only, with the documented default", async () => {
       const [module, demo] = await Promise.all([load(), demos[name]()])
       expect(typeof module.default, `${name} default export`).toBe("function")
       expect(module.DEFAULTS, `${name} DEFAULTS`).toBeTruthy()
@@ -39,6 +40,6 @@ describe("customize modules", () => {
         if (expected !== undefined && value !== "") expect(value, `${name}: default of "${key}"`).toEqual(expected)
       }
       for (const key of demoOnly) expect(module.DEFAULTS, `${name}: DEMO_ONLY key "${key}" has no control`).toHaveProperty(key)
-    }
+    })
   })
 })

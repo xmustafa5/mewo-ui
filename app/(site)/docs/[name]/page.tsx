@@ -98,10 +98,10 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
         ) : null}
       </header>
 
-      {isBlock(item) ? (
-        <BlockPreview name={item.name} code={code} />
-      ) : Customized ? (
+      {Customized ? (
         <Customized code={code} />
+      ) : isBlock(item) ? (
+        <BlockPreview name={item.name} code={code} />
       ) : (
         <ComponentPreview code={code}>
           <Demo />

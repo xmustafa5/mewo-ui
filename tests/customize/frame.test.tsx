@@ -64,6 +64,46 @@ describe("CustomizeFrame", () => {
   })
 })
 
+describe("CustomizeFrame width", () => {
+  const frame = () => document.querySelector<HTMLElement>('[data-slot="customize-frame"]')!
+  const renderFrame = () =>
+    render(
+      <CustomizeFrame code={<pre>source</pre>} preview={<p>demo</p>} run={0} onReplay={() => {}} changed={false} onReset={() => {}}>
+        <div />
+      </CustomizeFrame>,
+    )
+
+  it("offers Desktop, Tablet and Mobile and narrows the frame to the chosen width", () => {
+    renderFrame()
+    expect(screen.getByRole("group", { name: "Preview width" })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: "Desktop" })).toHaveAttribute("aria-pressed", "true")
+    expect(frame().style.maxWidth).toBe("")
+    fireEvent.click(screen.getByRole("button", { name: "Mobile · 375px" }))
+    expect(frame().style.maxWidth).toBe("375px")
+    expect(frame()).toHaveAttribute("data-narrow")
+    fireEvent.click(screen.getByRole("button", { name: "Desktop" }))
+    expect(frame().style.maxWidth).toBe("")
+  })
+
+  it("has a handle the keys step, Home at the narrowest and End at the full width", () => {
+    renderFrame()
+    fireEvent.click(screen.getByRole("button", { name: "Tablet · 768px" }))
+    const handle = screen.getByRole("separator", { name: "Drag to resize the preview" })
+    expect(handle).toHaveAttribute("aria-valuenow", "768")
+    fireEvent.keyDown(handle, { key: "ArrowLeft" })
+    expect(frame().style.maxWidth).toBe("758px")
+    fireEvent.keyDown(handle, { key: "ArrowRight", shiftKey: true })
+    expect(frame().style.maxWidth).toBe("808px")
+    fireEvent.keyDown(handle, { key: "Home" })
+    expect(frame().style.maxWidth).toBe("320px")
+    fireEvent.keyDown(handle, { key: "End" })
+    expect(frame().style.maxWidth).toBe("")
+    fireEvent.click(screen.getByRole("button", { name: "Mobile · 375px" }))
+    fireEvent.doubleClick(handle)
+    expect(frame().style.maxWidth).toBe("")
+  })
+})
+
 describe("UsageBlock", () => {
   it("prints the snippet and says when it carries changes", () => {
     const { rerender } = render(<UsageBlock usage={{ ...usage, props: {} }} changed={false} />)

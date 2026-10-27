@@ -14,4 +14,6 @@ export type CustomizeModule = {
   DEFAULTS: Values
   /** Keys that are not props of the piece (a preset, the demo's own content or size): the usage snippet skips them. */
   DEMO_ONLY?: readonly string[]
+  /** A section's preview, rendered on its own page in the frame the panel drives (`/preview/<name>/customize`). */
+  Framed?: React.ComponentType
 }

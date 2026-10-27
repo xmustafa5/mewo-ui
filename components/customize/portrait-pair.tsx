@@ -1,0 +1,46 @@
+"use client"
+
+import { PortraitPair } from "@/registry/mewo/blocks/portrait-pair"
+import { Input, Slider } from "./controls"
+import { CustomizeFrame } from "./frame"
+import { FramedPreview, useFramedValues } from "./framed"
+import type { CustomizeProps } from "./types"
+import { changedProps } from "./usage"
+import { useCustomize } from "./use-customize"
+
+export const DEFAULTS = {
+  line: "A new capital was founded on the river.",
+  text: "Scholars there translated old books, and painters illustrated new ones.",
+  length: 7.8,
+}
+export const DEMO_ONLY = [] as const
+
+/** The section scrolling inside its box, as in the demo. */
+export function Framed() {
+  const values = useFramedValues(DEFAULTS)
+  return (
+    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+      <PortraitPair line={values.line} text={values.text} length={values.length} />
+    </div>
+  )
+}
+
+export default function PortraitPairCustomize({ code }: CustomizeProps) {
+  const { values, defaults, changed, run, set, reset, replay } = useCustomize(DEFAULTS)
+  return (
+    <CustomizeFrame
+      code={code}
+      run={run}
+      onReplay={replay}
+      changed={changed}
+      onReset={reset}
+      stageClassName="p-3 sm:p-4"
+      usage={{ name: "PortraitPair", item: "portrait-pair", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
+      preview={<FramedPreview name="portrait-pair" values={values} run={run} />}
+    >
+      <Input label="Line" value={values.line} onChange={(value) => set("line", value)} />
+      <Input label="Text" value={values.text} onChange={(value) => set("text", value)} />
+      <Slider label="Length" min={5} max={12} step={0.1} format={(value) => `${value} screens`} value={values.length} onChange={(value) => set("length", value)} />
+    </CustomizeFrame>
+  )
+}

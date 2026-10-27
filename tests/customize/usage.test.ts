@@ -21,6 +21,8 @@ describe("formatValue", () => {
     expect(formatValue(true)).toBeNull()
     expect(formatValue(false)).toBe("{false}")
     expect(formatValue(["#a", "#b"])).toBe('{["#a", "#b"]}')
+    expect(formatValue({ label: "Go", href: "#", "data-x": 1 })).toBe('{{ label: "Go", href: "#", "data-x": 1 }}')
+    expect(formatValue([{ src: "a.jpg", ratio: 1.5 }])).toBe('{[{ src: "a.jpg", ratio: 1.5 }]}')
   })
 })
 

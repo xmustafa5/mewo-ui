@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { Check, Code2, Copy, Eye, Palette, RotateCcw } from "lucide-react"
+import { Check, Code2, Copy, Eye, GripVertical, Monitor, Palette, RotateCcw, Smartphone, Tablet } from "lucide-react"
 import { previewTabClass, previewTabsListClass, stageClass } from "@/components/site/component-preview"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { cn } from "@/lib/utils"
@@ -10,6 +10,105 @@ import { type Token, type TokenKind, type Usage, tokenize, usageText } from "./u
 
 const actionClass =
   "inline-flex h-7.5 items-center justify-center gap-1.5 rounded-[7px] px-2.5 text-xs font-medium text-muted-foreground transition-[background-color,color,opacity,transform] duration-150 hover:bg-background hover:text-foreground active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-ring/60"
+const toolButtonClass = "inline-flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
+
+/** The narrowest the preview goes, and the widths the toolbar offers; the frame is the stage's width otherwise. */
+const MIN_WIDTH = 320
+const WIDTHS = [
+  { label: "Desktop", width: null, Icon: Monitor },
+  { label: "Tablet · 768px", width: 768, Icon: Tablet },
+  { label: "Mobile · 375px", width: 375, Icon: Smartphone },
+] as const
+const INDICATOR_MS = 2000
+const KEY_STEP = 10
+const KEY_STEP_LARGE = 50
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
+
+/**
+ * The preview's width: a preset from the toolbar, or any width by the handle on the frame's edge (the arrow keys
+ * step it, Home and End go to the ends, a double-click lets it go). `null` is the stage's full width.
+ */
+function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
+  const [width, setWidth] = React.useState<number | null>(null)
+  const [full, setFull] = React.useState(0)
+  const [dragging, setDragging] = React.useState(false)
+  const [indicator, setIndicator] = React.useState(false)
+  const drag = React.useRef<{ id: number; startX: number; startWidth: number } | null>(null)
+  const hideTimer = React.useRef(0)
+
+  // the stage's content width bounds the frame, and a window that gets narrower than a set width lets it go
+  React.useEffect(() => {
+    const stage = stageRef.current
+    if (!stage) return
+    const measure = () => {
+      const styles = getComputedStyle(stage)
+      const inner = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight)
+      // 0 until the stage has a size: nothing is bounded by it yet
+      const next = inner > 0 ? Math.max(MIN_WIDTH, Math.floor(inner)) : 0
+      setFull(next)
+      setWidth((current) => (next && current !== null && current >= next ? null : current))
+    }
+    measure()
+    const observer = new ResizeObserver(measure)
+    observer.observe(stage)
+    return () => observer.disconnect()
+  }, [stageRef])
+  React.useEffect(() => () => window.clearTimeout(hideTimer.current), [])
+
+  const show = () => {
+    setIndicator(true)
+    window.clearTimeout(hideTimer.current)
+    hideTimer.current = window.setTimeout(() => setIndicator(false), INDICATOR_MS)
+  }
+  const commit = (next: number | null) => {
+    const rounded = next === null ? null : Math.round(clamp(next, MIN_WIDTH, full || next))
+    setWidth(rounded !== null && full && rounded >= full ? null : rounded)
+    show()
+  }
+  const current = width ?? full
+
+  const handle = {
+    role: "separator" as const,
+    tabIndex: 0,
+    "aria-orientation": "vertical" as const,
+    "aria-label": "Drag to resize the preview",
+    "aria-valuemin": MIN_WIDTH,
+    "aria-valuemax": full,
+    "aria-valuenow": Math.round(current),
+    "data-dragging": dragging || undefined,
+    onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => {
+      if (event.button !== 0) return
+      event.preventDefault()
+      event.currentTarget.setPointerCapture?.(event.pointerId)
+      drag.current = { id: event.pointerId, startX: event.clientX, startWidth: current }
+      setDragging(true)
+    },
+    onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => {
+      if (drag.current?.id !== event.pointerId) return
+      // the frame is centred, so the edge moves half as far as the width changes
+      commit(drag.current.startWidth + (event.clientX - drag.current.startX) * 2)
+    },
+    onPointerUp: (event: React.PointerEvent<HTMLDivElement>) => {
+      if (drag.current?.id !== event.pointerId) return
+      drag.current = null
+      setDragging(false)
+    },
+    onPointerCancel: () => {
+      drag.current = null
+      setDragging(false)
+    },
+    onDoubleClick: () => commit(null),
+    onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+      const step = event.shiftKey ? KEY_STEP_LARGE : KEY_STEP
+      const targets: Record<string, number | null> = { ArrowLeft: current - step, ArrowRight: current + step, Home: MIN_WIDTH, End: null }
+      if (!(event.key in targets)) return
+      event.preventDefault()
+      commit(targets[event.key])
+    },
+  }
+
+  return { width, full, dragging, indicator: dragging || (indicator && width !== null), set: commit, handle }
+}
 
 /**
  * A piece's preview with its Customize panel: the same Preview and Code tabs and stage as `ComponentPreview`,
@@ -45,20 +144,39 @@ export function CustomizeFrame({
   /** The control rows. */
   children: React.ReactNode
 }) {
+  const stageRef = React.useRef<HTMLDivElement>(null)
+  const size = usePreviewWidth(stageRef)
   return (
     <Tabs defaultValue="preview" className="gap-3">
-      <TabsList className={previewTabsListClass}>
-        <TabsTrigger value="preview" className={previewTabClass}>
-          <Eye aria-hidden />
-          Preview
-        </TabsTrigger>
-        <TabsTrigger value="code" className={previewTabClass}>
-          <Code2 aria-hidden />
-          Code
-        </TabsTrigger>
-      </TabsList>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <TabsList className={previewTabsListClass}>
+          <TabsTrigger value="preview" className={previewTabClass}>
+            <Eye aria-hidden />
+            Preview
+          </TabsTrigger>
+          <TabsTrigger value="code" className={previewTabClass}>
+            <Code2 aria-hidden />
+            Code
+          </TabsTrigger>
+        </TabsList>
+        <div role="group" aria-label="Preview width" className="flex h-10 items-center gap-0.5 rounded-xl border bg-card/60 p-1 max-sm:hidden">
+          {WIDTHS.map(({ label, width, Icon }) => (
+            <button
+              key={label}
+              type="button"
+              aria-label={label}
+              title={label}
+              aria-pressed={size.width === width}
+              onClick={() => size.set(width)}
+              className={cn(toolButtonClass, size.width === width && "bg-background text-foreground dark:bg-accent")}
+            >
+              <Icon className="size-4" aria-hidden />
+            </button>
+          ))}
+        </div>
+      </div>
       <TabsContent value="preview">
-        <div className={cn(stageClass, "flex min-h-115 items-center justify-center p-6 sm:p-10", stageClassName)}>
+        <div ref={stageRef} className={cn(stageClass, "flex min-h-115 items-center justify-center p-6 sm:p-10", stageClassName)}>
           <button
             type="button"
             aria-label="Replay animation"
@@ -68,8 +186,32 @@ export function CustomizeFrame({
           >
             <RotateCcw className="size-4" aria-hidden />
           </button>
-          <div key={run} className="flex w-full items-center justify-center">
-            {preview}
+          {/* the frame: the stage's width, or the width set by a preset or the handle, centred */}
+          <div
+            data-slot="customize-frame"
+            data-narrow={size.width !== null || undefined}
+            data-dragging={size.dragging || undefined}
+            className="group/frame relative flex w-full items-center justify-center rounded-xl transition-[max-width] duration-300 data-dragging:transition-none data-narrow:outline-1 data-narrow:outline-dashed data-narrow:outline-border data-narrow:outline-offset-8"
+            style={{ maxWidth: size.width ?? undefined }}
+          >
+            <div key={run} className="flex w-full items-center justify-center">
+              {preview}
+            </div>
+            <div
+              {...size.handle}
+              className="absolute top-1/2 -right-7 z-10 flex h-16 w-6 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center rounded-md text-muted-foreground/50 outline-none transition-colors group-hover/frame:text-muted-foreground hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring/60 data-dragging:text-foreground max-sm:hidden"
+            >
+              <GripVertical className="size-4" aria-hidden />
+            </div>
+            <span
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 rounded-md border bg-background/80 px-2 py-0.5 text-[11px] font-medium text-muted-foreground tabular-nums backdrop-blur transition-opacity duration-200",
+                size.indicator ? "opacity-100" : "opacity-0",
+              )}
+            >
+              {Math.round(size.width ?? size.full)}px
+            </span>
           </div>
         </div>
         <section aria-labelledby="customize-heading" className="@container mt-6 rounded-2xl border bg-muted/50 p-1">

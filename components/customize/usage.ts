@@ -5,8 +5,9 @@ import { same } from "./use-customize"
 export type Usage = {
   /** The component's exported name. */
   name: string
-  /** The registry item's name: the import comes from `@/components/ui/<item>`. */
+  /** The registry item's name: the import comes from `@/components/ui/<item>`, or `@/components/<item>` for a section (the shadcn CLI puts a block beside the ui folder). */
   item: string
+  block?: boolean
   /** The props to print, already reduced to the ones that differ from the defaults (`changedProps`). */
   props: Record<string, unknown>
   /** What goes between the tags, if anything: text or JSX, over one line or several. */
@@ -27,13 +28,25 @@ export function changedProps(values: Values, defaults: Values, demoOnly: readonl
   return { ...out, ...computed }
 }
 
-/** A prop's value as JSX: a string in quotes, a number or a list in braces, `true` as the bare prop (null). */
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/
+
+/** A value as a JavaScript literal: strings quoted, lists and objects spaced the way a formatter writes them. */
+export function literal(value: unknown): string {
+  if (typeof value === "string") return JSON.stringify(value)
+  if (Array.isArray(value)) return `[${value.map(literal).join(", ")}]`
+  if (value && typeof value === "object") {
+    const entries = Object.entries(value).map(([key, item]) => `${IDENTIFIER.test(key) ? key : JSON.stringify(key)}: ${literal(item)}`)
+    return entries.length ? `{ ${entries.join(", ")} }` : "{}"
+  }
+  return String(value)
+}
+
+/** A prop's value as JSX: a string in quotes, a number, a list or an object in braces, `true` as the bare prop (null). */
 export function formatValue(value: unknown): string | null {
   if (typeof value === "string") return value.includes('"') || value.includes("\n") ? `{${JSON.stringify(value)}}` : `"${value}"`
   if (typeof value === "number") return `{${value}}`
   if (typeof value === "boolean") return value ? null : "{false}"
-  if (Array.isArray(value)) return `{${JSON.stringify(value).replace(/,/g, ", ")}}`
-  return `{${JSON.stringify(value)}}`
+  return `{${literal(value)}}`
 }
 
 const WIDTH = 80
@@ -44,7 +57,7 @@ const indent = (text: string, by = "  ") =>
     .join("\n")
 
 /** The snippet as text, for the copy button. */
-export function usageText({ name, item, props, children }: Usage): string {
+export function usageText({ name, item, block, props, children }: Usage): string {
   const attrs = Object.entries(props)
     .filter(([, value]) => value !== undefined && value !== null)
     .map(([key, value]) => {
@@ -62,7 +75,7 @@ export function usageText({ name, item, props, children }: Usage): string {
     const oneLine = !children.includes("\n") && `${inlineOpen}>${children}</${name}>`.length <= WIDTH
     element = oneLine && !stacked ? `${open}>${children}</${name}>` : `${open}>\n${indent(children)}\n</${name}>`
   }
-  return `import { ${name} } from "@/components/ui/${item}"\n\n${element}`
+  return `import { ${name} } from "@/components/${block ? "" : "ui/"}${item}"\n\n${element}`
 }
 
 export type TokenKind = "plain" | "keyword" | "tag" | "attr" | "string" | "value" | "text"
