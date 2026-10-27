@@ -25,7 +25,7 @@ export function IntroWordmark({ stage = "top", atTop = true, className, children
       aria-hidden="true"
       data-slot="intro-wordmark"
       data-stage={stage}
-      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", 
+      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", 
         "pointer-events-none fixed left-1/2 z-[100] -translate-x-1/2 font-heading text-[length:calc(var(--story-u)*4.3)] leading-none tracking-[-0.02em] whitespace-nowrap text-white mix-blend-difference max-[900px]:text-[length:calc(var(--story-u)*2)] motion-reduce:transition-none",
         stage !== "top"
           ? "top-[calc(50%-calc(var(--story-u)*2))] [transition:opacity_0.6s_ease] max-[900px]:top-[calc(50%-calc(var(--story-u)*1.2))]"

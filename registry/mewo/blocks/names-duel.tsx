@@ -170,7 +170,7 @@ export function NamesDuel({
   return (
     <section
       data-slot="names-duel"
-      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", "relative h-[calc(var(--mewo-viewport,100vh)*var(--mewo-length))] motion-reduce:h-auto", className)}
+      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", "relative h-[calc(var(--mewo-viewport,100vh)*var(--mewo-length))] motion-reduce:h-auto", className)}
       style={{ "--mewo-length": 1 + Math.max(0, length), ...style } as React.CSSProperties}
       {...props}
     >

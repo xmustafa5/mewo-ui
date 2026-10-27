@@ -13,7 +13,7 @@ const tracks: Partial<Record<StageLayout, StageTrackSet>> = {
 export default function ScrollStageDemo() {
   return (
     // a transformed box contains the stage's fixed layer, so the demo stays in its frame; scroll the page to play it
-    <div className="relative h-[70vh] overflow-hidden rounded-xl border [container-type:size] [contain:layout]">
+    <div className="w-full relative h-[70vh] overflow-hidden rounded-xl border [container-type:size] [contain:layout]">
       <ScrollStage tracks={{ ...tracks, tablet: tracks.desktop, phone: tracks.desktop }} length={2} className="bg-muted/40">
         <h3 data-track="title" className="w-[320px] text-center font-heading text-5xl">
           Scroll the page

@@ -22,7 +22,7 @@ export function PictureFigure({
   ...props
 }: PictureFigureProps) {
   return (
-    <figure data-slot="picture-figure" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)] [--spacing:calc(var(--story-u)*0.25)]", "relative m-0", className)} {...props}>
+    <figure data-slot="picture-figure" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)] [--spacing:calc(var(--story-u)*0.25)]", "relative m-0", className)} {...props}>
       <div className="relative h-full overflow-hidden" style={{ aspectRatio: String(ratio) }}>
         {/* eslint-disable-next-line @next/next/no-img-element -- items cannot use next/image */}
         <img src={src} alt={alt} className="absolute inset-0 size-full object-cover" />

@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function GlassPanelDemo() {
   return (
     // a transformed box contains the panel's fixed pieces, so the demo stays in its frame
-    <div className="[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] relative h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+    <div className="relative w-full h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
       <GlassPanel defaultOpen>
         <GlassPanelTrigger className="fixed top-[calc(var(--story-u)*2)] end-[calc(var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">
           <span className="block h-[2px] w-[calc(var(--story-u)*1.45)] rounded-[1px] bg-current" />

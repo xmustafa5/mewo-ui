@@ -51,7 +51,7 @@ function GlassPanel({
   const value = React.useMemo(() => ({ triggerRef, container, returnFocusRef }), [container])
   return (
     <GlassPanelContext.Provider value={value}>
-      <div ref={setContainer} data-slot="glass-panel" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", "contents", className)}>
+      <div ref={setContainer} data-slot="glass-panel" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", "contents", className)}>
         <DialogPrimitive.Root
           modal={false}
           onOpenChange={(open, details) => {

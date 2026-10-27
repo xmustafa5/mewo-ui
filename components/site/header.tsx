@@ -32,6 +32,9 @@ export function Header() {
           <Link href="/docs/hero-aurora" className={navLinkClass}>
             Sections
           </Link>
+          <Link href="/sites" className={navLinkClass}>
+            Sites
+          </Link>
           <Link href="/studio" className={navLinkClass}>
             Studio
           </Link>

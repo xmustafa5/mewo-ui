@@ -7,7 +7,7 @@ const credit = (title: string, by: string) => ({ title, by, line: "A museum some
 export default function NamesDuelDemo() {
   // the stage pins to its nearest scroll container, so the duels scroll inside this box: one picture, then two
   return (
-    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background">
+    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
       <NamesDuel top="First ruler" bottom="Second ruler" pictures={[{ src: pic(1, 1000, 978), ratio: 1000 / 978, credit: credit("A carved disc", "c. 2300 BCE") }]} />
       <NamesDuel
         top="Builder"

@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function PortraitPairDemo() {
   // the stage pins to its nearest scroll container, so the section scrolls inside this box
   return (
-    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background">
+    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
       <PortraitPair />
     </div>
   )

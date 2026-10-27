@@ -36,7 +36,7 @@ export function CornerWordmark({
         e.preventDefault()
         onHome()
       }}
-      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", 
+      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", 
         "fixed top-[calc(var(--story-u)*2)] start-[calc(var(--story-u)*2)] z-[100] font-heading text-[length:calc(var(--story-u)*3.3)] leading-none tracking-[-0.02em] whitespace-nowrap text-white no-underline mix-blend-difference max-[900px]:hidden motion-reduce:transition-none",
         show
           ? "visible opacity-100 [transition:opacity_0.8s_ease,visibility_0s]"

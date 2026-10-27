@@ -24,7 +24,7 @@ export function PictureCredit({
   ...props
 }: PictureCreditProps) {
   return (
-    <p data-slot="picture-credit" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", "grid gap-[calc(var(--story-u)*0.5)] text-center", className)} {...props}>
+    <p data-slot="picture-credit" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", "grid gap-[calc(var(--story-u)*0.5)] text-center", className)} {...props}>
       <span className="text-[length:max(12px,calc(var(--story-u)*1.2))] leading-[1.2] max-[900px]:text-[length:calc(var(--story-u)*1)]">
         <a href={href} target="_blank" rel="noopener noreferrer" className="pointer-events-auto">
           <em className="not-italic underline underline-offset-[0.15em]">{title}</em>

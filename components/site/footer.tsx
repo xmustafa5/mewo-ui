@@ -36,6 +36,7 @@ export function Footer() {
         { label: "Introduction", href: "/docs" },
         { label: "All components", href: "/docs/components" },
         { label: "Sections", href: "/docs/hero-aurora" },
+        { label: "Sites", href: "/sites" },
         { label: "Background Studio", href: "/studio" },
       ],
     },

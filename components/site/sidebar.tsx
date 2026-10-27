@@ -27,6 +27,7 @@ const START = {
   label: "Get started",
   links: [
     { href: "/docs", title: "Introduction" },
+    { href: "/sites", title: "Sites" },
     { href: "/studio", title: "Background Studio" },
   ],
 }

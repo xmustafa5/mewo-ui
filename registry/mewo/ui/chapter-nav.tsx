@@ -123,7 +123,7 @@ export function ChapterNav({
   }, [isOpen, open, onOpenChange])
 
   return (
-    <div data-slot="chapter-nav" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", "contents", className)} {...props}>
+    <div data-slot="chapter-nav" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", "contents", className)} {...props}>
       <button
         ref={button}
         aria-controls={id}

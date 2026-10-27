@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function IntroWordmarkDemo() {
   return (
     // half light, half dark: the difference blend turns the name dark on one side and light on the other
-    <div className="relative h-[50vh] overflow-hidden rounded-xl border bg-[linear-gradient(90deg,#e6e0dc_50%,#1d1d1f_50%)] [container-type:size] [contain:layout]">
+    <div className="relative w-full h-[50vh] overflow-hidden rounded-xl border bg-[linear-gradient(90deg,#e6e0dc_50%,#1d1d1f_50%)] [container-type:size] [contain:layout]">
       <IntroWordmarkLoop />
     </div>
   )

@@ -33,7 +33,7 @@ export function ZoomPanel({
     <div
       data-slot="zoom-panel"
       data-state={state}
-      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", 
+      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", 
         "group absolute end-[calc(var(--story-u)*2)] bottom-[calc(var(--story-u)*2)] h-[calc(var(--story-u)*11)] w-[calc(var(--story-u)*20)] overflow-hidden rounded-sm bg-black text-white",
         "[transition:opacity_0.5s_cubic-bezier(0.455,0.03,0.515,0.955),visibility_0s,right_0.8s_cubic-bezier(0.455,0.03,0.515,0.955),left_0.8s_cubic-bezier(0.455,0.03,0.515,0.955),bottom_0.8s_cubic-bezier(0.455,0.03,0.515,0.955),width_0.8s_cubic-bezier(0.455,0.03,0.515,0.955),height_0.8s_cubic-bezier(0.455,0.03,0.515,0.955)]",
         "data-[state=hidden]:invisible data-[state=hidden]:opacity-0",

@@ -4,6 +4,7 @@ import type { SearchEntry } from "@/components/site/search"
 export const DOCS_PAGES = [
   { href: "/docs", title: "Introduction", description: "What mewo is and how installing works." },
   { href: "/docs/components", title: "Components", description: "Every component and section, with a preview of each." },
+  { href: "/sites", title: "Sites", description: "Whole sites built with mewo pieces: scroll them here, and see which piece is which." },
 ] as const
 
 export const TOOL_PAGES = [

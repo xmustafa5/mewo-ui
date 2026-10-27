@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function ZoomPanelDemo() {
   // scrolling inside the box sets the panel's state, as a story's scroll does: thumbnail, open, thumbnail, gone
   return (
-    <div className="h-[70vh] w-full overflow-hidden rounded-xl border bg-muted/40">
+    <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border bg-muted/40 [container-type:size] [contain:layout]">
       <ZoomPanelScroll />
     </div>
   )

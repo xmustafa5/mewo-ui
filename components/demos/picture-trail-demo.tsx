@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function PictureTrailDemo() {
   // the stage pins to its nearest scroll container, so the demo scrolls inside this box
   return (
-    <div className="h-[min(70vh,560px)] w-full overflow-y-auto rounded-xl border bg-background">
+    <div className="h-[min(70vh,560px)] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
       <PictureTrail />
     </div>
   )

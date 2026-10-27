@@ -18,7 +18,8 @@ function StudioFallback() {
 
 export default function StudioPage() {
   return (
-    <div className="mx-auto flex h-[calc(100dvh-4rem)] w-full max-w-360 flex-col px-4 py-4 sm:px-6">
+    // the whole window under the header (4rem and its border): the stage is as wide as the window allows
+    <div className="flex h-[calc(100dvh-4rem-1px)] w-full flex-col px-4 py-4 sm:px-6">
       {/* The studio reads the URL on the client, so it renders behind a boundary and the shell is static. */}
       <Suspense fallback={<StudioFallback />}>
         <BackgroundStudio />

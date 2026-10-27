@@ -4,7 +4,7 @@ import type { PropDoc } from "./types"
 export default function ChapterNavDemo() {
   return (
     // a transformed box contains the nav's fixed pieces, so the demo stays in its frame
-    <div className="relative h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+    <div className="relative w-full h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
       <ChapterNavLive />
     </div>
   )

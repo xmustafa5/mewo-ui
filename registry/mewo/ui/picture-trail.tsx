@@ -255,7 +255,7 @@ export function PictureTrail({
     <section
       data-slot="picture-trail"
       className={cn(
-        "[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]",
+        "[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]",
         "relative h-[calc(var(--mewo-viewport,100vh)*var(--mewo-length))]",
         className
       )}

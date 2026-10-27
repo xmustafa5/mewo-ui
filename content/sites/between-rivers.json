@@ -1,0 +1,29 @@
+{
+  "slug": "between-rivers",
+  "title": "Between Rivers",
+  "blurb": "A scroll story through the history of Mesopotamia and Iraq, told through objects, places and people: a hero that bursts into a field of pictures, a painting that zooms as you read, names that cross the page, and a cloud of pictures at the end.",
+  "url": "https://between-rivers.mewo-ui.com",
+  "embed": true,
+  "pieces": [
+    "picture-wave",
+    "picture-orbit",
+    "picture-trail",
+    "names-duel",
+    "portrait-pair",
+    "picture-cloud",
+    "zoom-picture",
+    "zoom-panel",
+    "scroll-captions",
+    "rising-captions",
+    "date-timeline",
+    "rich-text",
+    "word-cycle",
+    "corner-hint",
+    "intro-wordmark",
+    "corner-wordmark",
+    "picture-credit",
+    "chapter-nav",
+    "glass-panel",
+    "picture-figure"
+  ]
+}

@@ -5,7 +5,7 @@ export default function CornerWordmarkDemo() {
   return (
     // a transformed box contains the fixed position; light under the name's first letters and dark after them shows
     // the difference blend
-    <div className="[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] relative h-[40vh] overflow-hidden rounded-xl border bg-[linear-gradient(90deg,#e6e0dc_calc(var(--story-u)*5),#1d1d1f_calc(var(--story-u)*5))] [container-type:size] [contain:layout]">
+    <div className="[--story-u:min(2.6667cqw,12px)] relative w-full h-[40vh] overflow-hidden rounded-xl border bg-[linear-gradient(90deg,#e6e0dc_calc(var(--story-u)*5),#1d1d1f_calc(var(--story-u)*5))] [container-type:size] [contain:layout]">
       <CornerWordmarkToggle />
     </div>
   )

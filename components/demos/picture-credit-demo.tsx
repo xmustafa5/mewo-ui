@@ -3,7 +3,7 @@ import type { PropDoc } from "./types"
 
 export default function PictureCreditDemo() {
   return (
-    <div className="[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] flex justify-center py-12">
+    <div className="[--story-u:min(2.6667cqw,12px)] flex justify-center py-12">
       <PictureCredit title="A carved vessel" by="c. 3000 BCE" line="A museum somewhere. Placeholder photograph, CC BY 4.0." href="#" className="w-[calc(var(--story-u)*37)] max-w-full" />
     </div>
   )

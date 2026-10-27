@@ -27,7 +27,7 @@ export function CornerHint({
     <p
       role="status"
       data-slot="corner-hint"
-      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", 
+      className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", 
         "pointer-events-none fixed z-[100] end-[calc(var(--story-u)*2)] bottom-[calc(var(--story-u)*2)] rounded-lg py-[calc(var(--story-u)*2.1)] ps-[calc(var(--story-u)*1.8)] pe-[calc(var(--story-u)*2.2)] text-[length:calc(var(--story-u)*1.4)] leading-[1.4] tracking-[-0.01em] whitespace-nowrap text-muted-foreground",
         "bg-[rgba(186,186,186,0.2)] backdrop-blur-[12px]",
         "[transition:opacity_0.5s_ease,scale_0.6s_cubic-bezier(0.215,0.61,0.355,1)] motion-reduce:transition-none",

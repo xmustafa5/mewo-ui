@@ -19,7 +19,7 @@ export interface DateTimelineProps extends React.ComponentProps<"div"> {
 export function DateTimeline({ dates = ["c. 3000 BCE", "1850s", "1930s"], track, className, ...props }: DateTimelineProps) {
   const name = (part: string) => (track ? `${track}.${part}` : undefined)
   return (
-    <div data-slot="date-timeline" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] text-[length:var(--story-u)]", "contents", className)} {...props}>
+    <div data-slot="date-timeline" className={cn("[--story-u:min(2.6667cqw,12px)] min-[901px]:[--story-u:0.625cqw] min-[901px]:@max-[900px]:[--story-u:min(2.6667cqw,12px)] text-[length:var(--story-u)]", "contents", className)} {...props}>
       <div data-track={name("timeline")} className="h-[2px] w-[calc(var(--story-u)*46)] overflow-hidden max-[900px]:w-[calc(100cqw-calc(var(--story-u)*4))]">
         <div data-track={name("timelineLine")} data-track-rel={track ? "1" : undefined} className="flex h-[2px] w-[calc(var(--story-u)*92)] justify-between max-[900px]:w-[calc(200cqw-calc(var(--story-u)*8))]">
           {/* a 10rem gap in the middle for the date */}

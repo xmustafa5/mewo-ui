@@ -5,8 +5,8 @@ import { getGroups, getItems } from "@/lib/registry"
 describe("getSearchEntries", () => {
   it("lists the docs pages and tools first, then every item once", () => {
     const entries = getSearchEntries()
-    expect(entries.slice(0, 3).map((e) => e.href)).toEqual(["/docs", "/docs/components", "/studio"])
-    expect(entries).toHaveLength(getItems().length + 3)
+    expect(entries.slice(0, 4).map((e) => e.href)).toEqual(["/docs", "/docs/components", "/sites", "/studio"])
+    expect(entries).toHaveLength(getItems().length + 4)
     expect(new Set(entries.map((e) => e.href)).size).toBe(entries.length)
   })
 

@@ -106,6 +106,18 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 
 The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
 
+### Adding a site
+
+`/sites` lists whole sites built with mewo pieces; `/sites/<slug>` frames one and lists the pieces it is built from, split into the components (in the catalog) and the simple pieces (unlisted). Each site is one file, `content/sites/<slug>.json`:
+
+```json
+{ "slug": "my-site", "title": "My Site", "blurb": "What it is.", "url": "https://my-site.example.com", "embed": true, "pieces": ["zoom-picture", "glass-panel"] }
+```
+
+- `pieces` are registry names, in the order to show them. Their fate (listed or unlisted) is read from `registry.json`.
+- `public/sites/<slug>.webp` is the card's poster (16:9, 1280 × 720).
+- `embed: true` means the site answers the viewer, which then frames it with `?embed=1` and offers Inspect. The site must allow framing from this origin (`Content-Security-Policy: frame-ancestors`) and speak the viewer's protocol over `postMessage`, every message carrying `source: "<slug>"` (or the manifest's `source`): the viewer sends `hello` and `inspect { on, pieces: [{ name, label, tag? }] }`; the site sends `ready`, `select { name }` (a click on an outlined piece), `open { name }` (a double-click) and `escape`. The site draws the outlines itself. Without `embed`, the site is framed as it is and the list stays.
+
 ## Registry directory
 
 mewo is listed in the [shadcn registry directory](https://ui.shadcn.com/docs/registry/directory)
