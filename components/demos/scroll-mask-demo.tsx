@@ -1,12 +1,14 @@
 import { ScrollMask, type ScrollMaskVariant } from "@/registry/mewo/ui/scroll-mask"
+import { ScrollBox } from "./scroll-box"
 import type { PropDoc } from "./types"
 
 const VARIANTS: ScrollMaskVariant[] = ["iris", "wipe", "curtain", "slats", "grid", "type"]
 
 export default function ScrollMaskDemo() {
   return (
-    // Each frame pins to its nearest scroll container, so the demo scrolls inside this box.
-    <div className="h-[480px] w-full overflow-y-auto rounded-lg border">
+    // Each frame pins to its nearest scroll container, so the demo scrolls inside this box. It opens on the iris
+    // part-way open: 0.29 of its reveal, one box height long.
+    <ScrollBox start={0.29} className="h-[480px] w-full overflow-y-auto rounded-lg border">
       {VARIANTS.map((variant) => (
         <ScrollMask key={variant} variant={variant} scrollLength={1} overlay={0.3} alt="Landscape photograph">
           <div className="px-6 text-center text-white">
@@ -15,7 +17,7 @@ export default function ScrollMaskDemo() {
           </div>
         </ScrollMask>
       ))}
-    </div>
+    </ScrollBox>
   )
 }
 

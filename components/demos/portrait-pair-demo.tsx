@@ -1,12 +1,14 @@
 import { PortraitPair } from "@/registry/mewo/blocks/portrait-pair"
+import { ScrollBox } from "./scroll-box"
 import type { PropDoc } from "./types"
 
 export default function PortraitPairDemo() {
-  // the stage pins to its nearest scroll container, so the section scrolls inside this box
+  // the stage pins to its nearest scroll container, so the section scrolls inside this box. It opens on the first
+  // line, already faded in
   return (
-    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+    <ScrollBox start={0.2} className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
       <PortraitPair />
-    </div>
+    </ScrollBox>
   )
 }
 

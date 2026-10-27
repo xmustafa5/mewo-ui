@@ -1,5 +1,6 @@
 "use client"
 
+import { ScrollBox } from "@/components/demos/scroll-box"
 import { ScrollMask, type ScrollMaskVariant } from "@/registry/mewo/ui/scroll-mask"
 import { Input, Select, Slider } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -39,8 +40,9 @@ export default function ScrollMaskCustomize({ code }: CustomizeProps) {
         children: `<div className="px-6 text-center text-white">\n  <p className="${LABEL_CLASS}">Variant</p>\n  <h3 className="${TITLE_CLASS}">${values.variant}</h3>\n</div>`,
       }}
       preview={
-        // the frame pins to its nearest scroll container, so the preview scrolls inside this box
-        <div className="h-[480px] w-full overflow-y-auto rounded-lg border">
+        // the frame pins to its nearest scroll container, so the preview scrolls inside this box; it opens part-way
+        // into the reveal, as the demo does, the reveal being scrollLength box heights long
+        <ScrollBox start={0.29 * values.scrollLength} className="h-[480px] w-full overflow-y-auto rounded-lg border">
           <ScrollMask
             variant={values.variant as ScrollMaskVariant}
             word={values.word}
@@ -59,7 +61,7 @@ export default function ScrollMaskCustomize({ code }: CustomizeProps) {
               <h3 className={TITLE_CLASS}>{values.variant}</h3>
             </div>
           </ScrollMask>
-        </div>
+        </ScrollBox>
       }
     >
       <Select label="Variant" options={VARIANT_OPTIONS} value={values.variant} onChange={(value) => set("variant", value)} />

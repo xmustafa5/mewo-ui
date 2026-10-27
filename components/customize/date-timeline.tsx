@@ -41,7 +41,7 @@ export default function DateTimelineCustomize({ code }: CustomizeProps) {
         // the line slides its gap to each date as the story is read: scroll inside the frame. The stage is wider than
         // the frame, so the timeline in its middle shows at about its size on a wide page. The stage binds its pieces
         // when it mounts, so a new date list or size starts the frame over
-        <StageFrame key={`${values.size}|${dates.join("|")}`} tracks={tracks as unknown as StageTrackSet} length={10.3} scale={values.size}>
+        <StageFrame key={`${values.size}|${dates.join("|")}`} tracks={tracks as unknown as StageTrackSet} length={10.3} scale={values.size} start={0.3}>
           <DateTimeline track="a1" dates={dates} />
         </StageFrame>
       }

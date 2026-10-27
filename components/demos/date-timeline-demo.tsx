@@ -8,7 +8,7 @@ export default function DateTimelineDemo() {
   // the line slides its gap to each date as the story is read: scroll inside the frame. The stage is twice the
   // frame's width, so the timeline in its middle shows at about its size on a wide page
   return (
-    <StageFrame tracks={tracks as unknown as StageTrackSet} length={10.3} scale={2}>
+    <StageFrame tracks={tracks as unknown as StageTrackSet} length={10.3} scale={2} start={0.3}>
       <DateTimeline track="a1" dates={["c. 3000 BCE", "c. 2300 BCE", "1850s", "1920s", "1930s", "Today"]} />
     </StageFrame>
   )

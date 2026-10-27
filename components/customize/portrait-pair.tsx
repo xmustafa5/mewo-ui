@@ -1,5 +1,6 @@
 "use client"
 
+import { ScrollBox } from "@/components/demos/scroll-box"
 import { PortraitPair } from "@/registry/mewo/blocks/portrait-pair"
 import { Input, Slider } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -15,13 +16,13 @@ export const DEFAULTS = {
 }
 export const DEMO_ONLY = [] as const
 
-/** The section scrolling inside its box, as in the demo. */
+/** The section scrolling inside its box, opening on the first line, as in the demo. */
 export function Framed() {
   const values = useFramedValues(DEFAULTS)
   return (
-    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+    <ScrollBox start={0.2} className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
       <PortraitPair line={values.line} text={values.text} length={values.length} />
-    </div>
+    </ScrollBox>
   )
 }
 

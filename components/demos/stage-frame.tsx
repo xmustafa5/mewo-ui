@@ -12,6 +12,7 @@ export function StageFrame({
   tracks,
   length,
   scale = 1,
+  start = 0,
   className,
   children,
 }: {
@@ -22,12 +23,18 @@ export function StageFrame({
   /** The stage's width against the frame's, centred: above 1 the pieces show bigger, and only the middle of the
    * story's view is in the frame (for a small piece near the middle, like the timeline). */
   scale?: number
+  /** Where the frame opens, in viewport heights of the slice: past the blank moment before the piece starts. */
+  start?: number
   className?: string
   children: React.ReactNode
 }) {
   const box = React.useRef<HTMLDivElement>(null)
   const label = React.useRef<HTMLSpanElement>(null)
   const sets = React.useMemo(() => ({ desktop: tracks }), [tracks])
+  // the stage follows the box's scroll events, so it catches up on the first frame
+  React.useLayoutEffect(() => {
+    if (box.current && start) box.current.scrollTop = start * box.current.clientHeight
+  }, [start])
 
   return (
     <div className={cn("relative aspect-[16/10] w-full overflow-hidden rounded-xl border bg-background [container-type:size] [contain:layout]", className)}>
@@ -53,7 +60,7 @@ export function StageFrame({
         data-demo-overlay
         className="pointer-events-none absolute right-3 bottom-2 rounded bg-background/80 px-1.5 font-mono text-xs text-muted-foreground"
       >
-        {`0.0 / ${length} vh`}
+        {`${start.toFixed(1)} / ${length} vh`}
       </span>
     </div>
   )
