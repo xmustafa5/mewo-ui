@@ -58,7 +58,8 @@ describe("SiteViewer", () => {
     expect(screen.getByRole("region", { name: "Components" })).toBeInTheDocument()
     expect(screen.getByRole("region", { name: "Simple pieces of this site" })).toHaveTextContent("Rich Text")
     expect(screen.getByRole("link", { name: /Open site/ })).toHaveAttribute("href", site.url)
-    expect(screen.getByRole("link", { name: /Glass Panel/ })).toHaveAttribute("href", "/docs/glass-panel")
+    expect(screen.getByRole("button", { name: /Glass Panel/ })).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: "Open Glass Panel" })).toHaveAttribute("href", "/docs/glass-panel")
   })
 
   it("has an Inspect toggle that reads its state", () => {
@@ -74,9 +75,9 @@ describe("SiteViewer", () => {
   it("marks the piece the site selected, from the site's origin only", () => {
     render(<SiteViewer site={site} pieces={pieces} />)
     message({ source: "rivers", type: "select", name: "zoom-picture" }, "https://evil.example.com")
-    expect(screen.getByRole("link", { name: /Zoom Picture/ })).not.toHaveAttribute("aria-current")
+    expect(document.getElementById("site-piece-zoom-picture")).not.toHaveAttribute("aria-current")
     message({ source: "rivers", type: "select", name: "zoom-picture" })
-    expect(screen.getByRole("link", { name: /Zoom Picture/ })).toHaveAttribute("aria-current", "true")
+    expect(document.getElementById("site-piece-zoom-picture")).toHaveAttribute("aria-current", "true")
     expect(screen.getByText("Selected Zoom Picture")).toBeInTheDocument()
   })
 
@@ -117,9 +118,20 @@ describe("SiteViewer", () => {
     window.localStorage.removeItem("mewo:sites:size")
   })
 
-  it("has no Inspect toggle for a site that does not answer", () => {
+  it("has no Inspect toggle for a site that does not answer, and its cards open the page", () => {
     render(<SiteViewer site={{ ...site, embed: false }} pieces={pieces} />)
     expect(screen.queryByRole("button", { name: "Inspect" })).toBeNull()
     expect(screen.getByText("The pieces this site is built from.")).toBeInTheDocument()
+    expect(screen.getByRole("link", { name: /Glass Panel/ })).toHaveAttribute("href", "/docs/glass-panel")
+  })
+
+  it("a card takes the framed site to the piece and marks it; a piece in the address is shown once the site is up", () => {
+    window.history.replaceState(null, "", "/sites/rivers?piece=zoom-picture")
+    render(<SiteViewer site={site} pieces={pieces} />)
+    fireEvent.click(screen.getByRole("button", { name: /Glass Panel/ }))
+    expect(document.getElementById("site-piece-glass-panel")).toHaveAttribute("aria-current", "true")
+    message({ source: "rivers", type: "ready" })
+    expect(document.getElementById("site-piece-zoom-picture")).toHaveAttribute("aria-current", "true")
+    window.history.replaceState(null, "", "/")
   })
 })

@@ -16,6 +16,7 @@ import { PropsTable } from "@/components/site/props-table"
 import { UnlistedNote } from "@/components/site/unlisted-note"
 import { getNeighbours } from "@/lib/navigation"
 import { GROUP_LABELS, getAllItems, getDependencies, getItem, isBlock, isDropIn, isUnlisted, type Group } from "@/lib/registry"
+import { sitesWith } from "@/lib/sites"
 import { displaySource } from "@/lib/source"
 
 // unlisted items have a page too: only the catalog, the sidebar and search leave them out
@@ -40,6 +41,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
   const code = <CodeBlock code={source} />
   const group = item.categories?.[0] as Group | undefined
   const unlisted = isUnlisted(item)
+  const seenIn = sitesWith(item.name)
   // an unlisted item is in no group page, so it has no neighbours and its crumb does not link
   const { previous, next } = getNeighbours(item.name)
 
@@ -76,6 +78,21 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
           <DependencyBadges dependencies={getDependencies(item)} />
         </div>
         {unlisted ? <UnlistedNote className="mt-5 max-w-2xl" /> : null}
+        {seenIn.length ? (
+          <p className="mt-5 flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
+            <span>Seen in</span>
+            {seenIn.map((site) => (
+              <Link
+                key={site.slug}
+                href={`/sites/${site.slug}?piece=${item.name}`}
+                className="inline-flex items-center gap-1 rounded-lg border bg-card/60 px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-accent"
+              >
+                {site.title}
+                <ChevronRight className="size-3" aria-hidden />
+              </Link>
+            ))}
+          </p>
+        ) : null}
       </header>
 
       {isBlock(item) ? (

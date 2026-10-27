@@ -18,7 +18,9 @@ export interface WordCycleProps extends React.ComponentProps<"span"> {
 /** One word at a time in a line of text: each fades and rises into place, in the width of the longest word. */
 export function WordCycle({ words = ["political", "economic", "cultural"], interval = 2200, className, ...props }: WordCycleProps) {
   const [current, setCurrent] = React.useState(0)
+  const sizer = React.useRef<HTMLSpanElement>(null)
 
+  // the cycle runs only while the line is on screen (watched through its sizing span, so the root's ref stays the consumer's)
   React.useEffect(() => {
     if (words.length < 2) return
     let timer = 0
@@ -28,8 +30,29 @@ export function WordCycle({ words = ["political", "economic", "cultural"], inter
         tick()
       }, interval)
     }
+    const stop = () => {
+      window.clearTimeout(timer)
+      timer = 0
+    }
+    const el = sizer.current
+    const observer =
+      el && typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            ([entry]) => {
+              if (entry?.isIntersecting) {
+                if (!timer) tick()
+              } else stop()
+            },
+            { rootMargin: "50% 0px" }
+          )
+        : null
+    // runs from the start (an observer reports its first state right after observe, and stops it when off screen)
     tick()
-    return () => window.clearTimeout(timer)
+    observer?.observe(el!)
+    return () => {
+      stop()
+      observer?.disconnect()
+    }
   }, [words.length, interval])
 
   return (
@@ -46,7 +69,7 @@ export function WordCycle({ words = ["political", "economic", "cultural"], inter
           {w}
         </span>
       ))}
-      <span className="invisible [grid-area:1/1]" aria-hidden="true">
+      <span ref={sizer} className="invisible [grid-area:1/1]" aria-hidden="true">
         {longestWord(words)}
       </span>
     </span>

@@ -85,12 +85,35 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
     [site.source, site.origin]
   )
 
+  // a piece named in the address (?piece=<name>, from a "Seen in" link) is shown once the site is up
+  const pending = React.useRef<string | null>(null)
+  React.useEffect(() => {
+    pending.current = new URLSearchParams(window.location.search).get("piece")
+  }, [])
+
+  // the framed site goes to a piece and shows it; the panel marks it
+  const goto = React.useCallback(
+    (name: string) => {
+      setSelected(name)
+      send({ type: "goto", name, label: pieces.find((p) => p.name === name)?.title })
+    },
+    [send, pieces]
+  )
+
   // what the site says
   React.useEffect(() => {
     const onMessage = (event: MessageEvent) => {
       const message = parseMessage(event, site.origin, site.source)
       if (!message) return
-      if (message.type === "ready") setReady(true)
+      if (message.type === "ready") {
+        setReady(true)
+        if (pending.current && pieces.some((p) => p.name === pending.current)) {
+          const name = pending.current
+          pending.current = null
+          goto(name)
+          document.getElementById(`site-piece-${name}`)?.scrollIntoView({ block: "nearest" })
+        }
+      }
       if (message.type === "select") {
         setSelected(message.name)
         document.getElementById(`site-piece-${message.name}`)?.scrollIntoView({ block: "nearest" })
@@ -100,7 +123,7 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
     }
     window.addEventListener("message", onMessage)
     return () => window.removeEventListener("message", onMessage)
-  }, [site.origin, site.source, router])
+  }, [site.origin, site.source, router, pieces, goto])
 
   // the inspector follows the toggle, and is sent again once the site is up
   React.useEffect(() => {
@@ -245,14 +268,16 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
               ? "The pieces this site is built from."
               : inspect
                 ? "Point at the page to see which piece is which. Click selects it here, double-click opens it, Escape leaves."
-                : "Turn on Inspect, then point at the page to see which piece is which."}
+                : "Click a piece to see it in the page, or turn on Inspect and point at the page."}
           </p>
           <p aria-live="polite" className="sr-only">
             {selectedPiece ? `Selected ${selectedPiece.title}` : ""}
           </p>
           <div className="min-h-0 flex-1 overflow-y-auto p-3">
-            <PieceGroup title="Components" pieces={listed} selected={selected} />
-            {unlisted.length ? <PieceGroup title="Simple pieces of this site" pieces={unlisted} selected={selected} className="mt-5" /> : null}
+            <PieceGroup title="Components" pieces={listed} selected={selected} onGoto={site.embed ? goto : undefined} />
+            {unlisted.length ? (
+              <PieceGroup title="Simple pieces of this site" pieces={unlisted} selected={selected} onGoto={site.embed ? goto : undefined} className="mt-5" />
+            ) : null}
           </div>
         </aside>
         ) : null}
@@ -261,7 +286,19 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
   )
 }
 
-function PieceGroup({ title, pieces, selected, className }: { title: string; pieces: SitePiece[]; selected: string | null; className?: string }) {
+function PieceGroup({
+  title,
+  pieces,
+  selected,
+  onGoto,
+  className,
+}: {
+  title: string
+  pieces: SitePiece[]
+  selected: string | null
+  onGoto?: (name: string) => void
+  className?: string
+}) {
   if (!pieces.length) return null
   return (
     <section className={className} aria-label={title}>
@@ -269,7 +306,7 @@ function PieceGroup({ title, pieces, selected, className }: { title: string; pie
       <ul className="space-y-3">
         {pieces.map((piece) => (
           <li key={piece.name}>
-            <SitePieceCard piece={piece} selected={selected === piece.name} />
+            <SitePieceCard piece={piece} selected={selected === piece.name} onGoto={onGoto} />
           </li>
         ))}
       </ul>

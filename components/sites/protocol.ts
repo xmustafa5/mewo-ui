@@ -3,6 +3,7 @@
 //
 //   viewer → site   hello                      asks for ready again
 //                   inspect { on, pieces }     the inspector, with the pieces to outline
+//                   goto { name }              scroll to the piece and show it for a moment
 //   site → viewer   ready { locale }           the site is up and listening
 //                   select { name }            a click or a tap on an outlined piece
 //                   open { name }              a double-click on one

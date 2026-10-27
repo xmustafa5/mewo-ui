@@ -51,6 +51,9 @@ export function sitePieces(site: SiteManifest): { listed: RegistryItem[]; unlist
   return { listed, unlisted, missing }
 }
 
+/** The sites a piece appears in, for the "Seen in" row on its page. */
+export const sitesWith = (name: string) => getSites().filter((site) => site.pieces.includes(name))
+
 /** The address the viewer frames: with `?embed=1` when the site answers the viewer. */
 export const frameSrc = (site: SiteManifest) => (site.embed ? `${site.url.replace(/\/$/, "")}/?embed=1` : site.url)
 

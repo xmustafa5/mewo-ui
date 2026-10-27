@@ -2,7 +2,7 @@ import { existsSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { getItem, isUnlisted } from "@/lib/registry"
-import { frameSrc, getSiteFiles, getSites, posterOf, siteOrigin, sitePieces } from "@/lib/sites"
+import { frameSrc, getSiteFiles, getSites, posterOf, siteOrigin, sitePieces, sitesWith } from "@/lib/sites"
 
 describe("content/sites", () => {
   const sites = getSites()
@@ -38,6 +38,12 @@ describe("content/sites", () => {
       for (const item of listed) expect(isUnlisted(item)).toBe(false)
       for (const item of unlisted) expect(isUnlisted(item)).toBe(true)
     }
+  })
+
+  it("knows which sites a piece appears in", () => {
+    const [first] = sites
+    expect(sitesWith(first.pieces[0]).map((s) => s.slug)).toContain(first.slug)
+    expect(sitesWith("no-such-piece")).toEqual([])
   })
 
   it("frames an answering site with ?embed=1, and knows its origin", () => {

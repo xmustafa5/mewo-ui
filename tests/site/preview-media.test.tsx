@@ -53,4 +53,12 @@ describe("SitePieceCard", () => {
     expect(screen.getByText("Selected")).toBeInTheDocument()
     expect(screen.getByText("simple")).toBeInTheDocument()
   })
+
+  it("with a goto handler the card is a button and a small arrow opens the page", () => {
+    const onGoto = vi.fn()
+    render(<SitePieceCard piece={piece} selected={false} onGoto={onGoto} />)
+    fireEvent.click(screen.getByRole("button", { name: /Glass Panel/ }))
+    expect(onGoto).toHaveBeenCalledWith("glass-panel")
+    expect(screen.getByRole("link", { name: "Open Glass Panel" })).toHaveAttribute("href", "/docs/glass-panel")
+  })
 })
