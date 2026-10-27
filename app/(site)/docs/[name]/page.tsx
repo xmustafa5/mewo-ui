@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { ChevronRight } from "lucide-react"
+import { customize } from "@/components/customize"
 import { demos } from "@/components/demos"
 import { BlockPreview } from "@/components/site/block-preview"
 import { CodeBlock } from "@/components/site/code-block"
@@ -37,6 +38,8 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
   if (!item || !loadDemo) notFound()
 
   const { default: Demo, props } = await loadDemo()
+  // an item with a customize module shows its panel under the preview; the demo still feeds the props table
+  const Customized = customize[name] ? (await customize[name]()).default : null
   const source = displaySource(await readFile(path.join(process.cwd(), item.files[0].path), "utf8"))
   const code = <CodeBlock code={source} />
   const group = item.categories?.[0] as Group | undefined
@@ -97,6 +100,8 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
 
       {isBlock(item) ? (
         <BlockPreview name={item.name} code={code} />
+      ) : Customized ? (
+        <Customized code={code} />
       ) : (
         <ComponentPreview code={code}>
           <Demo />

@@ -101,8 +101,9 @@ npm run verify:install # installs every item into a fresh Next app from a local 
 1. Write it at `registry/mewo/ui/<name>.tsx` (starts with `"use client"`, accepts `className`, honours reduced motion). Sections go in `registry/mewo/blocks/` and import components as `@/registry/mewo/ui/<name>`.
 2. Describe it in `registry.json` — `dependencies` for npm packages, `registryDependencies` for other items (`@mewo/<name>`) or shadcn core items (`button`), `css` for any `@keyframes`, and `"meta": { "added": "YYYY-MM-DD" }`. Items added within 14 days of the latest release get the New badge. A simple piece that ships with a site built with mewo can add `"unlisted": true` to `meta`: it keeps its page at `/docs/<name>` and installs like any item, but the catalog, the sidebar, search and the counts leave it out.
 3. Add `components/demos/<name>-demo.tsx` (default export = demo, `props` = props table) and register it in `components/demos/index.ts`.
-4. Add a test under `tests/`. `npm test` also checks the catalog invariants.
-5. `npm run verify:install`.
+4. Give it a Customize panel: `components/customize/<name>.tsx`, registered in `components/customize/index.ts`. It is a client component that exports `DEFAULTS` (one key per control), `DEMO_ONLY` (the keys that are not props of the piece: the demo's own content or size) and a default component that calls `useCustomize(DEFAULTS)` and renders `<CustomizeFrame>` with the piece as `preview`, its `usage` (the component's name, the item's name, `changedProps(...)` and its children) and one row per control (`Slider`, `Select`, `Switch`, `Input`, `Color`, `ColorList`). The values live in the address, so a customised look is a link; a value equal to its default leaves it. A control whose change only shows from the start (an entrance, a stagger) passes `{ replay: true }` to `set`, which remounts the preview; everything else updates live. `npm test` checks that every key is a documented prop or in `DEMO_ONLY`, with the documented default.
+5. Add a test under `tests/`. `npm test` also checks the catalog invariants.
+6. `npm run verify:install`.
 
 The docs site, sidebar and preview route are generated from `registry.json` — nothing else to edit.
 
