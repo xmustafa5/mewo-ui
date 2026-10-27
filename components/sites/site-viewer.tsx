@@ -3,10 +3,11 @@
 import * as React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { ArrowUpRight, Crosshair, PanelRight, RotateCcw } from "lucide-react"
+import { ArrowUpRight, Crosshair, Maximize2, Monitor, PanelRight, RotateCcw, Smartphone, Tablet } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { parseMessage, pieceSpecs, type SitePiece } from "./protocol"
 import { SitePieceCard } from "./site-piece-card"
+import { useStoredChoice } from "./use-stored-choice"
 
 export type SiteInfo = {
   slug: string
@@ -27,6 +28,20 @@ export type SiteInfo = {
 const READY_PATIENCE_MS = 15000
 
 /**
+ * The frame's size. A preset gives the site a fixed window, the one its layout was built for, scaled down to fit
+ * the space here, so every visitor sees the same page; Fit gives it the window it has, as a tab would.
+ */
+export const SIZES = [
+  { id: "desktop", label: "Desktop", width: 1440, height: 900, Icon: Monitor },
+  { id: "tablet", label: "Tablet", width: 768, height: 900, Icon: Tablet },
+  { id: "phone", label: "Phone", width: 375, height: 812, Icon: Smartphone },
+  { id: "fit", label: "Fit", width: 0, height: 0, Icon: Maximize2 },
+] as const
+export type SizeId = (typeof SIZES)[number]["id"]
+const SIZE_IDS = SIZES.map((s) => s.id)
+const SIZE_KEY = "mewo:sites:size"
+
+/**
  * A site built with mewo pieces, framed under the header with the pieces it is built from beside it. The frame is
  * the only thing that scrolls. With Inspect on, pointing at the page outlines the piece under the pointer (the site
  * draws that itself), a click selects it here, a double-click opens its page, Escape leaves.
@@ -40,6 +55,23 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
   const [inspect, setInspect] = React.useState(false)
   const [showList, setShowList] = React.useState(true)
   const [selected, setSelected] = React.useState<string | null>(null)
+  const [sizeId, setSizeId] = useStoredChoice<SizeId>(SIZE_KEY, "desktop", SIZE_IDS)
+  const stage = React.useRef<HTMLDivElement>(null)
+  const [area, setArea] = React.useState<{ w: number; h: number } | null>(null)
+  const preset = SIZES.find((s) => s.id === sizeId && s.width > 0)
+  // the frame is scaled down to the space it has, never up
+  const scale = preset && area ? Math.min(area.w / preset.width, area.h / preset.height, 1) : 1
+
+  // the space the frame has, for the scale
+  React.useEffect(() => {
+    const el = stage.current
+    if (!el || typeof ResizeObserver === "undefined") return
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setArea({ w: entry.contentRect.width, h: entry.contentRect.height })
+    })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
   const listed = pieces.filter((p) => !p.unlisted)
   const unlisted = pieces.filter((p) => p.unlisted)
   const specs = React.useMemo(() => pieceSpecs(pieces), [pieces])
@@ -109,9 +141,27 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
           <p className="text-sm text-muted-foreground">
             Built with mewo · {listed.length} {listed.length === 1 ? "component" : "components"}
             {unlisted.length ? ` and ${unlisted.length} simple ${unlisted.length === 1 ? "piece" : "pieces"}` : ""}
+            {preset ? ` · ${preset.width} × ${preset.height}${scale < 0.995 ? `, shown at ${Math.round(scale * 100)}%` : ""}` : " · fits the window"}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          <div role="group" aria-label="Frame size" className="flex h-9 items-center gap-0.5 rounded-lg border bg-card/60 p-0.5">
+            {SIZES.map(({ id, label, Icon }) => (
+              <button
+                key={id}
+                type="button"
+                aria-pressed={sizeId === id}
+                onClick={() => setSizeId(id)}
+                className={cn(
+                  "inline-flex h-full items-center gap-1.5 rounded-md px-2.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground",
+                  sizeId === id && "bg-background text-foreground shadow-sm dark:bg-accent"
+                )}
+              >
+                <Icon className="size-4" aria-hidden />
+                <span className="max-sm:sr-only">{label}</span>
+              </button>
+            ))}
+          </div>
           {site.embed ? (
             <button
               type="button"
@@ -159,26 +209,33 @@ export function SiteViewer({ site, pieces }: { site: SiteInfo; pieces: SitePiece
       </div>
 
       <div className={cn("grid min-h-0 flex-1 gap-3", showList && "lg:grid-cols-[minmax(0,1fr)_22rem]")}>
-        <div className="relative min-h-0 overflow-hidden rounded-2xl border bg-muted/30 max-lg:h-[70dvh]">
-          <iframe
-            key={run}
-            ref={frame}
-            title={site.title}
-            src={site.frame}
-            allow="fullscreen"
-            onLoad={() => send({ type: "hello" })}
-            className="block size-full border-0"
-          />
-          {site.embed && !ready ? (
-            <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-end bg-muted/30">
-              {site.poster ? <Image src={site.poster} alt="" fill unoptimized className="object-cover opacity-90" /> : null}
-              {slow ? (
-                <p className="relative m-4 rounded-lg bg-background/90 px-3 py-2 text-sm text-muted-foreground backdrop-blur">
-                  The site is taking a while to answer. It may still be loading, or you can open it in its own tab.
-                </p>
-              ) : null}
-            </div>
-          ) : null}
+        {/* the space; a preset's frame sits in its middle at its scale, Fit's frame fills it */}
+        <div ref={stage} className="relative grid min-h-0 place-items-center overflow-hidden rounded-2xl bg-dots max-lg:h-[70dvh]">
+          <div
+            className={cn("relative overflow-hidden rounded-2xl border bg-muted/30", !preset && "size-full")}
+            style={preset ? { width: Math.round(preset.width * scale), height: Math.round(preset.height * scale) } : undefined}
+          >
+            <iframe
+              key={run}
+              ref={frame}
+              title={site.title}
+              src={site.frame}
+              allow="fullscreen"
+              onLoad={() => send({ type: "hello" })}
+              className={cn("block border-0", !preset && "size-full")}
+              style={preset ? { width: preset.width, height: preset.height, transform: `scale(${scale})`, transformOrigin: "top left" } : undefined}
+            />
+            {site.embed && !ready ? (
+              <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-end bg-muted/30">
+                {site.poster ? <Image src={site.poster} alt="" fill unoptimized className="object-cover opacity-90" /> : null}
+                {slow ? (
+                  <p className="relative m-4 rounded-lg bg-background/90 px-3 py-2 text-sm text-muted-foreground backdrop-blur">
+                    The site is taking a while to answer. It may still be loading, or you can open it in its own tab.
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
         </div>
 
         {showList ? (

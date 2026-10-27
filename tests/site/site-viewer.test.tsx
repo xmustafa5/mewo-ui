@@ -97,6 +97,26 @@ describe("SiteViewer", () => {
     expect(screen.queryByRole("region", { name: "Components" })).toBeNull()
   })
 
+  it("frames the site at a fixed desktop window by default, and at the preset picked, remembered", () => {
+    window.localStorage.removeItem("mewo:sites:size")
+    const { unmount } = render(<SiteViewer site={site} pieces={pieces} />)
+    const group = screen.getByRole("group", { name: "Frame size" })
+    expect(screen.getByRole("button", { name: "Desktop" })).toHaveAttribute("aria-pressed", "true")
+    expect(screen.getByTitle("Rivers")).toHaveStyle({ width: "1440px", height: "900px" })
+    expect(screen.getByText(/1440 × 900/)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole("button", { name: "Phone" }))
+    expect(screen.getByTitle("Rivers")).toHaveStyle({ width: "375px", height: "812px" })
+    expect(group).toContainElement(screen.getByRole("button", { name: "Phone" }))
+    fireEvent.click(screen.getByRole("button", { name: "Fit" }))
+    expect(screen.getByTitle("Rivers").style.width).toBe("")
+    expect(screen.getByText(/fits the window/)).toBeInTheDocument()
+    unmount()
+    // the choice holds for the next visit
+    render(<SiteViewer site={site} pieces={pieces} />)
+    expect(screen.getByRole("button", { name: "Fit" })).toHaveAttribute("aria-pressed", "true")
+    window.localStorage.removeItem("mewo:sites:size")
+  })
+
   it("has no Inspect toggle for a site that does not answer", () => {
     render(<SiteViewer site={{ ...site, embed: false }} pieces={pieces} />)
     expect(screen.queryByRole("button", { name: "Inspect" })).toBeNull()
