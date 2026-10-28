@@ -29,7 +29,7 @@ export default function PictureOrbitCustomize({ code }: CustomizeProps) {
       usage={{ name: "PictureOrbit", item: "picture-orbit", props: changedProps(values, defaults, DEMO_ONLY), children: usageChildren }}
       preview={
         // the box scrolls by itself: the stage pins in it and the cards rise around the title
-        <div className="h-[min(70vh,560px)] w-full overflow-y-auto rounded-xl border bg-background">
+        <div className="h-[500px] w-full overflow-y-auto rounded-xl border">
           <PictureOrbit length={values.length} lean={values.lean} float={values.float}>
             {children}
           </PictureOrbit>

@@ -32,7 +32,7 @@ export default function RisingCaptionsCustomize({ code }: CustomizeProps) {
       usage={{ name: "RisingCaptions", item: "rising-captions", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the stage pins to its nearest scroll container, so the piece scrolls inside this box, as in the demo
-        <div key={values.captions} className="h-[min(70vh,560px)] w-full overflow-y-auto rounded-xl border bg-background">
+        <div key={values.captions} className="h-[500px] w-full overflow-y-auto rounded-xl border">
           <RisingCaptions captions={CAPTIONS.slice(0, values.captions)} step={values.step} />
         </div>
       }

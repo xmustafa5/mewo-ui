@@ -18,7 +18,8 @@ const credit = (title: string, by: string) => ({ title, by, line: "A museum some
 export function Framed() {
   const values = useFramedValues(DEFAULTS)
   return (
-    <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+    // the frame is the window here: the box fills it, its edges the frame's
+    <div className="h-dvh w-full overflow-y-auto [container-type:inline-size]">
       <NamesDuel top={values.top} bottom={values.bottom} length={values.length} pictures={[{ src: pic(1, 1000, 978), ratio: 1000 / 978, credit: credit("A carved disc", "c. 2300 BCE") }]} />
       <NamesDuel
         top="Builder"
@@ -44,7 +45,7 @@ export default function NamesDuelCustomize({ code }: CustomizeProps) {
       onReset={reset}
       fill
       usage={{ name: "NamesDuel", item: "names-duel", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
-      preview={<FramedPreview name="names-duel" values={values} run={run} />}
+      preview={<FramedPreview name="names-duel" values={values} run={run} className="h-[500px]" />}
     >
       <Input label="Top name" value={values.top} onChange={(value) => set("top", value)} />
       <Input label="Bottom name" value={values.bottom} onChange={(value) => set("bottom", value)} />

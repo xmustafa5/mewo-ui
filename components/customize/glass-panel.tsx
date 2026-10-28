@@ -53,7 +53,7 @@ export default function GlassPanelCustomize({ code }: CustomizeProps) {
       usage={{ name: "GlassPanel", item: "glass-panel", props: changedProps(values, defaults, DEMO_ONLY, computed), children }}
       preview={
         // a transformed box contains the panel's fixed pieces, so the preview stays in its frame
-        <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
           {/* keyed on the value: the address is read after the first render, and an uncontrolled panel takes its initial state only once */}
           <GlassPanel key={String(values.open)} defaultOpen={values.open}>
             <GlassPanelTrigger className="fixed top-[calc(var(--story-u)*2)] end-[calc(var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">

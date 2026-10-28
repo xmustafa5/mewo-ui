@@ -20,7 +20,8 @@ export const DEMO_ONLY = [] as const
 export function Framed() {
   const values = useFramedValues(DEFAULTS)
   return (
-    <ScrollBox start={0.2} className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+    // the frame is the window here: the box fills it, its edges the frame's
+    <ScrollBox start={0.2} className="h-dvh w-full overflow-y-auto [container-type:inline-size]">
       <PortraitPair line={values.line} text={values.text} length={values.length} />
     </ScrollBox>
   )
@@ -37,7 +38,7 @@ export default function PortraitPairCustomize({ code }: CustomizeProps) {
       onReset={reset}
       fill
       usage={{ name: "PortraitPair", item: "portrait-pair", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
-      preview={<FramedPreview name="portrait-pair" values={values} run={run} />}
+      preview={<FramedPreview name="portrait-pair" values={values} run={run} className="h-[500px]" />}
     >
       <Input label="Line" value={values.line} onChange={(value) => set("line", value)} />
       <Input label="Text" value={values.text} onChange={(value) => set("text", value)} />

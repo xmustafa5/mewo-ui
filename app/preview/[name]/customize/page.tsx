@@ -19,5 +19,11 @@ export default async function FramedCustomizePage({ params }: PageProps<"/previe
   if (!load) notFound()
   const { Framed } = await load()
   if (!Framed) notFound()
-  return <Framed />
+  return (
+    <>
+      {/* the page is see-through, so the docs page's stage shows behind the section, as behind every other preview */}
+      <style>{"html, body { background: transparent }"}</style>
+      <Framed />
+    </>
+  )
 }

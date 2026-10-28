@@ -23,7 +23,7 @@ function CloudBox({ scroll, ...props }: { scroll: number } & PictureCloudProps) 
   }
   return (
     // the sticky stage is as tall as the box whatever height the box is given: container units
-    <div onScroll={onScroll} className="h-[min(70vh,640px)] w-full overflow-y-auto rounded-xl border bg-background [container-type:size]">
+    <div onScroll={onScroll} className="h-[500px] w-full overflow-y-auto rounded-xl border [container-type:size]">
       <div style={{ height: `${scroll * 100}%` }}>
         <div className="sticky top-0 h-[100cqh]">
           <PictureCloud controlsRef={cloud} progress={0.04} {...props} />

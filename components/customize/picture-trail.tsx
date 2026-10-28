@@ -31,7 +31,7 @@ export default function PictureTrailCustomize({ code }: CustomizeProps) {
       usage={{ name: "PictureTrail", item: "picture-trail", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the stage pins to its nearest scroll container, so the preview scrolls inside this box
-        <div className="h-[min(70vh,560px)] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
+        <div className="h-[500px] w-full overflow-y-auto rounded-xl border [container-type:inline-size]">
           <PictureTrail top={values.top} bottom={values.bottom} holders={holders} image={image} />
         </div>
       }

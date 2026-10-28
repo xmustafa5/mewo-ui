@@ -52,7 +52,7 @@ export default function ScrollCaptionsCustomize({ code }: CustomizeProps) {
       usage={{ name: "ScrollCaptions", item: "scroll-captions", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the stage pins to its nearest scroll container, so the piece scrolls inside this box, as in the demo
-        <div key={values.captions} className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background">
+        <div key={values.captions} className="h-[500px] w-full overflow-y-auto rounded-xl border">
           <ScrollCaptions captions={CAPTIONS.slice(0, values.captions)} step={values.step} captionClassName={captionClassName} />
         </div>
       }

@@ -55,7 +55,7 @@ export default function PictureWaveCustomize({ code }: CustomizeProps) {
       fill
       usage={{ name: "PictureWave", item: "picture-wave", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
-        <div className="h-[min(70vh,560px)] w-full overflow-hidden rounded-xl border bg-background">
+        <div className="h-[500px] w-full overflow-hidden rounded-xl border">
           <WaveCycle state={values.state as PictureWaveState} cycle={values.cycle} orientation={values.orientation as PictureWaveOrientation} lean={values.lean} float={values.float} words={words} />
         </div>
       }

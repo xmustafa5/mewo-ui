@@ -41,7 +41,7 @@ export default function ZoomPictureCustomize({ code }: CustomizeProps) {
       }}
       preview={
         // the box scrolls by itself: the picture pins in it, zooms in, pans down through itself and zooms back out
-        <div key={values.box} className={cn("h-[min(70vh,560px)] overflow-y-auto rounded-xl border bg-background", WIDTHS[values.box])}>
+        <div key={values.box} className={cn("h-[500px] overflow-y-auto rounded-xl border", WIDTHS[values.box])}>
           <ZoomPicture src={srcOf(values.picture)} alt={values.alt}>
             {text ? <p className={TEXT_CLASS}>{text}</p> : null}
           </ZoomPicture>

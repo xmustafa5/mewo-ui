@@ -35,7 +35,7 @@ export default function ZoomPanelCustomize({ code }: CustomizeProps) {
       usage={{ name: "ZoomPanel", item: "zoom-panel", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the demo's box, a size container the open panel takes its height from; scrolling inside it sets the state as a story's scroll does
-        <div key={values.driver} className="relative h-[70vh] w-full overflow-hidden rounded-xl border bg-muted/40 [container-type:size] [contain:layout]">
+        <div key={values.driver} className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-muted/40 [container-type:size] [contain:layout]">
           {scrolled ? <ZoomPanelScroll {...picture} /> : <ZoomPanel state={values.state as ZoomPanelState} {...picture} />}
         </div>
       }

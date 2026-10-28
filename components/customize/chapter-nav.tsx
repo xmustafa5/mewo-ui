@@ -34,7 +34,7 @@ export default function ChapterNavCustomize({ code }: CustomizeProps) {
       usage={{ name: "ChapterNav", item: "chapter-nav", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the demo's box: layout-contained, so the nav's fixed dots and panel stay in the frame
-        <div className="relative h-[70vh] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
           <ChapterNav
             chapters={chapters}
             progress={position}

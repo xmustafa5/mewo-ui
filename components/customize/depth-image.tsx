@@ -74,7 +74,7 @@ export default function DepthImageCustomize({ code }: CustomizeProps) {
       fill
       preview={
         // the image fills its parent, so the preview gives it a box, as the demo does
-        <div className="relative h-[560px] max-h-[70vh] w-full overflow-hidden">
+        <div className="relative h-[560px] w-full overflow-hidden">
           <DepthImage alt="A photograph relit by a moving light" {...values} image={image} onError={(error) => setFailure({ image, message: error.message })} />
         </div>
       }

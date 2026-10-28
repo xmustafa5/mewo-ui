@@ -72,7 +72,7 @@ export function FramedPreview({ name, values, run, className }: { name: string; 
       title={`${name} preview`}
       src={`/preview/${name}/customize`}
       onLoad={(event) => send(event.currentTarget, values)}
-      className={cn("h-160 w-full rounded-xl border bg-background shadow-xl shadow-black/10", className)}
+      className={cn("h-160 w-full rounded-xl border shadow-xl shadow-black/10", className)}
     />
   )
 }
