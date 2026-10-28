@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import { Vec3 } from "ogl"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import { MewoCharacter, createFog, fitView, followStep, packFog, reachPoint, stepFog, stirFog, stretchFor, turnToward, type Bounds } from "@/registry/mewo/ui/mewo-character"
+import { DreamCat, createFog, fitView, followStep, packFog, reachPoint, stepFog, stirFog, stretchFor, turnToward, type Bounds } from "@/registry/mewo/ui/dream-cat"
 
 describe("followStep", () => {
   it("jumps at once without smoothing and covers two thirds of the way in one time constant", () => {
@@ -173,7 +173,7 @@ function divergence(fog: ReturnType<typeof createFog>) {
   return most
 }
 
-describe("MewoCharacter", () => {
+describe("DreamCat", () => {
   beforeEach(() => {
     // jsdom has no WebGL: the component must render its root and stop there
     vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null)
@@ -181,8 +181,8 @@ describe("MewoCharacter", () => {
   afterEach(() => vi.restoreAllMocks())
 
   it("renders a root that fills its parent, with the className merged and no canvas", () => {
-    const { container } = render(<MewoCharacter className="h-80" />)
-    const root = container.querySelector("[data-slot=mewo-character]")
+    const { container } = render(<DreamCat className="h-80" />)
+    const root = container.querySelector("[data-slot=dream-cat]")
     expect(root).toBeInTheDocument()
     expect(root).toHaveClass("relative", "w-full", "overflow-hidden", "h-80")
     expect(root).not.toHaveClass("h-full")
@@ -190,17 +190,17 @@ describe("MewoCharacter", () => {
   })
 
   it("is decorative without alt, an image with it", () => {
-    const { rerender, container } = render(<MewoCharacter />)
+    const { rerender, container } = render(<DreamCat />)
     expect(container.querySelector("[role=img]")).toBeNull()
-    rerender(<MewoCharacter alt="The mewo cat" />)
+    rerender(<DreamCat alt="The mewo cat" />)
     expect(screen.getByRole("img", { name: "The mewo cat" })).toBeInTheDocument()
   })
 
   it("lays children above the character and passes other props through", () => {
     render(
-      <MewoCharacter id="hero" data-testid="character">
+      <DreamCat id="hero" data-testid="character">
         <h2>Hello</h2>
-      </MewoCharacter>
+      </DreamCat>
     )
     expect(screen.getByRole("heading", { name: "Hello" })).toBeInTheDocument()
     expect(screen.getByTestId("character")).toHaveAttribute("id", "hero")

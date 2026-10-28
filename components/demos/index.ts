@@ -46,5 +46,5 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "tilted-tiles": () => import("./tilted-tiles-demo"),
   "skewed-carousel": () => import("./skewed-carousel-demo"),
   "prism-carousel": () => import("./prism-carousel-demo"),
-  "mewo-character": () => import("./mewo-character-demo"),
+  "dream-cat": () => import("./dream-cat-demo"),
 }

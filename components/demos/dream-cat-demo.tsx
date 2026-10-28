@@ -1,11 +1,11 @@
-import { MewoCharacter } from "@/registry/mewo/ui/mewo-character"
+import { DreamCat } from "@/registry/mewo/ui/dream-cat"
 import type { PropDoc } from "./types"
 
-export default function MewoCharacterDemo() {
+export default function DreamCatDemo() {
   return (
     // a black night behind the dream; on a page, the character shows whatever is behind it
     <div className="relative h-[500px] w-full overflow-hidden rounded-xl bg-black">
-      <MewoCharacter src="/models/mewo.glb" alt="The mewo cat pointing at the pointer" />
+      <DreamCat src="/models/mewo.glb" alt="The mewo cat pointing at the pointer" />
     </div>
   )
 }

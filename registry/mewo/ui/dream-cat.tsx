@@ -4,7 +4,7 @@ import * as React from "react"
 import { Camera, Euler, GLTFLoader, Mat4, Mesh, Program, Quat, RenderTarget, Renderer, Texture, Transform, Triangle, Vec3, type GLTFMaterial, type OGLRenderingContext } from "ogl"
 import { cn } from "@/lib/utils"
 
-export interface MewoCharacterProps extends Omit<React.ComponentProps<"div">, "children" | "onLoad" | "onError"> {
+export interface DreamCatProps extends Omit<React.ComponentProps<"div">, "children" | "onLoad" | "onError"> {
   /** Address of the character's model: a .glb, y up, facing +z. Same-origin or served with CORS. */
   src?: string
   /** Accessible description of the character. Without it the character is decorative. */
@@ -42,7 +42,7 @@ export interface MewoCharacterProps extends Omit<React.ComponentProps<"div">, "c
   /** How much the character's outline blurs and comes apart into rising dots, 0 to 1. 0 keeps a clean outline. */
   dissolve?: number
   /** The pupils: rings that ripple outward with the dream, or plain. */
-  eyes?: MewoCharacterEyes
+  eyes?: DreamCatEyes
   /** Speed of the dream's slow motion: the fog drifting and the wisps rising. 0 holds it still and costs nothing at rest. */
   drift?: number
   /** Render scale cap. The device pixel ratio is also capped at 2 and by a pixel budget. */
@@ -55,12 +55,12 @@ export interface MewoCharacterProps extends Omit<React.ComponentProps<"div">, "c
   onError?: (error: Error) => void
 }
 
-type Settings = Required<Pick<MewoCharacterProps, "track" | "reach" | "stretch" | "gaze" | "lean" | "smoothing" | "zoom" | "x" | "y" | "sheen" | "exposure" | "fog" | "fogColor" | "swirl" | "dissolve" | "drift" | "eyes" | "dpr">> &
-  Pick<MewoCharacterProps, "src" | "color" | "onLoad" | "onError">
+type Settings = Required<Pick<DreamCatProps, "track" | "reach" | "stretch" | "gaze" | "lean" | "smoothing" | "zoom" | "x" | "y" | "sheen" | "exposure" | "fog" | "fogColor" | "swirl" | "dissolve" | "drift" | "eyes" | "dpr">> &
+  Pick<DreamCatProps, "src" | "color" | "onLoad" | "onError">
 
 export type Bounds = { min: [number, number, number]; max: [number, number, number] }
 
-export type MewoCharacterEyes = "rings" | "plain"
+export type DreamCatEyes = "rings" | "plain"
 
 const PIXEL_BUDGET = 4.5e6
 // the fog: a coarse grid over the box, about this many cells whatever its shape
@@ -707,7 +707,7 @@ function measure(scene: Transform): Bounds {
  * fog, its round hand reaches for the pointer wherever it is on the page (the arm stretching as far as it must)
  * and stirs the fog as it goes, the eyes follow the pointer and the body leans toward it. Drawn with WebGL 2, only while the pose is still catching up.
  */
-export function MewoCharacter({
+export function DreamCat({
   src = "/models/mewo.glb",
   alt,
   color = "#000000",
@@ -734,7 +734,7 @@ export function MewoCharacter({
   className,
   children,
   ...props
-}: MewoCharacterProps) {
+}: DreamCatProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
   const settings: Settings = { src, color, track, reach, stretch, gaze, lean, smoothing, zoom, x, y, sheen, exposure, fog, fogColor, swirl, dissolve, drift, eyes, dpr, onLoad, onError }
   const settingsRef = React.useRef(settings)
@@ -1245,7 +1245,7 @@ export function MewoCharacter({
   return (
     <div
       ref={rootRef}
-      data-slot="mewo-character"
+      data-slot="dream-cat"
       role={alt ? "img" : undefined}
       aria-label={alt}
       className={cn("relative h-full w-full touch-pan-y overflow-hidden", className)}

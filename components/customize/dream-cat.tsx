@@ -1,6 +1,6 @@
 "use client"
 
-import { MewoCharacter, type MewoCharacterEyes } from "@/registry/mewo/ui/mewo-character"
+import { DreamCat, type DreamCatEyes } from "@/registry/mewo/ui/dream-cat"
 import { Color } from "./color-picker"
 import { Select, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -38,7 +38,7 @@ const EYES_OPTIONS = ["rings", "plain"]
 const withHash = (value: string) => (/^[0-9a-f]{3,8}$/i.test(value) ? `#${value}` : value)
 const percent = (value: number) => `${Math.round(value * 100)}%`
 
-export default function MewoCharacterCustomize({ code }: CustomizeProps) {
+export default function DreamCatCustomize({ code }: CustomizeProps) {
   const { values, defaults, changed, run, set, reset, replay } = useCustomize(DEFAULTS)
   const color = withHash(values.color)
   const fogColor = withHash(values.fogColor)
@@ -54,12 +54,12 @@ export default function MewoCharacterCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       fill
-      usage={{ name: "MewoCharacter", item: "mewo-character", props }}
+      usage={{ name: "DreamCat", item: "dream-cat", props }}
       preview={
         // the model is served from the site's public/models/, where the page's download note says to put it; a black
         // night behind the dream (on a page, the character shows whatever is behind it)
         <div className="relative h-[500px] w-full overflow-hidden rounded-xl bg-black">
-          <MewoCharacter src="/models/mewo.glb" alt="The mewo cat reaching for the pointer in a dream" {...values} color={color} fogColor={fogColor} eyes={values.eyes as MewoCharacterEyes} />
+          <DreamCat src="/models/mewo.glb" alt="The mewo cat reaching for the pointer in a dream" {...values} color={color} fogColor={fogColor} eyes={values.eyes as DreamCatEyes} />
         </div>
       }
     >
