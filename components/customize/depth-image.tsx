@@ -1,7 +1,8 @@
 "use client"
 
+import * as React from "react"
 import { DepthImage, type DepthImageProps } from "@/registry/mewo/ui/depth-image"
-import { Select, Slider, Switch } from "./controls"
+import { Input, Select, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
 import type { CustomizeProps } from "./types"
 import { changedProps } from "./usage"
@@ -10,7 +11,11 @@ import { useCustomize } from "./use-customize"
 type View = NonNullable<DepthImageProps["view"]>
 type Fit = NonNullable<DepthImageProps["fit"]>
 
+// the photo the preview relights, passed in as the image prop, as the demo does
+const PHOTO = "https://6ae1ac4636a7426e66fa1541.imgix.net/sandbox/mewo.png?q=80&w=1740&auto=format&fit=crop"
+
 export const DEFAULTS = {
+  image: PHOTO,
   view: "lit" as View,
   fit: "cover" as Fit,
   depthFromLight: 0.5,
@@ -42,8 +47,22 @@ const VIEW_OPTIONS = [
 ] as const
 const FIT_OPTIONS: Fit[] = ["cover", "contain"]
 
+/** The value once it has held still for `ms`: a half-typed address is never fetched. */
+function useSettled<T>(value: T, ms: number) {
+  const [settled, setSettled] = React.useState(value)
+  React.useEffect(() => {
+    const id = window.setTimeout(() => setSettled(value), ms)
+    return () => window.clearTimeout(id)
+  }, [value, ms])
+  return settled
+}
+
 export default function DepthImageCustomize({ code }: CustomizeProps) {
   const { values, defaults, changed, run, set, reset, replay } = useCustomize(DEFAULTS)
+  // the photo is a prop the usage always passes; an emptied field leaves it out, and the piece shows its placeholder
+  const image = useSettled(values.image.trim(), 450) || undefined
+  const [failure, setFailure] = React.useState<{ image: string | undefined; message: string } | null>(null)
+  const props = { ...(image ? { image } : {}), ...changedProps(values, defaults, ["image"]) }
   return (
     <CustomizeFrame
       code={code}
@@ -51,14 +70,25 @@ export default function DepthImageCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
-      usage={{ name: "DepthImage", item: "depth-image", props: changedProps(values, defaults, DEMO_ONLY) }}
+      usage={{ name: "DepthImage", item: "depth-image", props }}
+      // the photo fills the whole stage, edge to edge
+      stageClassName="p-0 sm:p-0"
       preview={
         // the image fills its parent, so the preview gives it a box, as the demo does
-        <div className="relative h-80 w-full overflow-hidden rounded-xl">
-          <DepthImage alt="A photograph relit by a moving light" {...values} />
+        <div className="relative h-[560px] max-h-[70vh] w-full overflow-hidden">
+          <DepthImage alt="A photograph relit by a moving light" {...values} image={image} onError={(error) => setFailure({ image, message: error.message })} />
         </div>
       }
     >
+      {/* a full row, so a long address reads */}
+      <div className="space-y-1.5">
+        <Input label="Image URL" wide showEnd placeholder="https://… (the server must allow CORS)" value={values.image} onChange={(value) => set("image", value)} />
+        {failure && failure.image === image ? (
+          <p role="status" className="px-1 text-xs text-destructive">
+            {failure.message}
+          </p>
+        ) : null}
+      </div>
       <Select label="View" options={VIEW_OPTIONS} value={values.view} onChange={(value) => set("view", value)} />
       <Select label="Fit" options={FIT_OPTIONS} value={values.fit} onChange={(value) => set("fit", value)} />
       <Slider label="Depth from light" min={0} max={1} step={0.01} value={values.depthFromLight} onChange={(value) => set("depthFromLight", value)} />

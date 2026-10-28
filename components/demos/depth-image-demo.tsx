@@ -1,10 +1,13 @@
 import { DepthImage } from "@/registry/mewo/ui/depth-image"
 import type { PropDoc } from "./types"
 
+// the photo the demo relights, passed in as the image prop
+const PHOTO = "https://6ae1ac4636a7426e66fa1541.imgix.net/sandbox/mewo.png?q=80&w=1740&auto=format&fit=crop"
+
 export default function DepthImageDemo() {
   return (
-    <div className="relative h-80 w-full overflow-hidden rounded-xl">
-      <DepthImage alt="A photograph relit by a moving light" />
+    <div className="relative h-[560px] max-h-[70vh] w-full overflow-hidden rounded-xl">
+      <DepthImage image={PHOTO} alt="A photograph relit by a moving light" />
     </div>
   )
 }

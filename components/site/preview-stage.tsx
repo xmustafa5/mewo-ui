@@ -55,11 +55,11 @@ export function PreviewStage({ framing, children }: { framing: Framing; children
       )}
     >
       {framing.kind === "fill" ? (
-        // The demo's own box becomes the frame: its fixed height, width cap, corners and border give way, and
+        // The demo's own box becomes the frame: its fixed height, height and width caps, corners and border give way, and
         // the helper copy a background demo lays over itself is left out of the thumbnail.
         <div
           key={run}
-          className="size-full [&>*]:h-full! [&>*]:w-full! [&>*]:max-w-none! [&>*]:rounded-none! [&>*]:border-0! [&_[data-demo-overlay]]:hidden"
+          className="size-full [&>*]:h-full! [&>*]:max-h-none! [&>*]:w-full! [&>*]:max-w-none! [&>*]:rounded-none! [&>*]:border-0! [&_[data-demo-overlay]]:hidden"
           style={framing.zoom ? { zoom: framing.zoom } : undefined}
         >
           {children}

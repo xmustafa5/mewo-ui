@@ -221,6 +221,8 @@ export function Input({
   placeholder = "",
   maxLength,
   disabled = false,
+  wide = false,
+  showEnd = false,
   onChange,
 }: {
   label: string
@@ -228,12 +230,41 @@ export function Input({
   placeholder?: string
   maxLength?: number
   disabled?: boolean
+  /** The field has a whole row to itself: its text may start just after the label, not 40% of the way along. */
+  wide?: boolean
+  /** A value too long for the field shows its end, flush right like every row's value, while it isn't being edited:
+   * the end of an address is what tells one from another. */
+  showEnd?: boolean
   onChange: (value: string) => void
 }) {
+  const ref = React.useRef<HTMLInputElement>(null)
+  React.useLayoutEffect(() => {
+    const input = ref.current
+    if (!showEnd || !input) return
+    const toEnd = () => {
+      if (document.activeElement !== input) input.scrollLeft = input.scrollWidth
+    }
+    // the browser scrolls a field back to its start as it loses focus, so the end is shown on the next frame
+    let frame = 0
+    const onBlur = () => {
+      cancelAnimationFrame(frame)
+      frame = requestAnimationFrame(toEnd)
+    }
+    toEnd()
+    const resize = new ResizeObserver(toEnd)
+    resize.observe(input)
+    input.addEventListener("blur", onBlur)
+    return () => {
+      cancelAnimationFrame(frame)
+      resize.disconnect()
+      input.removeEventListener("blur", onBlur)
+    }
+  }, [showEnd, value])
   return (
     <label data-control data-disabled={disabled} className={cn(trackClass, "block cursor-text")}>
       <span className={labelClass}>{label}</span>
       <input
+        ref={ref}
         type="text"
         value={value}
         placeholder={placeholder}
@@ -242,7 +273,12 @@ export function Input({
         aria-label={label}
         spellCheck={false}
         onChange={(event) => onChange(event.target.value)}
-        className="absolute inset-0 z-5 w-full bg-transparent pr-3 pl-[40%] text-right text-[13px] text-ellipsis text-foreground outline-none placeholder:text-muted-foreground/60"
+        className={cn(
+          "absolute inset-0 z-5 w-full bg-transparent pr-3 text-right text-[13px] text-foreground outline-none placeholder:text-muted-foreground/60",
+          wide ? "pl-28" : "pl-[40%]",
+          // a cut start fades out where the text begins; an end that fits leaves the fade on empty space
+          !showEnd ? "text-ellipsis" : wide ? "mask-[linear-gradient(to_right,transparent_7rem,black_9rem)]" : "mask-[linear-gradient(to_right,transparent_40%,black_calc(40%+2rem))]",
+        )}
       />
     </label>
   )
