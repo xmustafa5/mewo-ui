@@ -6,12 +6,10 @@ import type { CustomizeModule } from "./types"
  * page are filmed and framed from it.
  */
 export const customize: Record<string, () => Promise<CustomizeModule>> = {
-  // text, primitives, layout
+  // text, layout
   "marquee": () => import("./marquee"),
   "split-text": () => import("./split-text"),
   "venom": () => import("./venom"),
-  "tabs": () => import("./tabs"),
-  "collapsible": () => import("./collapsible"),
   "glass-panel": () => import("./glass-panel"),
   "text-shimmer": () => import("./text-shimmer"),
   // cards and media
@@ -47,8 +45,6 @@ export const customize: Record<string, () => Promise<CustomizeModule>> = {
   "depth-image": () => import("./depth-image"),
   "tilted-tiles": () => import("./tilted-tiles"),
   // sections: their preview runs in a frame the panel drives
-  "hero-aurora": () => import("./hero-aurora"),
-  "features-spotlight": () => import("./features-spotlight"),
   "names-duel": () => import("./names-duel"),
   "portrait-pair": () => import("./portrait-pair"),
 }

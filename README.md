@@ -11,7 +11,7 @@ Requires a project with shadcn initialised (`npx shadcn@latest init`) and Tailwi
 mewo is listed in the shadcn registry directory as `@mewo`, so installing needs no configuration:
 
 ```bash
-npx shadcn@latest add @mewo/hero-aurora
+npx shadcn@latest add @mewo/names-duel
 ```
 
 Single components can also be installed straight from their URL:
@@ -20,7 +20,7 @@ Single components can also be installed straight from their URL:
 npx shadcn@latest add https://www.mewo-ui.com/r/text-shimmer.json
 ```
 
-Sections (`hero-aurora`, `features-spotlight`) install other mewo components, which they list as
+Sections such as `names-duel` install other mewo components, which they list as
 `@mewo/<name>`. The CLI resolves that name through the registry directory; on older CLI versions
 that predate the directory, add the namespace to your `components.json` first:
 
@@ -51,34 +51,8 @@ that predate the directory, add the namespace to your `components.json` first:
 | `pattern-waves` | component | ogl |
 | `grainient` | component | — |
 | `dot-grid` | component | — |
-| `hero-aurora` | section | aurora-background, split-text, button |
-| `features-spotlight` | section | text-shimmer, scroll-reveal, spotlight-card, marquee, lucide-react |
-| `tabs` | drop-in | motion, @base-ui/react, class-variance-authority |
-| `collapsible` | drop-in | motion, @base-ui/react |
 
 Every item respects `prefers-reduced-motion`. Each installs only the dependency it uses.
-
-## Drop-in replacements
-
-Some mewo items replace a shadcn component of the same name. Installing one **overwrites**
-`components/ui/<name>.tsx` in your project:
-
-```bash
-npx shadcn@latest add @mewo/tabs
-```
-
-Your imports, props and JSX keep working — the exports and prop types are identical to
-shadcn's. The only change is that things move:
-
-- **tabs** — shadcn's highlight jumps between tabs. mewo's slides.
-- **collapsible** — shadcn's collapsible ships with no animation at all; the panel appears at
-  full height instantly. mewo's animates the height and fades the content in. mewo's root and
-  trigger ship unstyled — no base classes, exactly like shadcn's — so installing it cannot move
-  an existing layout; only the panel carries classes, and those are what make the height
-  animate.
-
-Verified against **shadcn CLI 4.21.0**. If shadcn changes these components' API, a mewo drop-in
-installed over the new version may diverge — check this line before upgrading.
 
 ## Background Studio
 

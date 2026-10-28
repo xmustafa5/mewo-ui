@@ -17,9 +17,10 @@ describe("DropInWarning", () => {
   })
 
   it("is shown for every drop-in in the catalog and for nothing else", () => {
+    // no drop-in ships at the moment
     const dropIns = getItems().filter(isDropIn).map((i) => i.name)
-    expect(dropIns.sort()).toEqual(["collapsible", "tabs"])
+    expect(dropIns).toEqual([])
     expect(isDropIn(getItem("text-shimmer")!)).toBe(false)
-    expect(isDropIn(getItem("hero-aurora")!)).toBe(false)
+    expect(isDropIn(getItem("names-duel")!)).toBe(false)
   })
 })

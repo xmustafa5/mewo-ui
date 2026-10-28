@@ -29,7 +29,7 @@ export function Header() {
           <Link href="/docs/components" className={navLinkClass}>
             Components
           </Link>
-          <Link href="/docs/hero-aurora" className={navLinkClass}>
+          <Link href="/docs/names-duel" className={navLinkClass}>
             Sections
           </Link>
           <Link href="/sites" className={navLinkClass}>

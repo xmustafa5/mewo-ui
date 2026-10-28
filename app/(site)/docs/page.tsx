@@ -49,7 +49,7 @@ export default function DocsIndexPage() {
           mewo is listed in the shadcn registry directory as <code className={inlineCode}>{NAMESPACE}</code>, so this
           works with no configuration:
         </p>
-        <pre className={codeClass}><code>{`npx shadcn@latest add ${NAMESPACE}/hero-aurora`}</code></pre>
+        <pre className={codeClass}><code>{`npx shadcn@latest add ${NAMESPACE}/names-duel`}</code></pre>
       </section>
 
       <section className="space-y-4">

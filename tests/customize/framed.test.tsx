@@ -31,16 +31,16 @@ describe("useFramedValues", () => {
 
 describe("FramedPreview", () => {
   it("frames the section's customize page and posts the values into it on load and on change", () => {
-    const { rerender } = render(<FramedPreview name="hero-aurora" values={{ title: "A" }} run={0} />)
-    const frame = screen.getByTitle("hero-aurora preview") as HTMLIFrameElement
-    expect(frame).toHaveAttribute("src", "/preview/hero-aurora/customize")
+    const { rerender } = render(<FramedPreview name="names-duel" values={{ title: "A" }} run={0} />)
+    const frame = screen.getByTitle("names-duel preview") as HTMLIFrameElement
+    expect(frame).toHaveAttribute("src", "/preview/names-duel/customize")
     const postMessage = vi.fn()
     Object.defineProperty(frame, "contentWindow", { value: { postMessage }, configurable: true })
     act(() => {
       frame.dispatchEvent(new Event("load"))
     })
     expect(postMessage).toHaveBeenLastCalledWith({ source: "mewo-customize", type: "values", values: { title: "A" } }, window.location.origin)
-    rerender(<FramedPreview name="hero-aurora" values={{ title: "B" }} run={0} />)
+    rerender(<FramedPreview name="names-duel" values={{ title: "B" }} run={0} />)
     expect(postMessage).toHaveBeenLastCalledWith({ source: "mewo-customize", type: "values", values: { title: "B" } }, window.location.origin)
     // the frame asks again after a reload
     postMessage.mockClear()

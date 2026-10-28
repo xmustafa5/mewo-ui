@@ -43,12 +43,12 @@ export function Hero() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Link
-              href="/docs/tabs"
+              href="/docs/concave-carousel"
               className="group inline-flex items-center gap-2 rounded-full border bg-card/70 p-1 pr-3 text-xs backdrop-blur transition-colors hover:bg-card"
             >
               <span className="rounded-full bg-brand px-2 py-0.5 font-medium text-brand-foreground">New</span>
               <span className="text-muted-foreground transition-colors group-hover:text-foreground">
-                Drop-in animated Tabs and Collapsible
+                Concave, Parallax and Prism carousels
               </span>
               <ArrowRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>

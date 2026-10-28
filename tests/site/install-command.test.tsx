@@ -12,9 +12,9 @@ describe("InstallCommand", () => {
   // The raw-URL form cannot resolve a section's `@mewo/...` registryDependencies,
   // so sections must be shown the components.json snippet instead.
   it("offers the registries snippet, not a raw URL, for a section", () => {
-    render(<InstallCommand name="hero-aurora" isBlock />)
-    expect(screen.getByText("npx shadcn@latest add @mewo/hero-aurora")).toBeInTheDocument()
-    expect(screen.queryByText(/\/r\/hero-aurora\.json$/)).toBeNull()
+    render(<InstallCommand name="names-duel" isBlock />)
+    expect(screen.getByText("npx shadcn@latest add @mewo/names-duel")).toBeInTheDocument()
+    expect(screen.queryByText(/\/r\/names-duel\.json$/)).toBeNull()
     expect(screen.getByText(/"registries"/)).toHaveTextContent('"@mewo"')
   })
 

@@ -27,11 +27,8 @@ const UI_ALLOWED = new Set([
   "class-variance-authority",
 ])
 
-/** Items that replace a shadcn component of the same name. These may import Base UI. */
-const DROPIN_EXPORTS: Record<string, string[]> = {
-  tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent", "tabsListVariants"],
-  collapsible: ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"],
-}
+/** Items that replace a shadcn component of the same name. These may import Base UI. None ships at the moment. */
+const DROPIN_EXPORTS: Record<string, string[]> = {}
 
 /**
  * Compound items built on a Base UI part (a panel on its Dialog), the other kind that may import Base UI. Their
@@ -149,9 +146,16 @@ describe("registry.json", () => {
   })
 
   it("sections report the npm packages their registryDependencies carry", () => {
-    const { getDependencies, getItem } = createRegistry(items)
-    expect(getDependencies(getItem("hero-aurora")!)).toEqual(["motion"])
-    expect(getDependencies(getItem("features-spotlight")!)).toEqual(["lucide-react", "motion"])
+    // a section with a package of its own, built on a component that brings another
+    const section = {
+      name: "sample-section",
+      type: "registry:block",
+      dependencies: ["lucide-react"],
+      registryDependencies: ["@mewo/aurora-background"],
+      files: [{ path: "registry/mewo/blocks/sample-section.tsx", type: "registry:component" }],
+    } as RegistryItem
+    const { getDependencies, getItem } = createRegistry([...items, section])
+    expect(getDependencies(getItem("sample-section")!)).toEqual(["lucide-react", "motion"])
   })
 
   it("dependencies list exactly the npm packages the file imports", () => {

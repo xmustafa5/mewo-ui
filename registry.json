@@ -243,54 +243,6 @@
       "files": [{ "path": "registry/mewo/ui/dot-grid.tsx", "type": "registry:ui" }]
     },
     {
-      "name": "hero-aurora",
-      "type": "registry:block",
-      "title": "Hero — Aurora",
-      "description": "A hero section: aurora backdrop, word-by-word headline, description and two call-to-action buttons.",
-      "categories": ["sections", "hero"],
-      "meta": { "added": "2026-09-15" },
-      "registryDependencies": ["button", "@mewo/aurora-background", "@mewo/split-text"],
-      "files": [{ "path": "registry/mewo/blocks/hero-aurora.tsx", "type": "registry:component" }]
-    },
-    {
-      "name": "features-spotlight",
-      "type": "registry:block",
-      "title": "Features — Spotlight",
-      "description": "A features section: shimmering eyebrow, heading, a scroll-revealed grid of spotlight cards and a logo marquee.",
-      "categories": ["sections", "features"],
-      "meta": { "added": "2026-09-15" },
-      "dependencies": ["lucide-react"],
-      "registryDependencies": ["@mewo/text-shimmer", "@mewo/scroll-reveal", "@mewo/spotlight-card", "@mewo/marquee"],
-      "files": [{ "path": "registry/mewo/blocks/features-spotlight.tsx", "type": "registry:component" }]
-    },
-    {
-      "name": "tabs",
-      "type": "registry:ui",
-      "title": "Tabs",
-      "description": "Drop-in replacement for shadcn's tabs. Adds an indicator that slides between tabs instead of jumping. Same exports, same props.",
-      "categories": ["primitives"],
-      "meta": { "added": "2026-09-17" },
-      "dependencies": ["motion", "@base-ui/react", "class-variance-authority"],
-      "files": [{ "path": "registry/mewo/ui/tabs.tsx", "type": "registry:ui" }]
-    },
-    {
-      "name": "collapsible",
-      "type": "registry:ui",
-      "title": "Collapsible",
-      "description": "Drop-in replacement for shadcn's collapsible, which ships with no animation at all. Adds eased height and a content fade. Same exports, same props.",
-      "categories": ["primitives"],
-      "meta": { "added": "2026-09-17" },
-      "dependencies": ["motion", "@base-ui/react"],
-      "files": [{ "path": "registry/mewo/ui/collapsible.tsx", "type": "registry:ui" }],
-      "css": {
-        "@media (scripting: none)": {
-          "[data-slot=\"collapsible-content-fade\"]": {
-            "opacity": "1 !important"
-          }
-        }
-      }
-    },
-    {
       "name": "album-rail",
       "type": "registry:ui",
       "title": "Album Rail",

@@ -1,10 +1,9 @@
 import { FileCode2, Folder } from "lucide-react"
 import { GROUP_ICONS } from "@/components/site/icons"
 import { MewoMark } from "@/components/site/mewo-mark"
-import { GROUP_ORDER, getDependencies, getItem, getItems } from "@/lib/registry"
+import { getDependencies, getGroups, getItem, getItems } from "@/lib/registry"
 import { cn } from "@/lib/utils"
 import { Marquee } from "@/registry/mewo/ui/marquee"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/registry/mewo/ui/tabs"
 
 function Card({ title, description, className, children }: { title: string; description: string; className?: string; children: React.ReactNode }) {
   return (
@@ -64,7 +63,8 @@ function DependenciesVisual() {
 }
 
 function CategoriesVisual() {
-  const groups = GROUP_ORDER
+  // the groups that hold items, as the sidebar lists them
+  const groups = getGroups().map((entry) => entry.group)
   return (
     <div className="relative size-40">
       <div aria-hidden className="absolute inset-3 rounded-full border border-dashed" />
@@ -105,27 +105,6 @@ function ReducedMotionVisual() {
         <span className={block} />
       </div>
     </div>
-  )
-}
-
-function DropInVisual() {
-  return (
-    <Tabs defaultValue="preview" className="w-64">
-      <TabsList className="w-full">
-        <TabsTrigger value="preview">Preview</TabsTrigger>
-        <TabsTrigger value="code">Code</TabsTrigger>
-        <TabsTrigger value="props">Props</TabsTrigger>
-      </TabsList>
-      <TabsContent value="preview" className="pt-2 text-xs text-muted-foreground">
-        Same API as shadcn&apos;s Tabs — the indicator slides.
-      </TabsContent>
-      <TabsContent value="code" className="pt-2 font-mono text-xs text-muted-foreground">
-        {"<Tabs defaultValue=\"preview\">"}
-      </TabsContent>
-      <TabsContent value="props" className="pt-2 text-xs text-muted-foreground">
-        Every prop passes straight through.
-      </TabsContent>
-    </Tabs>
   )
 }
 
@@ -176,26 +155,19 @@ export function WhatsInside() {
         <Card
           className="lg:col-span-4"
           title="Well organized"
-          description="Seven clear categories, from drop-in primitives to whole page sections."
+          description={`${getGroups().length} clear categories, from text effects to whole page sections.`}
         >
           <CategoriesVisual />
         </Card>
         <Card
-          className="lg:col-span-4"
+          className="lg:col-span-6"
           title="Reduced motion, built in"
           description="Every item checks prefers-reduced-motion and settles into a still, readable state."
         >
           <ReducedMotionVisual />
         </Card>
         <Card
-          className="lg:col-span-5"
-          title="Drop-in primitives"
-          description="Animated Tabs and Collapsible with shadcn's exact API. Swap the file, keep your imports."
-        >
-          <DropInVisual />
-        </Card>
-        <Card
-          className="lg:col-span-3"
+          className="md:col-span-2 lg:col-span-6"
           title="Yours to edit"
           description="The CLI copies the source into your project. No wrapper library to lock you in."
         >
