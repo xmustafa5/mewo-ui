@@ -30,6 +30,7 @@ export default function ChapterNavCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "ChapterNav", item: "chapter-nav", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the demo's box: layout-contained, so the nav's fixed dots and panel stay in the frame

@@ -156,6 +156,13 @@
   background-size: 18px 18px;
 }
 
+/* While a preview's resize handle is dragged, the whole page shows the resize cursor and nothing selects. */
+:root[data-preview-resizing],
+:root[data-preview-resizing] * {
+  cursor: ew-resize !important;
+  user-select: none !important;
+}
+
 /* The pixel grid the cat's stepped squares come from, as faint graph paper. */
 @utility bg-pixel-grid {
   background-image:

@@ -37,7 +37,7 @@ export default function HeroAuroraCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
-      stageClassName="p-3 sm:p-4"
+      fill
       usage={{ name: "HeroAurora", item: "hero-aurora", block: true, props: changedProps(values, defaults, DEMO_ONLY, ctas(values)) }}
       preview={<FramedPreview name="hero-aurora" values={values} run={run} />}
     >

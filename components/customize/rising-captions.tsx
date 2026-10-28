@@ -28,6 +28,7 @@ export default function RisingCaptionsCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "RisingCaptions", item: "rising-captions", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the stage pins to its nearest scroll container, so the piece scrolls inside this box, as in the demo

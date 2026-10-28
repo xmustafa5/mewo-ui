@@ -31,6 +31,7 @@ export default function TextScrollHighlightCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "TextScrollHighlight", item: "text-scroll-highlight", props: changedProps(values, defaults, DEMO_ONLY), children: values.text }}
       preview={
         // the highlight follows its nearest scroll container, so the preview scrolls inside this box; pinning changes

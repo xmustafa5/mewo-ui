@@ -52,6 +52,7 @@ export default function PictureWaveCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "PictureWave", item: "picture-wave", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         <div className="h-[min(70vh,560px)] w-full overflow-hidden rounded-xl border bg-background">

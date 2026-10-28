@@ -56,6 +56,7 @@ export default function VenomCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "Venom", item: "venom", props: changedProps(values, defaults, DEMO_ONLY, computed), children: word ? undefined : ICON_CHILDREN }}
       preview={
         // a box the height of the stage, so the tendrils have all of it to reach across; the symbiote is black in both themes, so both get the same light backdrop

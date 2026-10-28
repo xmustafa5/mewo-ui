@@ -25,6 +25,7 @@ export default function PictureOrbitCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "PictureOrbit", item: "picture-orbit", props: changedProps(values, defaults, DEMO_ONLY), children: usageChildren }}
       preview={
         // the box scrolls by itself: the stage pins in it and the cards rise around the title

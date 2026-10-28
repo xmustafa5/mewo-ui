@@ -37,6 +37,7 @@ export default function TiltedTilesCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "TiltedTiles", item: "tilted-tiles", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the wall fills its parent, so the preview gives it a box, as the demo does

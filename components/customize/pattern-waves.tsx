@@ -53,6 +53,7 @@ export default function PatternWavesCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       studioHref={`/studio?${studio}`}
       usage={{ name: "PatternWaves", item: "pattern-waves", props }}
       preview={

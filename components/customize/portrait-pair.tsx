@@ -35,7 +35,7 @@ export default function PortraitPairCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
-      stageClassName="p-3 sm:p-4"
+      fill
       usage={{ name: "PortraitPair", item: "portrait-pair", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={<FramedPreview name="portrait-pair" values={values} run={run} />}
     >

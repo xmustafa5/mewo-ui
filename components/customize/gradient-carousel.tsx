@@ -24,6 +24,7 @@ export default function GradientCarouselCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "GradientCarousel", item: "gradient-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         <GradientCarousel

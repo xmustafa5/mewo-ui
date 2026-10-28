@@ -42,7 +42,7 @@ export default function NamesDuelCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
-      stageClassName="p-3 sm:p-4"
+      fill
       usage={{ name: "NamesDuel", item: "names-duel", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={<FramedPreview name="names-duel" values={values} run={run} />}
     >

@@ -49,6 +49,7 @@ export default function GrainientCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       studioHref={`/studio?${studio}`}
       usage={{ name: "Grainient", item: "grainient", props }}
       preview={

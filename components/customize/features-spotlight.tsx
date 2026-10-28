@@ -25,7 +25,7 @@ export default function FeaturesSpotlightCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
-      stageClassName="p-3 sm:p-4"
+      fill
       usage={{ name: "FeaturesSpotlight", item: "features-spotlight", block: true, props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={<FramedPreview name="features-spotlight" values={values} run={run} />}
     >

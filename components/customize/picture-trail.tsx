@@ -27,6 +27,7 @@ export default function PictureTrailCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "PictureTrail", item: "picture-trail", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the stage pins to its nearest scroll container, so the preview scrolls inside this box

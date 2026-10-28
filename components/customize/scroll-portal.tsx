@@ -34,6 +34,7 @@ export default function ScrollPortalCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "ScrollPortal", item: "scroll-portal", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the portal pins to its nearest scroll container, so the preview scrolls inside this box

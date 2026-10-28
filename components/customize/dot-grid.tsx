@@ -36,6 +36,7 @@ export default function DotGridCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       studioHref={`/studio?${studio}`}
       usage={{ name: "DotGrid", item: "dot-grid", props }}
       preview={

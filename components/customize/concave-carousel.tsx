@@ -46,6 +46,7 @@ export default function ConcaveCarouselCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       usage={{ name: "ConcaveCarousel", item: "concave-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
+      fill
       preview={<ConcaveCarousel className="h-[560px]" {...values} />}
     >
       <Select label="Autoplay" options={AUTOPLAY_OPTIONS} value={values.autoplay} onChange={(value) => set("autoplay", value)} />

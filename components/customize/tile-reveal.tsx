@@ -31,6 +31,7 @@ export default function TileRevealCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{
         name: "TileReveal",
         item: "tile-reveal",

@@ -44,6 +44,7 @@ export default function PictureCloudCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "PictureCloud", item: "picture-cloud", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={<CloudBox key={values.scroll} scroll={values.scroll} images={images} count={values.count} petals={values.petals} outlines={values.outlines} />}
     >

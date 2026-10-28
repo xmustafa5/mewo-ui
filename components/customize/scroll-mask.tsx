@@ -33,6 +33,7 @@ export default function ScrollMaskCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{
         name: "ScrollMask",
         item: "scroll-mask",

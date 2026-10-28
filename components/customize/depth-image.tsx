@@ -71,8 +71,7 @@ export default function DepthImageCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       usage={{ name: "DepthImage", item: "depth-image", props }}
-      // the photo fills the whole stage, edge to edge
-      stageClassName="p-0 sm:p-0"
+      fill
       preview={
         // the image fills its parent, so the preview gives it a box, as the demo does
         <div className="relative h-[560px] max-h-[70vh] w-full overflow-hidden">

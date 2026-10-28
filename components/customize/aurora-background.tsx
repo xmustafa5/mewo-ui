@@ -33,6 +33,7 @@ export default function AuroraBackgroundCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "AuroraBackground", item: "aurora-background", props: changedProps(values, defaults, DEMO_ONLY, computed), children: children || undefined }}
       preview={
         <AuroraBackground showRadialMask={values.showRadialMask} className={className}>

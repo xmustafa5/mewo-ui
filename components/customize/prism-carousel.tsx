@@ -63,6 +63,7 @@ export default function PrismCarouselCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "PrismCarousel", item: "prism-carousel", props }}
       preview={
         // the carousel fills its parent, so the preview gives it a box, as the demo does

@@ -48,6 +48,7 @@ export default function ScrollCaptionsCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "ScrollCaptions", item: "scroll-captions", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the stage pins to its nearest scroll container, so the piece scrolls inside this box, as in the demo

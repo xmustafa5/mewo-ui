@@ -49,6 +49,7 @@ export default function GlassPanelCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "GlassPanel", item: "glass-panel", props: changedProps(values, defaults, DEMO_ONLY, computed), children }}
       preview={
         // a transformed box contains the panel's fixed pieces, so the preview stays in its frame

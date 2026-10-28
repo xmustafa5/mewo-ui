@@ -25,10 +25,11 @@ const KEY_STEP_LARGE = 50
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
 /**
- * The preview's width: a preset from the toolbar, or any width by the handle on the frame's edge (the arrow keys
- * step it, Home and End go to the ends, a double-click lets it go). `null` is the stage's full width.
+ * The preview's width: a preset from the toolbar, or any width by the handle on the stage's right edge (the arrow
+ * keys step it, Home and End go to the ends, a double-click lets it go). `null` is the panel's full width. The stage
+ * stays anchored on the left, so the handle follows the pointer one to one.
  */
-function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
+function usePreviewWidth(panelRef: React.RefObject<HTMLDivElement | null>) {
   const [width, setWidth] = React.useState<number | null>(null)
   const [full, setFull] = React.useState(0)
   const [dragging, setDragging] = React.useState(false)
@@ -36,24 +37,28 @@ function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
   const drag = React.useRef<{ id: number; startX: number; startWidth: number } | null>(null)
   const hideTimer = React.useRef(0)
 
-  // the stage's content width bounds the frame, and a window that gets narrower than a set width lets it go
+  // the panel's width bounds the stage, and a window that gets narrower than a set width lets it go
   React.useEffect(() => {
-    const stage = stageRef.current
-    if (!stage) return
+    const panel = panelRef.current
+    if (!panel) return
     const measure = () => {
-      const styles = getComputedStyle(stage)
-      const inner = stage.clientWidth - parseFloat(styles.paddingLeft) - parseFloat(styles.paddingRight)
-      // 0 until the stage has a size: nothing is bounded by it yet
-      const next = inner > 0 ? Math.max(MIN_WIDTH, Math.floor(inner)) : 0
+      // 0 until the panel has a size: nothing is bounded by it yet
+      const next = panel.clientWidth > 0 ? Math.max(MIN_WIDTH, Math.floor(panel.clientWidth)) : 0
       setFull(next)
       setWidth((current) => (next && current !== null && current >= next ? null : current))
     }
     measure()
     const observer = new ResizeObserver(measure)
-    observer.observe(stage)
+    observer.observe(panel)
     return () => observer.disconnect()
-  }, [stageRef])
-  React.useEffect(() => () => window.clearTimeout(hideTimer.current), [])
+  }, [panelRef])
+  React.useEffect(
+    () => () => {
+      window.clearTimeout(hideTimer.current)
+      delete document.documentElement.dataset.previewResizing
+    },
+    [],
+  )
 
   const show = () => {
     setIndicator(true)
@@ -66,6 +71,12 @@ function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
     show()
   }
   const current = width ?? full
+  const finish = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (drag.current?.id !== event.pointerId) return
+    drag.current = null
+    setDragging(false)
+    delete document.documentElement.dataset.previewResizing
+  }
 
   const handle = {
     role: "separator" as const,
@@ -82,21 +93,15 @@ function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
       event.currentTarget.setPointerCapture?.(event.pointerId)
       drag.current = { id: event.pointerId, startX: event.clientX, startWidth: current }
       setDragging(true)
+      document.documentElement.dataset.previewResizing = ""
     },
     onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => {
       if (drag.current?.id !== event.pointerId) return
-      // the frame is centred, so the edge moves half as far as the width changes
-      commit(drag.current.startWidth + (event.clientX - drag.current.startX) * 2)
+      commit(drag.current.startWidth + event.clientX - drag.current.startX)
     },
-    onPointerUp: (event: React.PointerEvent<HTMLDivElement>) => {
-      if (drag.current?.id !== event.pointerId) return
-      drag.current = null
-      setDragging(false)
-    },
-    onPointerCancel: () => {
-      drag.current = null
-      setDragging(false)
-    },
+    onPointerUp: finish,
+    onPointerCancel: finish,
+    onLostPointerCapture: finish,
     onDoubleClick: () => commit(null),
     onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
       const step = event.shiftKey ? KEY_STEP_LARGE : KEY_STEP
@@ -107,7 +112,7 @@ function usePreviewWidth(stageRef: React.RefObject<HTMLDivElement | null>) {
     },
   }
 
-  return { width, full, dragging, indicator: dragging || (indicator && width !== null), set: commit, handle }
+  return { width, full, current, dragging, indicator: dragging || (indicator && width !== null), set: commit, handle }
 }
 
 /**
@@ -124,6 +129,7 @@ export function CustomizeFrame({
   changed,
   onReset,
   studioHref,
+  fill = false,
   stageClassName,
   children,
 }: {
@@ -140,12 +146,15 @@ export function CustomizeFrame({
   onReset: () => void
   /** Where the Background Studio opens this piece, for the backgrounds it has. */
   studioHref?: string
+  /** The preview is a box of its own (a scroll box, a stage, a background, a section's frame): it fills the stage
+   * edge to edge at its own height, the stage's border and corners standing in for its own. */
+  fill?: boolean
   stageClassName?: string
   /** The control rows. */
   children: React.ReactNode
 }) {
-  const stageRef = React.useRef<HTMLDivElement>(null)
-  const size = usePreviewWidth(stageRef)
+  const panelRef = React.useRef<HTMLDivElement>(null)
+  const size = usePreviewWidth(panelRef)
   return (
     <Tabs defaultValue="preview" className="gap-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
@@ -176,43 +185,58 @@ export function CustomizeFrame({
         </div>
       </div>
       <TabsContent value="preview">
-        <div ref={stageRef} className={cn(stageClass, "flex min-h-115 items-center justify-center p-6 sm:p-10", stageClassName)}>
-          <button
-            type="button"
-            aria-label="Replay animation"
-            title="Replay"
-            onClick={onReplay}
-            className="absolute top-3 right-3 z-10 inline-flex size-9 items-center justify-center rounded-lg border bg-background/80 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
-          >
-            <RotateCcw className="size-4" aria-hidden />
-          </button>
-          {/* the frame: the stage's width, or the width set by a preset or the handle, centred */}
+        {/* the stage, anchored on the left at the panel's width or the width set by a preset or the handle */}
+        <div ref={panelRef} className="relative">
           <div
             data-slot="customize-frame"
             data-narrow={size.width !== null || undefined}
             data-dragging={size.dragging || undefined}
-            className="group/frame relative flex w-full items-center justify-center rounded-xl transition-[max-width] duration-300 data-dragging:transition-none data-narrow:outline-1 data-narrow:outline-dashed data-narrow:outline-border data-narrow:outline-offset-8"
+            className={cn(
+              stageClass,
+              "flex min-h-115 items-center justify-center p-6 transition-[max-width] duration-300 data-dragging:pointer-events-none data-dragging:transition-none motion-reduce:transition-none sm:p-10",
+              fill && "min-h-0 p-0 sm:p-0",
+              stageClassName,
+            )}
             style={{ maxWidth: size.width ?? undefined }}
           >
-            <div key={run} className="flex w-full items-center justify-center">
+            <button
+              type="button"
+              aria-label="Replay animation"
+              title="Replay"
+              onClick={onReplay}
+              className="absolute top-3 right-3 z-10 inline-flex size-9 items-center justify-center rounded-lg border bg-background/80 text-muted-foreground backdrop-blur transition-colors hover:text-foreground"
+            >
+              <RotateCcw className="size-4" aria-hidden />
+            </button>
+            <div key={run} className={cn("flex w-full items-center justify-center", fill && "[&>*]:rounded-none! [&>*]:border-0! [&>*]:shadow-none!")}>
               {preview}
             </div>
-            <div
-              {...size.handle}
-              className="absolute top-1/2 -right-7 z-10 flex h-16 w-6 -translate-y-1/2 cursor-ew-resize touch-none items-center justify-center rounded-md text-muted-foreground/50 outline-none transition-colors group-hover/frame:text-muted-foreground hover:text-foreground focus-visible:text-foreground focus-visible:outline-2 focus-visible:outline-ring/60 data-dragging:text-foreground max-sm:hidden"
-            >
-              <GripVertical className="size-4" aria-hidden />
-            </div>
-            <span
-              aria-hidden
-              className={cn(
-                "pointer-events-none absolute -bottom-8 left-1/2 -translate-x-1/2 rounded-md border bg-background/80 px-2 py-0.5 text-[11px] font-medium text-muted-foreground tabular-nums backdrop-blur transition-opacity duration-200",
-                size.indicator ? "opacity-100" : "opacity-0",
-              )}
-            >
-              {Math.round(size.width ?? size.full)}px
-            </span>
           </div>
+          {/* the handle: a bar and a grip on the stage's right edge, inset from its top and bottom; unseen until the
+              panel has a width to place it by */}
+          <div
+            {...size.handle}
+            className={cn(
+              "group/handle absolute top-8 bottom-8 z-10 flex w-6 cursor-ew-resize touch-none items-center justify-center outline-none transition-[left] duration-300 data-dragging:transition-none motion-reduce:transition-none max-lg:hidden",
+              !size.full && "invisible",
+            )}
+            style={{ left: size.current }}
+          >
+            <span className="h-12 w-1 rounded-full bg-border transition-colors group-hover/handle:bg-muted-foreground/70 group-focus-visible/handle:bg-muted-foreground/70 group-focus-visible/handle:shadow-[0_0_0_2px_var(--background),0_0_0_4px_var(--muted-foreground)] group-data-dragging/handle:bg-foreground" />
+            <GripVertical
+              aria-hidden
+              className="pointer-events-none absolute size-4 text-muted-foreground opacity-50 transition-[color,opacity] group-hover/handle:text-foreground group-hover/handle:opacity-100 group-focus-visible/handle:text-foreground group-focus-visible/handle:opacity-100 group-data-dragging/handle:text-background group-data-dragging/handle:opacity-100"
+            />
+          </div>
+          <span
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute bottom-2.5 left-1/2 z-10 -translate-x-1/2 rounded-md bg-background/80 px-1.5 py-0.5 text-xs font-medium text-muted-foreground tabular-nums transition-opacity duration-300",
+              size.indicator ? "opacity-100" : "opacity-0",
+            )}
+          >
+            {Math.round(size.current)}px
+          </span>
         </div>
         <section aria-labelledby="customize-heading" className="@container mt-6 rounded-2xl border bg-muted/50 p-1">
           <div className="flex min-h-11.5 items-center justify-between gap-4 py-2 pr-2 pl-3.5">

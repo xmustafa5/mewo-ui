@@ -32,6 +32,7 @@ export default function ZoomPictureCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{
         name: "ZoomPicture",
         item: "zoom-picture",

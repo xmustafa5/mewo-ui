@@ -34,6 +34,7 @@ export default function ParallaxCarouselCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "ParallaxCarousel", item: "parallax-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={<ParallaxCarousel className="h-[600px]" {...values} />}
     >

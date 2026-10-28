@@ -31,6 +31,7 @@ export default function ZoomPanelCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "ZoomPanel", item: "zoom-panel", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the demo's box, a size container the open panel takes its height from; scrolling inside it sets the state as a story's scroll does

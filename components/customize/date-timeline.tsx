@@ -36,6 +36,7 @@ export default function DateTimelineCustomize({ code }: CustomizeProps) {
       onReplay={replay}
       changed={changed}
       onReset={reset}
+      fill
       usage={{ name: "DateTimeline", item: "date-timeline", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
       preview={
         // the line slides its gap to each date as the story is read: scroll inside the frame. The stage is wider than
