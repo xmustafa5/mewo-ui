@@ -41,6 +41,8 @@ export interface MewoCharacterProps extends Omit<React.ComponentProps<"div">, "c
   swirl?: number
   /** How much the character's outline blurs and comes apart into rising dots, 0 to 1. 0 keeps a clean outline. */
   dissolve?: number
+  /** The pupils: rings that ripple outward with the dream, or plain. */
+  eyes?: MewoCharacterEyes
   /** Speed of the dream's slow motion: the fog drifting and the wisps rising. 0 holds it still and costs nothing at rest. */
   drift?: number
   /** Render scale cap. The device pixel ratio is also capped at 2 and by a pixel budget. */
@@ -53,10 +55,12 @@ export interface MewoCharacterProps extends Omit<React.ComponentProps<"div">, "c
   onError?: (error: Error) => void
 }
 
-type Settings = Required<Pick<MewoCharacterProps, "track" | "reach" | "stretch" | "gaze" | "lean" | "smoothing" | "zoom" | "x" | "y" | "sheen" | "exposure" | "fog" | "fogColor" | "swirl" | "dissolve" | "drift" | "dpr">> &
+type Settings = Required<Pick<MewoCharacterProps, "track" | "reach" | "stretch" | "gaze" | "lean" | "smoothing" | "zoom" | "x" | "y" | "sheen" | "exposure" | "fog" | "fogColor" | "swirl" | "dissolve" | "drift" | "eyes" | "dpr">> &
   Pick<MewoCharacterProps, "src" | "color" | "onLoad" | "onError">
 
 export type Bounds = { min: [number, number, number]; max: [number, number, number] }
+
+export type MewoCharacterEyes = "rings" | "plain"
 
 const PIXEL_BUDGET = 4.5e6
 // the fog: a coarse grid over the box, about this many cells whatever its shape
@@ -83,6 +87,8 @@ const CONTEXT_ATTRIBUTES = {
   preserveDrawingBuffer: false,
   powerPreference: "default" as const,
 }
+// how many dark rings cross a ringed pupil, from its middle to its rim
+const PUPIL_RINGS = 3
 // the parts the pose drives, by node name; a model without them still renders, standing still
 const NODES = { body: "mewo", arm: "arm.R", pupils: ["pupil.L", "pupil.R"] }
 
@@ -402,6 +408,7 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 out vec3 vNormal;
 out vec3 vWorld;
+out vec3 vLocal;
 void main() {
   mat4 world = modelMatrix;
   vec3 at = position;
@@ -415,6 +422,7 @@ void main() {
 #endif
   vec4 p = world * vec4(at, 1.0);
   vWorld = p.xyz;
+  vLocal = position;
   vNormal = mat3(world) * normal;
   gl_Position = projectionMatrix * viewMatrix * p;
 }`
@@ -425,7 +433,13 @@ const FRAGMENT = /* glsl */ `#version 300 es
 precision highp float;
 in vec3 vNormal;
 in vec3 vWorld;
+in vec3 vLocal;
 uniform vec3 cameraPosition;
+uniform float uRings;
+uniform vec3 uRingAxis;
+uniform float uRingScale;
+uniform vec3 uRingLight;
+uniform float uTime;
 uniform vec3 uColor;
 uniform vec3 uSheenColor;
 uniform float uSheen;
@@ -469,7 +483,15 @@ void main() {
 
   vec3 ambient = mix(vec3(0.16, 0.17, 0.22), vec3(0.62, 0.68, 0.8), n.y * 0.5 + 0.5);
   vec3 light = ambient + vec3(1.0, 0.97, 0.92) * 2.1 * wrapped(n, key, 0.35) + vec3(0.7, 0.78, 1.0) * 0.55 * wrapped(n, fill, 0.5);
-  vec3 color = uColor * light;
+  vec3 base = uColor;
+  if (uRings > 0.0) {
+    // rings round the pupil's middle out to its rim, dark and light, rippling outward as the dream drifts
+    float d = acos(clamp(dot(normalize(vLocal), uRingAxis), -1.0, 1.0)) * uRingScale - uTime * 0.6;
+    float band = abs(fract(d) - 0.5) * 2.0;
+    float w = fwidth(d) * 2.0;
+    base = mix(uColor, uRingLight, smoothstep(0.5 - w, 0.5 + w, band) * uRings);
+  }
+  vec3 color = base * light;
 
   // velvet: the fibres catch the light at grazing angles, so the edges glow in a lighter tint
   float edge = pow(1.0 - nv, 2.2);
@@ -601,7 +623,7 @@ void main() {
   // just outside the outline, tall streaks of noise rising: smoke leaving the character, its colour turning to light
   float streak = smoothstep(0.5, 0.82, fbm(p * vec2(7.0, 2.6) + vec2(0.0, -t * 0.35) + fold * 0.8));
   float smoke = uDissolve * streak * smoothstep(0.02, 0.35, cover) * (1.0 - smoothstep(0.35, 0.7, cover)) * 0.6;
-  vec3 smokeColor = mix(vec3(0.16, 0.3, 1.0), light, 0.55);
+  vec3 smokeColor = mix(blur.rgb / max(blur.a, 0.05), light, 0.55);
 
   float alpha = uFog * (0.22 + 0.6 * back);
   vec3 color = light * (0.75 + 0.7 * back) * alpha;
@@ -643,6 +665,12 @@ function makePart(gl: OGLRenderingContext, material: GLTFMaterial | undefined, s
       uGloss: { value: roughness < 0.6 ? 1 : 0 },
       uEmissive: { value: (material?.emissiveFactor ?? [0, 0, 0]).slice() },
       uExposure: { value: 1 },
+      // rings on the pupils, set per pupil as it is drawn; off elsewhere
+      uRings: { value: 0 },
+      uRingAxis: { value: [0, 0, 1] },
+      uRingScale: { value: 1 },
+      uRingLight: { value: [0.81, 0.81, 0.86] },
+      uTime: { value: 0 },
       // the arm's stretch, set once the arm is found; at rest it changes nothing
       ...(skinned ? { uShoulder: { value: [0, 0, 0] }, uAxis: { value: [0, 0, 1] }, uWrist: { value: 1 }, uStretch: { value: 1 }, uArmJoint: { value: -1 } } : {}),
     },
@@ -689,7 +717,7 @@ export function MewoCharacter({
   gaze = 6,
   lean = 10,
   smoothing = 0.16,
-  zoom = 1.25,
+  zoom = 1.5,
   x = 0.84,
   y = 0.71,
   sheen = 1.1,
@@ -699,6 +727,7 @@ export function MewoCharacter({
   swirl = 2,
   dissolve = 0.63,
   drift = 1.55,
+  eyes = "rings",
   dpr = 1.5,
   onLoad,
   onError,
@@ -707,7 +736,7 @@ export function MewoCharacter({
   ...props
 }: MewoCharacterProps) {
   const rootRef = React.useRef<HTMLDivElement>(null)
-  const settings: Settings = { src, color, track, reach, stretch, gaze, lean, smoothing, zoom, x, y, sheen, exposure, fog, fogColor, swirl, dissolve, drift, dpr, onLoad, onError }
+  const settings: Settings = { src, color, track, reach, stretch, gaze, lean, smoothing, zoom, x, y, sheen, exposure, fog, fogColor, swirl, dissolve, drift, eyes, dpr, onLoad, onError }
   const settingsRef = React.useRef(settings)
   const wakeRef = React.useRef<(() => void) | null>(null)
 
@@ -803,6 +832,7 @@ export function MewoCharacter({
       body: Transform | null
       arm: { node: Transform; rest: Quat; axis: Vec3; length: number; radius: number; wrist: number; front: number; uniforms: Program["uniforms"] } | null
       pupils: { node: Transform; rest: Quat; look: Vec3 }[]
+      ringed: Program[]
     } | null = null
     let loaded = ""
     let generation = 0
@@ -853,6 +883,7 @@ export function MewoCharacter({
         const tint = linearColor(s.fogColor)
         if (tint) composeProgram.uniforms.uFogColor.value = tint
       }
+      for (const program of model.ringed) program.uniforms.uRings.value = s.eyes === "plain" ? 0 : 1
       for (const part of model.parts) {
         const u = part.program.uniforms
         u.uExposure.value = s.exposure
@@ -917,6 +948,8 @@ export function MewoCharacter({
 
     const render = () => {
       const s = settingsRef.current
+      // the pupils' rings ripple on the dream's clock
+      for (const program of model?.ringed ?? []) program.uniforms.uTime.value = time
       renderer.render({ scene, camera, target: sceneTarget })
       const u = composeProgram.uniforms
       u.uResolution.value = [canvas.width, canvas.height]
@@ -1079,15 +1112,29 @@ export function MewoCharacter({
               reach = { axis, length: shape.length, radius: shape.radius, wrist: shape.wrist, front, uniforms }
             }
           }
+          const ringed: Program[] = []
           const pupils = NODES.pupils.flatMap((name) => {
             const node = named(name)
             const mesh = node?.children.find((child) => (child as Mesh).geometry) as Mesh | undefined
             const data = mesh?.geometry.attributes.position?.data
-            if (!node || !data) return []
+            if (!node || !mesh || !data) return []
             // the pupil looks out through its own middle, from the eye's centre
-            const look = new Vec3()
-            for (let i = 0; i < data.length; i += 3) look.add(new Vec3(data[i], data[i + 1], data[i + 2]))
-            look.applyQuaternion(node.quaternion).normalize()
+            const middle = new Vec3()
+            for (let i = 0; i < data.length; i += 3) middle.add(new Vec3(data[i], data[i + 1], data[i + 2]))
+            middle.normalize()
+            // its rim: the widest angle any of its points makes with its middle; the rings fit inside it
+            let rim = 1e-3
+            const point = new Vec3()
+            for (let i = 0; i < data.length; i += 3) rim = Math.max(rim, point.set(data[i], data[i + 1], data[i + 2]).normalize().angle(middle))
+            const axis = [middle[0], middle[1], middle[2]]
+            const scale = PUPIL_RINGS / rim
+            // the two pupils share a program, so each sets its own middle as it is drawn
+            mesh.onBeforeRender(() => {
+              mesh.program.uniforms.uRingAxis.value = axis
+              mesh.program.uniforms.uRingScale.value = scale
+            })
+            if (!ringed.includes(mesh.program)) ringed.push(mesh.program)
+            const look = middle.clone().applyQuaternion(node.quaternion).normalize()
             return [{ node, rest: new Quat().copy(node.quaternion), look }]
           })
           model = {
@@ -1097,6 +1144,7 @@ export function MewoCharacter({
             body: named(NODES.body),
             arm: arm && reach ? { node: arm, rest: new Quat().copy(arm.quaternion), ...reach } : null,
             pupils,
+            ringed,
           }
           applyLook()
           resize()

@@ -1,8 +1,8 @@
 "use client"
 
-import { MewoCharacter } from "@/registry/mewo/ui/mewo-character"
+import { MewoCharacter, type MewoCharacterEyes } from "@/registry/mewo/ui/mewo-character"
 import { Color } from "./color-picker"
-import { Slider, Switch } from "./controls"
+import { Select, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
 import type { CustomizeProps } from "./types"
 import { changedProps } from "./usage"
@@ -15,11 +15,12 @@ export const DEFAULTS = {
   track: true,
   x: 0.84,
   y: 0.71,
-  zoom: 1.25,
+  zoom: 1.5,
   fog: 0.6,
   swirl: 2,
   dissolve: 0.63,
   drift: 1.55,
+  eyes: "rings",
   reach: 86,
   stretch: 3.3,
   gaze: 6,
@@ -31,6 +32,7 @@ export const DEFAULTS = {
 export const DEMO_ONLY = [] as const
 
 const MODEL_BLUE = "#0a2ed8"
+const EYES_OPTIONS = ["rings", "plain"]
 
 /** A hex colour read back from the address has lost its `#`. */
 const withHash = (value: string) => (/^[0-9a-f]{3,8}$/i.test(value) ? `#${value}` : value)
@@ -54,14 +56,16 @@ export default function MewoCharacterCustomize({ code }: CustomizeProps) {
       fill
       usage={{ name: "MewoCharacter", item: "mewo-character", props }}
       preview={
-        // the model is served from the site's public/models/, where the page's download note says to put it
-        <div className="relative h-[500px] w-full overflow-hidden rounded-xl">
-          <MewoCharacter src="/models/mewo.glb" alt="The mewo cat reaching for the pointer in a dream" {...values} color={color} fogColor={fogColor} />
+        // the model is served from the site's public/models/, where the page's download note says to put it; a black
+        // night behind the dream (on a page, the character shows whatever is behind it)
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl bg-black">
+          <MewoCharacter src="/models/mewo.glb" alt="The mewo cat reaching for the pointer in a dream" {...values} color={color} fogColor={fogColor} eyes={values.eyes as MewoCharacterEyes} />
         </div>
       }
     >
       <Color label="Fur colour" value={color || MODEL_BLUE} onChange={(value) => set("color", value)} />
       <Color label="Fog colour" value={fogColor} onChange={(value) => set("fogColor", value)} />
+      <Select label="Eyes" options={EYES_OPTIONS} value={values.eyes} onChange={(value) => set("eyes", value)} />
       <Switch label="Track the pointer" checked={values.track} onChange={(value) => set("track", value)} />
       <Slider label="Position X" min={0} max={1} step={0.01} format={percent} value={values.x} onChange={(value) => set("x", value)} />
       <Slider label="Position Y" min={0} max={1} step={0.01} format={percent} value={values.y} onChange={(value) => set("y", value)} />
