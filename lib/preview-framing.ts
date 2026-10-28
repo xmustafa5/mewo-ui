@@ -51,6 +51,15 @@ const FRAMING: Record<string, Framing> = {
   "picture-trail": { kind: "fill" },
   "names-duel": { kind: "fill" },
   "portrait-pair": { kind: "fill" },
+  // carousels and walls that fill a box of their own, and a single card and a strip of cards centred
+  "concave-carousel": { kind: "fill" },
+  // its pictures are 560px tall: filmed smaller, so they fit the card whole
+  "parallax-carousel": { kind: "fill", zoom: 0.8 },
+  "depth-image": { kind: "fill" },
+  "tilted-tiles": { kind: "fill" },
+  "prism-carousel": { kind: "fill" },
+  "depth-card": { kind: "center", zoom: 1.4 },
+  "skewed-carousel": { kind: "center", zoom: 1.2 },
 }
 
 export function framingFor(name: string, isBlock: boolean): Framing {

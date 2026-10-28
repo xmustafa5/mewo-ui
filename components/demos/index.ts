@@ -46,4 +46,11 @@ export const demos: Record<string, () => Promise<DemoModule>> = {
   "picture-trail": () => import("./picture-trail-demo"),
   "names-duel": () => import("./names-duel-demo"),
   "portrait-pair": () => import("./portrait-pair-demo"),
+  "concave-carousel": () => import("./concave-carousel-demo"),
+  "parallax-carousel": () => import("./parallax-carousel-demo"),
+  "depth-card": () => import("./depth-card-demo"),
+  "depth-image": () => import("./depth-image-demo"),
+  "tilted-tiles": () => import("./tilted-tiles-demo"),
+  "skewed-carousel": () => import("./skewed-carousel-demo"),
+  "prism-carousel": () => import("./prism-carousel-demo"),
 }

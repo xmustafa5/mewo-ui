@@ -22,6 +22,11 @@ export const customize: Record<string, () => Promise<CustomizeModule>> = {
   "scroll-captions": () => import("./scroll-captions"),
   "rising-captions": () => import("./rising-captions"),
   "spotlight-card": () => import("./spotlight-card"),
+  "concave-carousel": () => import("./concave-carousel"),
+  "parallax-carousel": () => import("./parallax-carousel"),
+  "depth-card": () => import("./depth-card"),
+  "skewed-carousel": () => import("./skewed-carousel"),
+  "prism-carousel": () => import("./prism-carousel"),
   // scroll
   "scroll-reveal": () => import("./scroll-reveal"),
   "scroll-portal": () => import("./scroll-portal"),
@@ -39,6 +44,8 @@ export const customize: Record<string, () => Promise<CustomizeModule>> = {
   "picture-cloud": () => import("./picture-cloud"),
   "picture-wave": () => import("./picture-wave"),
   "picture-orbit": () => import("./picture-orbit"),
+  "depth-image": () => import("./depth-image"),
+  "tilted-tiles": () => import("./tilted-tiles"),
   // sections: their preview runs in a frame the panel drives
   "hero-aurora": () => import("./hero-aurora"),
   "features-spotlight": () => import("./features-spotlight"),

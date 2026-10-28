@@ -500,6 +500,69 @@
       "meta": { "added": "2026-10-27" },
       "registryDependencies": ["@mewo/picture-credit", "@mewo/picture-figure", "@mewo/rich-text"],
       "files": [{ "path": "registry/mewo/blocks/portrait-pair.tsx", "type": "registry:component" }]
+    },
+    {
+      "name": "concave-carousel",
+      "type": "registry:ui",
+      "title": "Concave Carousel",
+      "description": "A gallery wall that curves around the viewer in CSS 3D, with a slow drift, spring snapping, drag and flick, the wheel, captions and a floor reflection. No dependencies.",
+      "categories": ["card"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/concave-carousel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "parallax-carousel",
+      "type": "registry:ui",
+      "title": "Parallax Carousel",
+      "description": "A strip of image planes you drag, scroll or step through with the arrow keys, each picture sliding inside its frame as it moves away from the centre, with an optional autoplay drift. No dependencies.",
+      "categories": ["card"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/parallax-carousel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "depth-card",
+      "type": "registry:ui",
+      "title": "Depth Card",
+      "description": "A card that tilts toward the pointer in 3D while its image layers shift in depth under a soft spotlight, and its text rises in on hover. No dependencies.",
+      "categories": ["card"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/depth-card.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "depth-image",
+      "type": "registry:ui",
+      "title": "Depth Image",
+      "description": "A photo relit by a light that follows the pointer or drifts on a slow orbit, with depth, surface detail and soft self-shadows estimated from the image. Raw WebGL 2, no dependencies.",
+      "categories": ["background"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/depth-image.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "tilted-tiles",
+      "type": "registry:ui",
+      "title": "Tilted Tiles",
+      "description": "A wall of image columns on a tilted 3D plane, scrolling in a seamless loop under a soft fade while the pointer steers the tilt. No dependencies.",
+      "categories": ["background"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/tilted-tiles.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "skewed-carousel",
+      "type": "registry:ui",
+      "title": "Skewed Carousel",
+      "description": "A carousel of cards that turn away in 3D as they slide, with spring motion, swipe, dots and arrow keys. No dependencies.",
+      "categories": ["card"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/skewed-carousel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "prism-carousel",
+      "type": "registry:ui",
+      "title": "Prism Carousel",
+      "description": "A coverflow of rounded images that sweeps a band of spectrum and colour into each new one and splits into a spectrum while it moves, with drag, wheel, keys, autoplay and captions. Raw WebGL 2, no dependencies.",
+      "categories": ["card"],
+      "meta": { "added": "2026-10-28" },
+      "files": [{ "path": "registry/mewo/ui/prism-carousel.tsx", "type": "registry:ui" }]
     }
   ]
 }
