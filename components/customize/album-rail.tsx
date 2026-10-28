@@ -23,20 +23,23 @@ export default function AlbumRailCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       usage={{ name: "AlbumRail", item: "album-rail", props: changedProps(values, defaults, DEMO_ONLY, computed) }}
+      // the rail centred in a 500px box, as every preview is
+      fill
       preview={
-        <AlbumRail
-          className="py-6"
-          size={values.size}
-          visible={values.visible}
-          turn={values.turn}
-          fan={values.fan}
-          loop={values.loop}
-          autoplay={values.autoplay || false}
-          pauseOnHover={values.pauseOnHover}
-          showCaption={values.showCaption}
-          showControls={values.showControls}
-          accent={values.accent}
-        />
+        <div className="flex h-[500px] w-full items-center justify-center">
+          <AlbumRail
+            size={values.size}
+            visible={values.visible}
+            turn={values.turn}
+            fan={values.fan}
+            loop={values.loop}
+            autoplay={values.autoplay || false}
+            pauseOnHover={values.pauseOnHover}
+            showCaption={values.showCaption}
+            showControls={values.showControls}
+            accent={values.accent}
+          />
+        </div>
       }
     >
       <Slider label="Size" min={160} max={400} step={10} unit="px" value={values.size} onChange={(value) => set("size", value)} />

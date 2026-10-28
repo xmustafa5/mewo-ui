@@ -40,7 +40,7 @@ export default function TileRevealCustomize({ code }: CustomizeProps) {
       }}
       preview={
         // the stage pins to its nearest scroll container, so the preview scrolls inside this box
-        <div key={values.tiles} className="h-[480px] w-full overflow-y-auto rounded-lg border">
+        <div key={values.tiles} className="h-[500px] w-full overflow-y-auto rounded-lg border">
           <TileReveal
             images={images}
             columns={values.columns}

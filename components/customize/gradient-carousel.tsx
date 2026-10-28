@@ -30,7 +30,7 @@ export default function GradientCarouselCustomize({ code }: CustomizeProps) {
         <GradientCarousel
           images={IMAGES}
           aria-label="Sample photographs"
-          className="h-[420px] rounded-lg"
+          className="h-[500px] rounded-lg"
           maxRotationDegrees={values.maxRotationDegrees}
           maxDepthPx={values.maxDepthPx}
           minScale={values.minScale}

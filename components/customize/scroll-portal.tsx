@@ -38,7 +38,7 @@ export default function ScrollPortalCustomize({ code }: CustomizeProps) {
       usage={{ name: "ScrollPortal", item: "scroll-portal", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the portal pins to its nearest scroll container, so the preview scrolls inside this box
-        <div key={values.count} className="h-[480px] w-full overflow-y-auto rounded-lg border">
+        <div key={values.count} className="h-[500px] w-full overflow-y-auto rounded-lg border">
           <ScrollPortal
             scenes={scenes}
             frameDepth={values.frameDepth}

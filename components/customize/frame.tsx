@@ -201,7 +201,7 @@ export function CustomizeFrame({
             data-dragging={size.dragging || undefined}
             className={cn(
               stageClass,
-              "flex min-h-115 items-center justify-center p-6 transition-[max-width] duration-300 data-dragging:pointer-events-none data-dragging:transition-none motion-reduce:transition-none sm:p-10",
+              "flex min-h-[502px] items-center justify-center p-6 transition-[max-width] duration-300 data-dragging:pointer-events-none data-dragging:transition-none motion-reduce:transition-none sm:p-10",
               fill && "min-h-0 p-0 sm:p-0",
               stageClassName,
             )}

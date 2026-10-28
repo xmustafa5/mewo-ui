@@ -60,7 +60,7 @@ export default function VenomCustomize({ code }: CustomizeProps) {
       usage={{ name: "Venom", item: "venom", props: changedProps(values, defaults, DEMO_ONLY, computed), children: word ? undefined : ICON_CHILDREN }}
       preview={
         // a box the height of the stage, so the tendrils have all of it to reach across; the symbiote is black in both themes, so both get the same light backdrop
-        <div className="relative h-95 w-full overflow-hidden rounded-xl bg-zinc-100">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl bg-zinc-100">
           {word ? (
             <Venom className="absolute inset-0" text={values.word} {...look} />
           ) : (

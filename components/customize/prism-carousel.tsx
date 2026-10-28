@@ -67,7 +67,7 @@ export default function PrismCarouselCustomize({ code }: CustomizeProps) {
       usage={{ name: "PrismCarousel", item: "prism-carousel", props }}
       preview={
         // the carousel fills its parent, so the preview gives it a box, as the demo does
-        <div className="h-140 w-full overflow-hidden rounded-xl">
+        <div className="h-[500px] w-full overflow-hidden rounded-xl">
           <PrismCarousel {...look} backgroundColor={background || undefined} />
         </div>
       }

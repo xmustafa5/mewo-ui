@@ -43,7 +43,7 @@ export default function ScrollMaskCustomize({ code }: CustomizeProps) {
       preview={
         // the frame pins to its nearest scroll container, so the preview scrolls inside this box; it opens part-way
         // into the reveal, as the demo does, the reveal being scrollLength box heights long
-        <ScrollBox start={0.29 * values.scrollLength} className="h-[480px] w-full overflow-y-auto rounded-lg border">
+        <ScrollBox start={0.29 * values.scrollLength} className="h-[500px] w-full overflow-y-auto rounded-lg border">
           <ScrollMask
             variant={values.variant as ScrollMaskVariant}
             word={values.word}
