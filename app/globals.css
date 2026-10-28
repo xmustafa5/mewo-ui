@@ -156,6 +156,18 @@
   background-size: 18px 18px;
 }
 
+/* The ground a narrowed preview leaves bare: a 40px grid of dashed lines. */
+@utility bg-dashed-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in oklch, var(--foreground) 10%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklch, var(--foreground) 10%, transparent) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image:
+    repeating-linear-gradient(to right, #000 0 3px, transparent 3px 8px),
+    repeating-linear-gradient(to bottom, #000 0 3px, transparent 3px 8px);
+  mask-composite: intersect;
+}
+
 /* While a preview's resize handle is dragged, the whole page shows the resize cursor and nothing selects. */
 :root[data-preview-resizing],
 :root[data-preview-resizing] * {

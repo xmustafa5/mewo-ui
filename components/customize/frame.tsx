@@ -185,8 +185,16 @@ export function CustomizeFrame({
         </div>
       </div>
       <TabsContent value="preview">
-        {/* the stage, anchored on the left at the panel's width or the width set by a preset or the handle */}
+        {/* the stage, anchored on the left at the panel's width or the width set by a preset or the handle, over the
+            ground a narrower width leaves bare: a box at the full width with a dashed grid, shown while narrowed */}
         <div ref={panelRef} className="relative">
+          <div
+            aria-hidden
+            data-visible={size.width !== null || size.dragging || undefined}
+            className="pointer-events-none absolute inset-0 rounded-2xl border bg-card opacity-0 transition-opacity duration-300 data-visible:opacity-100 motion-reduce:transition-none"
+          >
+            <div className="absolute inset-0 rounded-[inherit] bg-dashed-grid" />
+          </div>
           <div
             data-slot="customize-frame"
             data-narrow={size.width !== null || undefined}
@@ -197,7 +205,8 @@ export function CustomizeFrame({
               fill && "min-h-0 p-0 sm:p-0",
               stageClassName,
             )}
-            style={{ maxWidth: size.width ?? undefined }}
+            // opaque, the same colour as the stage's own tint over the page, so the grid behind never shows through
+            style={{ maxWidth: size.width ?? undefined, backgroundColor: "color-mix(in srgb, var(--card) 40%, var(--background))" }}
           >
             <button
               type="button"
@@ -231,7 +240,7 @@ export function CustomizeFrame({
           <span
             aria-hidden
             className={cn(
-              "pointer-events-none absolute bottom-2.5 left-1/2 z-10 -translate-x-1/2 rounded-md bg-background/80 px-1.5 py-0.5 text-xs font-medium text-muted-foreground tabular-nums transition-opacity duration-300",
+              "pointer-events-none absolute bottom-2.5 left-1/2 z-10 -translate-x-1/2 text-xs leading-none font-medium text-muted-foreground tabular-nums transition-opacity duration-300 motion-reduce:transition-none",
               size.indicator ? "opacity-100" : "opacity-0",
             )}
           >
