@@ -17,7 +17,6 @@ export type Framing =
 export const PREVIEW_SIZE = { width: 960, height: 540 } as const
 
 const FRAMING: Record<string, Framing> = {
-  "aurora-background": { kind: "fill" },
   "pattern-waves": { kind: "fill" },
   grainient: { kind: "fill" },
   "dot-grid": { kind: "fill" },
@@ -25,13 +24,11 @@ const FRAMING: Record<string, Framing> = {
   "scroll-portal": { kind: "fill" },
   "tile-reveal": { kind: "fill" },
   "scroll-mask": { kind: "fill" },
-  "text-scroll-highlight": { kind: "fill", zoom: 1.5 },
   "text-shimmer": { kind: "center", zoom: 2.2 },
   "split-text": { kind: "center", zoom: 1.7 },
   venom: { kind: "fill" },
   marquee: { kind: "center", zoom: 1.9 },
   "spotlight-card": { kind: "center", zoom: 2.2 },
-  "scroll-reveal": { kind: "center", zoom: 2 },
   "album-rail": { kind: "center", zoom: 1 },
   // the story pieces: each demo is a box of its own (a scroll box, a pinned stage, a contained frame), so it fills the card
   "zoom-panel": { kind: "fill" },

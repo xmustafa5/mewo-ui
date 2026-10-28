@@ -151,11 +151,11 @@ describe("registry.json", () => {
       name: "sample-section",
       type: "registry:block",
       dependencies: ["lucide-react"],
-      registryDependencies: ["@mewo/aurora-background"],
+      registryDependencies: ["@mewo/pattern-waves"],
       files: [{ path: "registry/mewo/blocks/sample-section.tsx", type: "registry:component" }],
     } as RegistryItem
     const { getDependencies, getItem } = createRegistry([...items, section])
-    expect(getDependencies(getItem("sample-section")!)).toEqual(["lucide-react", "motion"])
+    expect(getDependencies(getItem("sample-section")!)).toEqual(["lucide-react", "ogl"])
   })
 
   it("dependencies list exactly the npm packages the file imports", () => {

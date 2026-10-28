@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 /** The live demos on the home page, laid out two over three. */
 const TILES = [
-  { name: "aurora-background", span: "lg:col-span-7" },
+  { name: "grainient", span: "lg:col-span-7" },
   { name: "spotlight-card", span: "lg:col-span-5" },
   { name: "text-shimmer", span: "lg:col-span-4" },
   { name: "split-text", span: "lg:col-span-4" },

@@ -12,7 +12,7 @@ describe("getSearchEntries", () => {
 
   it("labels each item with its sidebar group", () => {
     const marquee = getSearchEntries().find((e) => e.href === "/docs/marquee")
-    expect(marquee?.section).toBe("Layout")
+    expect(marquee?.section).toBe("Text")
   })
 })
 

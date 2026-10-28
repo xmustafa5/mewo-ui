@@ -8,7 +8,7 @@ import type { CustomizeProps } from "./types"
 import { changedProps } from "./usage"
 import { useCustomize } from "./use-customize"
 
-export const DEFAULTS = { captions: 5, step: 0.85, place: "middle", size: "default" }
+export const DEFAULTS = { captions: 5, step: 0.85, place: "middle", size: "large" }
 export const DEMO_ONLY = ["captions", "place", "size"] as const
 
 // the demo's captions, then two more

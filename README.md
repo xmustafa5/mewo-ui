@@ -42,12 +42,9 @@ that predate the directory, add the namespace to your `components.json` first:
 | `venom` | component | — |
 | `spotlight-card` | component | motion |
 | `gradient-carousel` | component | — |
-| `scroll-reveal` | component | motion |
 | `scroll-portal` | component | — |
 | `tile-reveal` | component | — |
 | `scroll-mask` | component | — |
-| `text-scroll-highlight` | component | — |
-| `aurora-background` | component | motion |
 | `pattern-waves` | component | ogl |
 | `grainient` | component | — |
 | `dot-grid` | component | — |

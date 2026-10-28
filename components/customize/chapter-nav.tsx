@@ -39,7 +39,7 @@ export default function ChapterNavCustomize({ code }: CustomizeProps) {
         // nav keeps to the inline end, at its own size)
         <div
           className={cn(
-            "relative h-[500px] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]",
+            "relative h-[500px] w-full overflow-hidden rounded-xl border [container-type:size] [contain:layout]",
             // the rail at its own unit; the panel's unit also keeps it inside the box's height
             "[&>[data-slot=chapter-nav]]:[--rail-u:min(14px,1.6cqw)]",
             "[&>[data-slot=chapter-nav]>button]:[--story-u:var(--rail-u)]!",

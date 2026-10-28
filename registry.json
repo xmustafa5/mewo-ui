@@ -27,7 +27,7 @@
       "type": "registry:ui",
       "title": "Marquee",
       "description": "An infinite horizontal scroller with a seamless loop. CSS only — no dependencies.",
-      "categories": ["layout"],
+      "categories": ["text"],
       "meta": { "added": "2026-09-15" },
       "files": [{ "path": "registry/mewo/ui/marquee.tsx", "type": "registry:ui" }],
       "css": {
@@ -82,24 +82,6 @@
       "categories": ["card"],
       "meta": { "added": "2026-10-01" },
       "files": [{ "path": "registry/mewo/ui/gradient-carousel.tsx", "type": "registry:ui" }]
-    },
-    {
-      "name": "scroll-reveal",
-      "type": "registry:ui",
-      "title": "Scroll Reveal",
-      "description": "Fades and slides its children in when they enter the viewport. Powered by Motion.",
-      "categories": ["scroll"],
-      "meta": { "added": "2026-09-15" },
-      "dependencies": ["motion"],
-      "files": [{ "path": "registry/mewo/ui/scroll-reveal.tsx", "type": "registry:ui" }],
-      "css": {
-        "@media (scripting: none)": {
-          "[data-slot=\"scroll-reveal\"]": {
-            "opacity": "1 !important",
-            "transform": "none !important"
-          }
-        }
-      }
     },
     {
       "name": "scroll-portal",
@@ -169,47 +151,6 @@
           },
           "[data-slot=\"scroll-mask-content\"]": {
             "opacity": "1 !important"
-          }
-        }
-      }
-    },
-    {
-      "name": "text-scroll-highlight",
-      "type": "registry:ui",
-      "title": "Text Scroll Highlight",
-      "description": "Text whose words light up one by one with the scroll, either as it moves up the screen or pinned in place like a subtitle. No dependencies.",
-      "categories": ["scroll"],
-      "meta": { "added": "2026-10-01" },
-      "files": [{ "path": "registry/mewo/ui/text-scroll-highlight.tsx", "type": "registry:ui" }],
-      "css": {
-        "@media (scripting: none)": {
-          "[data-slot=\"text-scroll-highlight-word\"]": {
-            "opacity": "1 !important"
-          },
-          "[data-slot=\"text-scroll-highlight-pin\"]": {
-            "height": "auto !important"
-          },
-          "[data-slot=\"text-scroll-highlight-stage\"]": {
-            "position": "static !important",
-            "height": "auto !important"
-          }
-        }
-      }
-    },
-    {
-      "name": "aurora-background",
-      "type": "registry:ui",
-      "title": "Aurora Background",
-      "description": "A slowly drifting gradient backdrop with a fade-in for its content. A WebGL 2 shader, with a static CSS gradient wherever WebGL is unavailable.",
-      "categories": ["background"],
-      "meta": { "added": "2026-09-15" },
-      "dependencies": ["motion"],
-      "files": [{ "path": "registry/mewo/ui/aurora-background.tsx", "type": "registry:ui" }],
-      "css": {
-        "@media (scripting: none)": {
-          "[data-slot=\"aurora-content\"]": {
-            "opacity": "1 !important",
-            "transform": "none !important"
           }
         }
       }
@@ -355,7 +296,7 @@
       "type": "registry:ui",
       "title": "Glass Panel",
       "description": "A glass panel that grows out of the button that opens it, its content dropping into place in turn. Parts like shadcn's dialog (GlassPanel, GlassPanelTrigger, GlassPanelContent, GlassPanelTitle, GlassPanelFooter, GlassPanelClose) on a non-modal Base UI dialog: Escape and a press outside close it, focus moves in and back.",
-      "categories": ["layout", "overlay"],
+      "categories": ["card", "overlay"],
       "meta": { "added": "2026-10-27" },
       "dependencies": ["@base-ui/react"],
       "files": [{ "path": "registry/mewo/ui/glass-panel.tsx", "type": "registry:ui" }]

@@ -9,7 +9,7 @@ import { useCustomize } from "./use-customize"
 
 type Width = "wide" | "narrow"
 
-export const DEFAULTS = { open: true, title: "About this story", lines: 3, width: "wide" as Width, showCloseButton: true }
+export const DEFAULTS = { open: false, title: "About this story", lines: 3, width: "wide" as Width, showCloseButton: true }
 // `showCloseButton` is a prop of GlassPanelContent, not of the root: the usage prints it on the content, inside the children
 export const DEMO_ONLY = ["open", "title", "lines", "width", "showCloseButton"] as const
 
@@ -52,11 +52,13 @@ export default function GlassPanelCustomize({ code }: CustomizeProps) {
       fill
       usage={{ name: "GlassPanel", item: "glass-panel", props: changedProps(values, defaults, DEMO_ONLY, computed), children }}
       preview={
-        // a transformed box contains the panel's fixed pieces, so the preview stays in its frame
-        <div className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+        // a layout-contained box holds the panel's fixed pieces, so the preview stays in its frame. The preview puts the
+        // trigger in the middle and centres the panel on it, so it grows out of the button where it is (on a page both
+        // keep to the top corner)
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl border [container-type:size] [contain:layout] [&_[data-slot=glass-panel-content]]:end-[calc(50%-var(--story-u)*25.4)]! [&_[data-slot=glass-panel-content]]:top-1/2! [&_[data-slot=glass-panel-content]]:-translate-y-1/2">
           {/* keyed on the value: the address is read after the first render, and an uncontrolled panel takes its initial state only once */}
           <GlassPanel key={String(values.open)} defaultOpen={values.open}>
-            <GlassPanelTrigger className="fixed top-[calc(var(--story-u)*2)] end-[calc(var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">
+            <GlassPanelTrigger className="fixed top-[calc(50%-var(--story-u)*2)] end-[calc(50%-var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">
               <span className="block h-[2px] w-[calc(var(--story-u)*1.45)] rounded-[1px] bg-current" />
               <span className="block h-[2px] w-[calc(var(--story-u)*1.45)] rounded-[1px] bg-current" />
               <span className="sr-only">{values.title}</span>
