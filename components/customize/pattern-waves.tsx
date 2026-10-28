@@ -57,7 +57,7 @@ export default function PatternWavesCustomize({ code }: CustomizeProps) {
       studioHref={`/studio?${studio}`}
       usage={{ name: "PatternWaves", item: "pattern-waves", props }}
       preview={
-        <div className="relative h-80 w-full overflow-hidden rounded-xl">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl">
           <PatternWaves className="absolute inset-0" preset={values.preset as PatternWavesPreset} {...overrides} color={values.color} backgroundColor={background || (light ? PAGE.light : PAGE.dark)} />
           <div className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center text-center text-foreground">
             <h2 className="text-3xl font-bold tracking-tight">Pattern Waves</h2>

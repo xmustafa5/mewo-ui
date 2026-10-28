@@ -40,7 +40,7 @@ export default function DotGridCustomize({ code }: CustomizeProps) {
       studioHref={`/studio?${studio}`}
       usage={{ name: "DotGrid", item: "dot-grid", props }}
       preview={
-        <div className="relative h-80 w-full overflow-hidden rounded-xl bg-background">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl bg-background">
           <DotGrid
             className="absolute inset-0"
             baseColor={values.baseColor}

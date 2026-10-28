@@ -41,7 +41,7 @@ export default function TiltedTilesCustomize({ code }: CustomizeProps) {
       usage={{ name: "TiltedTiles", item: "tilted-tiles", props: changedProps(values, defaults, DEMO_ONLY) }}
       preview={
         // the wall fills its parent, so the preview gives it a box, as the demo does
-        <div className="h-[480px] w-full overflow-hidden rounded-lg border">
+        <div className="h-[500px] w-full overflow-hidden rounded-lg border">
           <TiltedTiles {...values} />
         </div>
       }

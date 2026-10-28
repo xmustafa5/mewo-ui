@@ -12,7 +12,7 @@ export const DEFAULTS = { showRadialMask: true, height: "medium", title: "Aurora
 export const DEMO_ONLY = ["height", "title", "text"] as const
 
 // the demo's box: the height travels as a className in the usage
-const HEIGHTS: Record<string, string> = { short: "min-h-[240px]", medium: "min-h-[320px]", tall: "min-h-[440px]" }
+const HEIGHTS: Record<string, string> = { short: "min-h-[400px]", medium: "min-h-[500px]", tall: "min-h-[600px]" }
 const HEIGHT_OPTIONS = [
   { value: "short", label: "Short" },
   { value: "medium", label: "Medium" },

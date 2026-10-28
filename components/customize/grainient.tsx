@@ -53,7 +53,7 @@ export default function GrainientCustomize({ code }: CustomizeProps) {
       studioHref={`/studio?${studio}`}
       usage={{ name: "Grainient", item: "grainient", props }}
       preview={
-        <div className="relative h-80 w-full overflow-hidden rounded-xl">
+        <div className="relative h-[500px] w-full overflow-hidden rounded-xl">
           <Grainient
             className="absolute inset-0"
             colors={values.colors}
