@@ -456,6 +456,16 @@
       "categories": ["card"],
       "meta": { "added": "2026-10-28" },
       "files": [{ "path": "registry/mewo/ui/prism-carousel.tsx", "type": "registry:ui" }]
+    },
+    {
+      "name": "mewo-character",
+      "type": "registry:ui",
+      "title": "Mewo Character",
+      "description": "The mewo cat in a dream, its outline fraying into a slowly drifting fog: its round hand reaches for the pointer wherever it is, the arm stretching as far as it must, and stirs the fog as it goes; its eyes follow and its body leans in. Drawn with WebGL 2 on ogl; the drift can be stopped, and then it is idle while the pointer rests.",
+      "categories": ["background"],
+      "meta": { "added": "2026-10-28", "downloads": ["models/mewo.glb"] },
+      "dependencies": ["ogl"],
+      "files": [{ "path": "registry/mewo/ui/mewo-character.tsx", "type": "registry:ui" }]
     }
   ]
 }

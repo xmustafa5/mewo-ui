@@ -51,6 +51,8 @@ const FRAMING: Record<string, Framing> = {
   "depth-image": { kind: "fill" },
   "tilted-tiles": { kind: "fill" },
   "prism-carousel": { kind: "fill" },
+  // a background: the character in its dream fills the card
+  "mewo-character": { kind: "fill" },
   "depth-card": { kind: "center", zoom: 1.4 },
   "skewed-carousel": { kind: "center", zoom: 1.2 },
 }

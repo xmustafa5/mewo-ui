@@ -10,6 +10,7 @@ import { BlockPreview } from "@/components/site/block-preview"
 import { CodeBlock } from "@/components/site/code-block"
 import { ComponentPreview } from "@/components/site/component-preview"
 import { DependencyBadges } from "@/components/site/dependency-badges"
+import { DownloadNote } from "@/components/site/download-note"
 import { PageNav, SectionHeading } from "@/components/site/docs-ui"
 import { DropInWarning } from "@/components/site/dropin-warning"
 import { InstallCommand } from "@/components/site/install-command"
@@ -112,6 +113,7 @@ export default async function ItemPage({ params }: PageProps<"/docs/[name]">) {
         <SectionHeading id="install">Install</SectionHeading>
         {isDropIn(item) ? <DropInWarning name={item.name} /> : null}
         <InstallCommand name={item.name} isBlock={isBlock(item)} />
+        {item.meta?.downloads?.length ? <DownloadNote files={item.meta.downloads} /> : null}
       </section>
 
       <section className="space-y-4">

@@ -40,6 +40,7 @@ export const customize: Record<string, () => Promise<CustomizeModule>> = {
   "picture-wave": () => import("./picture-wave"),
   "picture-orbit": () => import("./picture-orbit"),
   "depth-image": () => import("./depth-image"),
+  "mewo-character": () => import("./mewo-character"),
   "tilted-tiles": () => import("./tilted-tiles"),
   // sections: their preview runs in a frame the panel drives
   "names-duel": () => import("./names-duel"),

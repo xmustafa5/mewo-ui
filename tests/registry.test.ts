@@ -89,6 +89,12 @@ describe("registry.json", () => {
     for (const item of items) if ("unlisted" in (item.meta ?? {})) expect(item.meta?.unlisted, item.name).toBe(true)
   })
 
+  // a file an item's page offers for download must be there to download
+  it("meta.downloads are files under public/", () => {
+    for (const item of items)
+      for (const file of item.meta?.downloads ?? []) expect(existsSync(path.join(process.cwd(), "public", file)), `${item.name}: public/${file}`).toBe(true)
+  })
+
   it("every item has a demo", () => {
     for (const item of items) expect(demos, `demo for ${item.name}`).toHaveProperty(item.name)
   })

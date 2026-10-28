@@ -16,9 +16,10 @@ export type RegistryItem = {
   /**
    * Site-only facts about the item. `added` is the ISO date it joined the catalog. `unlisted` marks a simple
    * piece that ships with a site built with mewo: it keeps its page and installs like any item, but the
-   * catalog, the sidebar, search and the counts leave it out.
+   * catalog, the sidebar, search and the counts leave it out. `downloads` are files the item loads that no install
+   * can carry (a 3D model), as paths under `public/`: its page offers them, to be put at the same path.
    */
-  meta?: { added?: string; unlisted?: boolean }
+  meta?: { added?: string; unlisted?: boolean; downloads?: string[] }
 }
 
 export const GROUP_ORDER = ["sections", "primitives", "text", "card", "scroll", "background", "layout"] as const
