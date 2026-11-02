@@ -4,6 +4,7 @@ import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { ChevronDown } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useSpring, useWidth } from "./spring"
 import { useScrub } from "./use-scrub"
 
 /*
@@ -41,9 +42,15 @@ const useHoverDevice = () =>
     () => false,
   )
 
-const TICKS = 9
+const ROW_HEIGHT = 40
+/** How many points draw the liquid's surface, top to bottom. */
+const SURFACE_STEPS = 8
 
-/** A number: scrub anywhere on the row, or use the arrow keys, Home and End. */
+/**
+ * A number: scrub anywhere on the row, or use the arrow keys, Home and End. The row holds a liquid in the brand
+ * colour, filled to the value, deeper at the bottom with a bright surface. The surface follows the value on a loose
+ * spring, so a drag makes it slosh: it ripples as it catches up and overshoots, then settles still and costs nothing.
+ */
 export function Slider({
   label,
   min = 0,
@@ -104,6 +111,19 @@ export function Slider({
 
   const shown = format ? format(value) : `${Number(value.toFixed(decimalsOf(step)))}${unit}`
 
+  const width = useWidth(trackRef)
+  const surface = useSpring(percentage, { stiffness: 170, damping: 11 })
+  const gradientId = React.useId()
+  // the surface, top to bottom, as a ripple that only shows while the liquid moves
+  const amplitude = clamp(Math.abs(surface.velocity) * 0.06, 0, 9)
+  const phase = surface.time * 30
+  const surfaceX = (width * clamp(surface.value, 0, 100)) / 100
+  const edge = Array.from({ length: SURFACE_STEPS + 1 }, (_, index) => {
+    const y = (index / SURFACE_STEPS) * ROW_HEIGHT
+    return `${(surfaceX + amplitude * Math.sin(phase + index * 0.9)).toFixed(1)} ${y.toFixed(1)}`
+  })
+  const surfaceLine = `M ${edge.join(" L ")}`
+
   return (
     <div
       ref={trackRef}
@@ -127,15 +147,19 @@ export function Slider({
       onMouseLeave={() => setHovering(false)}
       onKeyDown={onKeyDown}
     >
-      <div className="pointer-events-none absolute inset-y-0 left-0 rounded-[7px] bg-foreground/7" style={{ width: `${percentage}%` }} />
-      <div className="pointer-events-none absolute inset-0" aria-hidden>
-        {Array.from({ length: TICKS }, (_, index) => (
-          <i key={index} className="absolute top-1/2 h-2 w-px -translate-x-1/2 -translate-y-1/2 rounded-full bg-border" style={{ left: `${((index + 1) / (TICKS + 1)) * 100}%` }} />
-        ))}
-      </div>
-      <div className="pointer-events-none absolute top-1/2 z-3 -ml-1.5 -translate-x-1/2 -translate-y-1/2" style={{ left: `${percentage}%` }}>
-        <div className={cn("h-6.5 w-1.25 scale-70 rounded-full bg-foreground opacity-30 transition-[opacity,transform] duration-200 ease-out", active && "scale-100 opacity-90")} />
-      </div>
+      {width > 0 ? (
+        <svg aria-hidden width={width} height={ROW_HEIGHT} className="pointer-events-none absolute inset-0">
+          <defs>
+            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="var(--brand)" stopOpacity={active ? 0.16 : 0.1} />
+              <stop offset="1" stopColor="var(--brand)" stopOpacity={active ? 0.5 : 0.38} />
+            </linearGradient>
+          </defs>
+          <path d={`M 0 0 L ${edge.join(" L ")} L 0 ${ROW_HEIGHT} Z`} fill={`url(#${gradientId})`} />
+          <path d={surfaceLine} fill="none" stroke="var(--brand)" strokeWidth={2} strokeOpacity={0.95} />
+          <path d={surfaceLine} fill="none" stroke="white" strokeWidth={0.75} strokeOpacity={0.35} transform="translate(-1.5 0)" />
+        </svg>
+      ) : null}
       <span className={labelClass}>{label}</span>
       <span className={valueClass}>{shown}</span>
     </div>
