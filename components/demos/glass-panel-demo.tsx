@@ -1,12 +1,22 @@
+import { cn } from "@/lib/utils"
 import { GlassPanel, GlassPanelContent, GlassPanelFooter, GlassPanelTitle, GlassPanelTrigger } from "@/registry/mewo/ui/glass-panel"
 import type { PropDoc } from "./types"
 
 export default function GlassPanelDemo() {
   return (
-    // a transformed box contains the panel's fixed pieces, so the demo stays in its frame
-    <div className="relative w-full h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+    // a layout-contained box holds the panel's fixed pieces, so the demo stays in its frame. The demo puts the trigger
+    // in the middle and centres the panel on it, larger than on a page, so the panel reads in a card; the backdrop is a
+    // soft gradient in each theme's colours (on a page both keep to the top corner, at the page's size)
+    <div
+      className={cn(
+        "relative h-[70vh] w-full overflow-hidden rounded-xl border [container-type:size] [contain:layout]",
+        "bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] dark:bg-[linear-gradient(135deg,#2b2e3b,#181b25)]",
+        "[&_[data-slot=glass-panel]]:[--story-u:min(14px,1.6cqw,2.1cqh)]!",
+        "[&_[data-slot=glass-panel-content]]:end-[calc(50%-var(--story-u)*25.4)]! [&_[data-slot=glass-panel-content]]:top-1/2! [&_[data-slot=glass-panel-content]]:-translate-y-1/2",
+      )}
+    >
       <GlassPanel defaultOpen>
-        <GlassPanelTrigger className="fixed top-[calc(var(--story-u)*2)] end-[calc(var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">
+        <GlassPanelTrigger className="fixed top-[calc(50%-var(--story-u)*2)] end-[calc(50%-var(--story-u)*2)] grid size-[calc(var(--story-u)*4)] place-content-center gap-[calc(var(--story-u)*0.55)] rounded-sm bg-primary text-primary-foreground">
           <span className="block h-[2px] w-[calc(var(--story-u)*1.45)] rounded-[1px] bg-current" />
           <span className="block h-[2px] w-[calc(var(--story-u)*1.45)] rounded-[1px] bg-current" />
           <span className="sr-only">About this story</span>

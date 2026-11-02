@@ -1,10 +1,26 @@
+import { cn } from "@/lib/utils"
 import { ChapterNavLive } from "./chapter-nav-live"
 import type { PropDoc } from "./types"
 
 export default function ChapterNavDemo() {
   return (
-    // a transformed box contains the nav's fixed pieces, so the demo stays in its frame
-    <div className="relative w-full h-[70vh] overflow-hidden rounded-xl border bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] [container-type:size] [contain:layout]">
+    // a layout-contained box holds the nav's fixed pieces, so the demo stays in its frame. The demo shows the nav larger
+    // and in the middle: the rail centred, the panel centred on it and opening out of it, on a soft gradient in each
+    // theme's colours (on a page the nav keeps to the inline end, at its own size)
+    <div
+      className={cn(
+        "relative h-[70vh] w-full overflow-hidden rounded-xl border [container-type:size] [contain:layout]",
+        "bg-[linear-gradient(135deg,#e6e0dc,#dae2e8)] dark:bg-[linear-gradient(135deg,#2b2e3b,#181b25)]",
+        // the rail at its own unit; the panel's unit also keeps it inside the box's height
+        "[&>[data-slot=chapter-nav]]:[--rail-u:min(14px,1.6cqw)]",
+        "[&>[data-slot=chapter-nav]>button]:[--story-u:var(--rail-u)]!",
+        "[&>[data-slot=chapter-nav]>section]:[--story-u:min(14px,1.6cqw,2.1cqh)]!",
+        "[&>[data-slot=chapter-nav]>button]:end-[calc(50%-var(--story-u)*2)]!",
+        "[&>[data-slot=chapter-nav]>section]:end-[calc(50%-var(--story-u)*25.4)]!",
+        // closed, the panel's clip is the rail it opens out of, in the middle
+        "[&>[data-slot=chapter-nav]>section]:[clip-path:inset(calc((50%-var(--rail-u)*4.5)*(1-var(--chapter-nav-reveal)))_calc((50%-var(--rail-u)*2)*(1-var(--chapter-nav-reveal)))_calc((50%-var(--rail-u)*4.5)*(1-var(--chapter-nav-reveal)))_calc((50%-var(--rail-u)*2)*(1-var(--chapter-nav-reveal)))_round_calc(var(--story-u)*1.2))]!",
+      )}
+    >
       <ChapterNavLive />
     </div>
   )
