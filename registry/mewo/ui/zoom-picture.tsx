@@ -116,6 +116,8 @@ function scrollParent(node: HTMLElement): HTMLElement | null {
   return null
 }
 
+export const DEFAULT_SRC = "https://cataas.com/cat/2lo2luOySDGPFCng"
+
 /**
  * A picture that zooms in as the reader scrolls, from a small picture until it fills the view, pans down through
  * itself, then zooms back out and leaves. A dark scrim deepens as it grows (from a scale of 0.3 to 0.9), so white
@@ -123,7 +125,7 @@ function scrollParent(node: HTMLElement): HTMLElement | null {
  * stage moves it instead and writes its scale to `--s`.
  */
 export function ZoomPicture({
-  src = "https://picsum.photos/seed/mewo-zoom-picture-1/1000/1200",
+  src = DEFAULT_SRC,
   alt = "",
   scroll = true,
   children,

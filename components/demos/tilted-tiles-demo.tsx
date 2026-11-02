@@ -1,4 +1,4 @@
-import { TiltedTiles } from "@/registry/mewo/ui/tilted-tiles"
+import { TiltedTilesCats as TiltedTiles } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function TiltedTilesDemo() {

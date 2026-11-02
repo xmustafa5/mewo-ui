@@ -1,5 +1,6 @@
 "use client"
 
+import { PARALLAX_IMAGES } from "@/components/demos/cats"
 import { ParallaxCarousel } from "@/registry/mewo/ui/parallax-carousel"
 import { Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -36,7 +37,7 @@ export default function ParallaxCarouselCustomize({ code }: CustomizeProps) {
       onReset={reset}
       fill
       usage={{ name: "ParallaxCarousel", item: "parallax-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
-      preview={<ParallaxCarousel className="h-[600px]" {...values} />}
+      preview={<ParallaxCarousel className="h-[600px]" images={PARALLAX_IMAGES} {...values} />}
     >
       <Slider label="Image width" min={200} max={520} step={10} unit="px" value={values.imageWidth} onChange={(value) => set("imageWidth", value)} />
       <Slider label="Image height" min={260} max={600} step={10} unit="px" value={values.imageHeight} onChange={(value) => set("imageHeight", value)} />

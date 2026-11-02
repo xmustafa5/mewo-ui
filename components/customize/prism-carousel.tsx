@@ -1,5 +1,6 @@
 "use client"
 
+import { PRISM_ITEMS } from "@/components/demos/cats"
 import { PrismCarousel } from "@/registry/mewo/ui/prism-carousel"
 import { Color } from "./color-picker"
 import { Select, Slider, Switch } from "./controls"
@@ -68,7 +69,7 @@ export default function PrismCarouselCustomize({ code }: CustomizeProps) {
       preview={
         // the carousel fills its parent, so the preview gives it a box, as the demo does
         <div className="h-[500px] w-full overflow-hidden rounded-xl">
-          <PrismCarousel {...look} backgroundColor={background || undefined} />
+          <PrismCarousel items={PRISM_ITEMS} {...look} backgroundColor={background || undefined} />
         </div>
       }
     >

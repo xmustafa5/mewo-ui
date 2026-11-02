@@ -1,5 +1,6 @@
 "use client"
 
+import { SKEWED_ITEMS } from "@/components/demos/cats"
 import { SkewedCarousel } from "@/registry/mewo/ui/skewed-carousel"
 import { Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -35,7 +36,7 @@ export default function SkewedCarouselCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       usage={{ name: "SkewedCarousel", item: "skewed-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
-      preview={<SkewedCarousel aria-label="Sample photographs" className="py-6" {...values} />}
+      preview={<SkewedCarousel aria-label="Sample photographs" className="py-6" items={SKEWED_ITEMS} {...values} />}
     >
       <Slider label="Card width" min={120} max={320} step={10} unit="px" value={values.cardWidth} onChange={(value) => set("cardWidth", value)} />
       <Slider label="Rotation" min={0} max={90} step={5} unit="°" value={values.rotation} onChange={(value) => set("rotation", value)} />

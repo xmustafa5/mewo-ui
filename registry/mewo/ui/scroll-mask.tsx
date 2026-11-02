@@ -48,7 +48,7 @@ export interface ScrollMaskProps extends React.ComponentProps<"section"> {
   calm?: boolean
 }
 
-const DEFAULT_SRC = "https://picsum.photos/seed/mewo-scroll-mask/1600/1000"
+export const DEFAULT_SRC = "https://cataas.com/cat/fogXmHYpuMV51EaN"
 
 // Stops used to draw one feathered mask edge.
 const FEATHER_STEPS = 14

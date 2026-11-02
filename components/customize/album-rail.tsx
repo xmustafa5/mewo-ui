@@ -1,5 +1,6 @@
 "use client"
 
+import { ALBUMS } from "@/components/demos/cats"
 import { AlbumRail } from "@/registry/mewo/ui/album-rail"
 import { Color } from "./color-picker"
 import { Slider, Switch } from "./controls"
@@ -28,6 +29,7 @@ export default function AlbumRailCustomize({ code }: CustomizeProps) {
       preview={
         <div className="flex h-[500px] w-full items-center justify-center">
           <AlbumRail
+            albums={ALBUMS}
             size={values.size}
             visible={values.visible}
             turn={values.turn}

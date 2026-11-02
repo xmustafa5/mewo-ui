@@ -1,20 +1,20 @@
+import { NAMES_DUEL_CATS } from "./cat-pictures"
 import { NamesDuel } from "@/registry/mewo/blocks/names-duel"
 import type { PropDoc } from "./types"
 
-const pic = (n: number, w: number, h: number) => `https://picsum.photos/seed/mewo-names-duel-${n}/${w}/${h}`
 const credit = (title: string, by: string) => ({ title, by, line: "A museum somewhere. Placeholder photograph.", href: "#" })
 
 export default function NamesDuelDemo() {
   // the stage pins to its nearest scroll container, so the duels scroll inside this box: one picture, then two
   return (
     <div className="h-[70vh] w-full overflow-y-auto rounded-xl border bg-background [container-type:inline-size]">
-      <NamesDuel top="First ruler" bottom="Second ruler" pictures={[{ src: pic(1, 1000, 978), ratio: 1000 / 978, credit: credit("A carved disc", "c. 2300 BCE") }]} />
+      <NamesDuel top="First ruler" bottom="Second ruler" pictures={[{ ...NAMES_DUEL_CATS[0], credit: credit("A carved disc", "c. 2300 BCE") }]} />
       <NamesDuel
         top="Builder"
         bottom="Conqueror"
         pictures={[
-          { src: pic(2, 760, 1000), ratio: 760 / 1000, credit: credit("A law stone", "c. 1750 BCE") },
-          { src: pic(3, 960, 1000), ratio: 960 / 1000, credit: credit("A city gate", "c. 575 BCE") },
+          { ...NAMES_DUEL_CATS[1], credit: credit("A law stone", "c. 1750 BCE") },
+          { ...NAMES_DUEL_CATS[2], credit: credit("A city gate", "c. 575 BCE") },
         ]}
       />
     </div>

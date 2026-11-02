@@ -11,7 +11,7 @@ export const DEFAULTS = { maxRotationDegrees: 28, maxDepthPx: 140, minScale: 0.9
 export const DEMO_ONLY = [] as const
 
 // the demo's cards: any image URLs work, served with CORS headers so the backdrop can read their colours
-const IMAGES = Array.from({ length: 8 }, (_, index) => `https://picsum.photos/seed/mewo-carousel-${index + 1}/480/600`)
+import { GRADIENT_CATS as IMAGES } from "@/components/demos/cat-pictures"
 const percent = (value: number) => `${Math.round(value * 100)}%`
 const twoPlaces = (value: number) => value.toFixed(2)
 

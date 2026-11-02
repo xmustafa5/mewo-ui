@@ -1,5 +1,6 @@
 "use client"
 
+import { cat, optimized, pick, ZOOM_PANEL_CATS } from "@/components/demos/cat-pictures"
 import { ZoomPanelScroll } from "@/components/demos/zoom-panel-scroll"
 import { ZoomPanel, type ZoomPanelState } from "@/registry/mewo/ui/zoom-panel"
 import { Input, Select, Slider } from "./controls"
@@ -16,7 +17,7 @@ const DRIVER_OPTIONS = [
   { value: "manual", label: "The State row" },
 ]
 const STATE_OPTIONS = ["hidden", "shown", "open"]
-const srcOf = (picture: number) => `https://picsum.photos/seed/mewo-zoom-panel-${picture}/1600/1100`
+const srcOf = (picture: number) => cat(pick(ZOOM_PANEL_CATS, picture))
 
 export default function ZoomPanelCustomize({ code }: CustomizeProps) {
   const { values, defaults, changed, run, set, setMany, reset, replay } = useCustomize(DEFAULTS)
@@ -36,7 +37,7 @@ export default function ZoomPanelCustomize({ code }: CustomizeProps) {
       preview={
         // the demo's box, a size container the open panel takes its height from; scrolling inside it sets the state as a story's scroll does
         <div key={values.driver} className="relative h-[500px] w-full overflow-hidden rounded-xl border bg-muted/40 [container-type:size] [contain:layout]">
-          {scrolled ? <ZoomPanelScroll {...picture} /> : <ZoomPanel state={values.state as ZoomPanelState} {...picture} />}
+          {scrolled ? <ZoomPanelScroll {...picture} src={optimized(picture.src, 1200)} /> : <ZoomPanel state={values.state as ZoomPanelState} {...picture} src={optimized(picture.src, 1200)} />}
         </div>
       }
     >

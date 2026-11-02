@@ -1,4 +1,4 @@
-import { ZoomPanelScroll } from "./zoom-panel-scroll"
+import { ZoomPanelScrollCats as ZoomPanelScroll } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function ZoomPanelDemo() {
@@ -12,7 +12,7 @@ export default function ZoomPanelDemo() {
 
 export const props: PropDoc[] = [
   { name: "state", type: "\"hidden\" | \"shown\" | \"open\"", default: '"shown"', description: "Hidden, a thumbnail in the corner, or a large panel zoomed into one band of the picture. The page sets it (from its scroll, a button…); here the box's scroll does." },
-  { name: "src", type: "string", default: "a picsum photo", description: "The picture (about 3 : 2)." },
+  { name: "src", type: "string", default: "a cat photo", description: "The picture (about 3 : 2)." },
   { name: "alt", type: "string", default: '""', description: "Its description." },
   { name: "caption", type: "string", default: "a placeholder", description: "Shown in the open panel." },
   { name: "className", type: "string", description: "Merged onto the panel." },

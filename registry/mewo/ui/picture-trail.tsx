@@ -131,6 +131,11 @@ function scrollParent(node: HTMLElement): HTMLElement | null {
   return null
 }
 
+export const DEFAULT_IMAGE = {
+  src: "https://cataas.com/cat/2lnVocnpd25cUka7",
+  credit: { title: "The siege", by: "c. 1258 CE", line: "A museum somewhere. Placeholder photograph.", href: "#" },
+}
+
 /**
  * A picture's trail through time, told as the reader scrolls on a pinned stage: a huge name crosses the view, the
  * holders pass in turn beside the picture, and a second huge name follows and stays faded behind it. Pins to its
@@ -141,10 +146,7 @@ export function PictureTrail({
   top = "Conqueror",
   bottom = "Last ruler",
   holders = ["First dynasty", "Second dynasty", "Third dynasty", "Fourth dynasty", "Fifth dynasty", "Sixth dynasty"],
-  image = {
-    src: "https://picsum.photos/seed/mewo-picture-trail-1/1330/1478",
-    credit: { title: "The siege", by: "c. 1258 CE", line: "A museum somewhere. Placeholder photograph.", href: "#" },
-  },
+  image = DEFAULT_IMAGE,
   className,
   style,
   ...props

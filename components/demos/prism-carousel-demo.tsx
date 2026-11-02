@@ -1,4 +1,4 @@
-import { PrismCarousel } from "@/registry/mewo/ui/prism-carousel"
+import { PrismCarouselCats as PrismCarousel } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function PrismCarouselDemo() {

@@ -12,7 +12,7 @@ export const DEFAULTS = { tiles: 12, columns: 3, gap: 28, tileRadius: 0, graysca
 export const DEMO_ONLY = ["tiles"] as const
 
 // any image URLs work; these are placeholders
-const IMAGES = Array.from({ length: 12 }, (_, index) => `https://picsum.photos/seed/mewo-tile-${index + 1}/480/480`)
+import { TILE_CATS as IMAGES } from "@/components/demos/cat-pictures"
 const DIRECTION_OPTIONS = [
   { value: "alternate", label: "Alternate" },
   { value: "top", label: "From the top" },

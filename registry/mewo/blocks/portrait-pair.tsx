@@ -85,7 +85,6 @@ function scrollParent(node: HTMLElement): HTMLElement | null {
   return null
 }
 
-const pic = (n: number, w: number, h: number) => `https://picsum.photos/seed/mewo-portrait-pair-${n}/${w}/${h}`
 const credit = (title: string) => ({ title, by: "c. 1230 CE", line: "A library somewhere. Placeholder photograph." })
 
 const PIECE = "absolute top-0 left-0 will-change-transform motion-reduce:static motion-reduce:will-change-auto"
@@ -95,6 +94,15 @@ const FADE = cn(
   "data-on:visible data-on:opacity-100 data-on:[transition:opacity_0.8s_cubic-bezier(0.455,0.03,0.515,0.955),visibility_0s]",
   "motion-reduce:visible motion-reduce:opacity-100 motion-reduce:transition-none"
 )
+
+export const DEFAULT_FIRST = { src: "https://cataas.com/cat/3k33qCkv5z4j455T", ratio: 958 / 1280, credit: credit("A library") }
+export const DEFAULT_SECOND = { src: "https://cataas.com/cat/28ZtVybuyptnWzTM", ratio: 960 / 1280, credit: credit("Men treading grapes") }
+export const DEFAULT_SKETCHES = [
+  { src: "https://cataas.com/cat/Y5sa4SJv5hDVCQfp", ratio: 700 / 637 },
+  { src: "https://cataas.com/cat/7FJaGUdoeOoWhxMr", ratio: 450 / 600 },
+  { src: "https://cataas.com/cat/BRPOKxA78mX8F5AZ", ratio: 450 / 600 },
+  { src: "https://cataas.com/cat/8xT3cGKtV11UhTQ8", ratio: 528 / 600 },
+]
 
 /**
  * Two portraits and the small pictures around them, played by scroll on a pinned stage. A large line shows alone.
@@ -107,14 +115,9 @@ export function PortraitPair({
   line = "A new capital was founded on the river.",
   text = "Scholars there translated old books, and painters illustrated new ones.",
   href,
-  first = { src: pic(1, 740, 1024), ratio: 740 / 1024, credit: credit("A library") },
-  second = { src: pic(2, 860, 1240), ratio: 860 / 1240, credit: credit("Men treading grapes") },
-  sketches = [
-    { src: pic(3, 400, 314), ratio: 400 / 314 },
-    { src: pic(4, 316, 400), ratio: 316 / 400 },
-    { src: pic(5, 312, 400), ratio: 312 / 400 },
-    { src: pic(6, 330, 400), ratio: 330 / 400 },
-  ],
+  first = DEFAULT_FIRST,
+  second = DEFAULT_SECOND,
+  sketches = DEFAULT_SKETCHES,
   length = END,
   className,
   style,

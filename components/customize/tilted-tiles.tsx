@@ -1,5 +1,6 @@
 "use client"
 
+import { TILTED_IMAGES } from "@/components/demos/cats"
 import { TiltedTiles } from "@/registry/mewo/ui/tilted-tiles"
 import { Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -42,7 +43,7 @@ export default function TiltedTilesCustomize({ code }: CustomizeProps) {
       preview={
         // the wall fills its parent, so the preview gives it a box, as the demo does
         <div className="h-[500px] w-full overflow-hidden rounded-lg border">
-          <TiltedTiles {...values} />
+          <TiltedTiles images={TILTED_IMAGES} {...values} />
         </div>
       }
     >

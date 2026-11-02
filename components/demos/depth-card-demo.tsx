@@ -1,4 +1,4 @@
-import { DepthCard } from "@/registry/mewo/ui/depth-card"
+import { DepthCardCats as DepthCard } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function DepthCardDemo() {

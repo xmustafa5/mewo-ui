@@ -24,6 +24,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <head>
+        {/* the placeholder cats come from cataas.com on nearly every component page: open the connection early */}
+        <link rel="preconnect" href="https://cataas.com" />
+        <link rel="dns-prefetch" href="https://cataas.com" />
+      </head>
       <body className="flex min-h-full flex-col">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}

@@ -1,5 +1,6 @@
 "use client"
 
+import { cat, CLOUD_CATS, optimized, pick } from "@/components/demos/cat-pictures"
 import * as React from "react"
 import { PictureCloud, type PictureCloudControls, type PictureCloudProps } from "@/registry/mewo/ui/picture-cloud"
 import { Slider, Switch } from "./controls"
@@ -11,7 +12,7 @@ import { useCustomize } from "./use-customize"
 export const DEFAULTS = { count: 1766, petals: 10, outlines: true, pictures: 0, scroll: 6 }
 export const DEMO_ONLY = ["pictures", "scroll"] as const
 
-const picturesOf = (count: number) => Array.from({ length: count }, (_, index) => `https://picsum.photos/seed/mewo-picture-cloud-${index + 1}/400/400`)
+const picturesOf = (count: number) => Array.from({ length: count }, (_, index) => optimized(cat(pick(CLOUD_CATS, index + 1)), 256))
 
 /** The demo's box: it scrolls by itself, and its scroll position drives the cloud through its whole sequence. */
 function CloudBox({ scroll, ...props }: { scroll: number } & PictureCloudProps) {

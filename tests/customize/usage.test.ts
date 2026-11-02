@@ -41,7 +41,7 @@ describe("usageText", () => {
     const text = usageText({
       name: "ZoomPicture",
       item: "zoom-picture",
-      props: { src: "https://picsum.photos/seed/mewo-zoom-picture-3/1000/1200", alt: "A field after rain" },
+      props: { src: "https://cataas.com/cat/3pr4EmlAcw5PczC9", alt: "A field after rain" },
       children: '<p className="text-2xl">Who made it</p>',
     })
     expect(text).toBe(
@@ -49,7 +49,7 @@ describe("usageText", () => {
         'import { ZoomPicture } from "@/components/ui/zoom-picture"',
         "",
         "<ZoomPicture",
-        '  src="https://picsum.photos/seed/mewo-zoom-picture-3/1000/1200"',
+        '  src="https://cataas.com/cat/3pr4EmlAcw5PczC9"',
         '  alt="A field after rain"',
         ">",
         '  <p className="text-2xl">Who made it</p>',
