@@ -74,7 +74,7 @@ describe("DepthCard", () => {
     expect(screen.getByRole("heading", { level: 3 })).toHaveTextContent("Quiet Ridge")
     expect(screen.getByText("First light over the high pass.")).toBeInTheDocument()
     expect(layersOf(root)).toHaveLength(1)
-    expect(layersOf(root)[0].style.backgroundImage).toContain("picsum.photos/seed/mewo-depth-card-1")
+    expect(layersOf(root)[0].style.backgroundImage).toContain("cataas.com/cat/")
   })
 
   it("keeps the root ref for the consumer", () => {

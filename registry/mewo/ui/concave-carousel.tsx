@@ -81,7 +81,7 @@ export interface ConcaveCarouselProps extends Omit<React.ComponentProps<"div">, 
   controlsRef?: React.Ref<ConcaveCarouselControls>
 }
 
-const DEFAULT_ITEMS: ConcaveCarouselItem[] = [
+export const DEFAULT_ITEMS: ConcaveCarouselItem[] = [
   ["Harbour Light", "Morning on the water"],
   ["Paper Lanterns", "A street after rain"],
   ["Quiet Ridge", "Above the tree line"],
@@ -91,7 +91,7 @@ const DEFAULT_ITEMS: ConcaveCarouselItem[] = [
   ["Copper Field", "Late summer, low sun"],
   ["Still Water", "A lake with no wind"],
 ].map(([title, subtitle], index) => ({
-  src: `https://picsum.photos/seed/mewo-concave-carousel-${index + 1}/800/640`,
+  src: `https://cataas.com/cat/${["afcjk0kZwJsapLu4", "4zJgFagrJcsYIDks", "VYLBb86IBQNRMCa9", "OK7AhogAWT9naJqJ", "1LlIgMhb3DfoW4qw", "nBsZd23B3uqH6AGy", "kPvP0fDe61Q2ujXV", "nu2fL4UsGVlbTn8U"][index]}`,
   alt: "Placeholder photograph",
   title,
   subtitle,

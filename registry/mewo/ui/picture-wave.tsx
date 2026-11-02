@@ -44,18 +44,29 @@ type Settings = Required<Pick<PictureWaveProps, "images" | "state" | "orientatio
 type World = "horizontal" | "vertical"
 type Keys = readonly (readonly [number, number])[]
 
-// the default pictures' proportions: the field's layout is seeded from them
-const ASPECTS = [
-  1, 1.286, 0.783, 0.75, 0.75, 0.75, 0.729, 0.639, 0.678, 1.27, 0.896, 1.13, 1.399, 0.834, 1.43, 0.531, 0.781, 0.803,
-  0.564, 0.766, 1.047, 0.672, 0.682, 0.787, 1.258, 0.51, 0.688, 1.182, 1.442, 0.656, 1.249, 2.306, 1.326, 1.249, 1.135,
-  0.75, 2.265, 1.306, 1.889, 0.971, 0.748, 0.49, 1.249, 0.748, 1.488, 0.678, 0.748, 0.75, 0.826, 0.814, 0.719, 1.384,
-  1.058, 2.317, 1.59, 1.501, 1.506, 1.501, 1.497, 1.506, 1.506, 1.369, 1.323, 1.506, 1.008, 1.556, 0.756, 0.805, 1.299,
-  1.358, 0.734, 1.333,
+// the default pictures: placeholder cats, each a fixed one from cataas.com at its small size, with its proportions
+// (width ÷ height), which seed the field's layout
+const CATS: [id: string, aspect: number][] = [
+  ["9KJtZfvlNhq7KbAm", 1.502], ["eM4t8b4yK9eu2hPm", 0.558], ["h4QKV0SMYKgSqHKV", 1.667], ["qEUtU3MgNTamybTm", 0.562],
+  ["RGUEWaEBQfkVW8zJ", 0.812], ["YqxwxAM4KsP47qTE", 0.747], ["3OI0zHkZS3RCb8xa", 0.785], ["0F0IKAPOdWiE755P", 0.562],
+  ["0mstmOIucwiN80jb", 1.35], ["1bJraW0IwSPm3MVd", 0.75], ["1N2AH31jiY6N9TYc", 0.559], ["2AjkEyDta2fk44NE", 0.75],
+  ["2Bb8z8bR1w5EFHhz", 0.562], ["2eXYJhGolHqOAKaM", 0.883], ["2xsQpqvspMC4OjXs", 0.562], ["3zM2HCQRdiZHB3Oo", 0.562],
+  ["4cnQObJyASFknf5L", 0.451], ["5enhMoq1fey3akP5", 0.75], ["7b6yOergmSkMZH7w", 1.778], ["7d7EPnouLU1Vwkdc", 1.003],
+  ["7VVdI0PDAwo0GLeJ", 0.562], ["89ddp91tTolLtlPz", 0.45], ["9hrU6WQjC4dn75hm", 0.642], ["A8f9fzuNUo7m54Jn", 0.563],
+  ["aKJD8Z7P8bQ8FDZ8", 1.923], ["BcBdLFp6n00qaTAm", 0.752], ["blCoC4jk99A5ChEC", 0.747], ["bOakL3BtHlryCLW3", 0.75],
+  ["3xajd1BkJ3RbfSkx", 0.667], ["GILRuBVxMjB0htly", 0.75], ["BuhnkqtpZqAxfsqQ", 0.562], ["iTmHMagWzAFn7fWM", 0.748],
+  ["mJ75VJU1htTphntH", 0.75], ["mrPYfaRfJqUmxHN0", 0.75], ["nxxtDWRE2dbpfM4D", 0.75], ["OZMYTHi2vMfUZEz0", 1.782],
+  ["ToFVsijtJWykEzKp", 0.753], ["VCV7NVM2hPvTPCc2", 1.333], ["xAeSjzULC9p4K8dz", 0.75], ["7xrDGcZqKEL4VTAM", 0.6],
+  ["G2gU9xo3HUvi70LL", 0.75], ["i17rOOhMY9XBvrUr", 0.75], ["NuCbxqOj92foqkh4", 0.748], ["S7LsxaFfwWhOZ6ir", 0.751],
+  ["TTY9yyybuIJMHYWs", 0.75], ["um3WTSJgjcOYucjo", 0.562], ["UPOwrNmxZARXkZuV", 0.75], ["VGIZrxdpLB3domok", 0.75],
+  ["yDesNhidQSPbzLAz", 0.752], ["YxFaRBNhBAMi1vBP", 0.998], ["5n4MTAC6ld0bVeCe", 1.778], ["AZo9zQWvZFvOBdGF", 1.734],
+  ["dBaJIho0PvGiwVsm", 0.752], ["JazIRPFqDYCXNJaA", 1.176], ["ngfJ6lSzEdJQ9GO8", 1.013], ["OcCyCN1wBhrCZAvP", 1.333],
+  ["7kM2cnX1djCXn0ut", 1.333], ["BswnFbCjndW2X9oO", 0.932], ["EMgyHa7PjTe3j9SE", 0.75], ["IN8bFy4SO9xHp4ib", 0.75],
+  ["YHCa57fmqzJfBODT", 0.8], ["1CF7xZmlX0t8QpgP", 1.504], ["1DrcyohjhwcNaRIz", 1.333], ["1KeQpy7eHqi0SFmc", 0.75],
+  ["1ntkA1kLWffNS2xN", 1.778], ["1si02A2ZNdeNH3yo", 0.802], ["1wpap8yckt96vOoU", 1.027], ["1Y3dpssxcbHPEkfO", 0.75],
+  ["22tTAaFI1Q33YBGO", 1.778], ["28ZtVybuyptnWzTM", 0.75], ["2lnVocnpd25cUka7", 0.906], ["2lo2luOySDGPFCng", 0.75],
 ]
-const PICTURES: PictureWaveImage[] = ASPECTS.map((aspect, i) => ({
-  src: `https://picsum.photos/seed/mewo-picture-wave-${i + 1}/${Math.round(300 * aspect)}/300`,
-  aspect,
-}))
+export const PICTURES: PictureWaveImage[] = CATS.map(([id, aspect]) => ({ src: `https://cataas.com/cat/${id}?type=small`, aspect }))
 const WORDS = ["Between", "Rivers"]
 
 // The sequence, in seconds from the first card: the wave grows in about its centre, holds (where "wave" rests),

@@ -45,7 +45,7 @@ export interface AlbumRailProps extends Omit<React.ComponentProps<"div">, "child
   onPlayChange?: (playing: boolean, index: number, album: AlbumRailItem) => void
 }
 
-const DEFAULT_ALBUMS: AlbumRailItem[] = [
+export const DEFAULT_ALBUMS: AlbumRailItem[] = [
   ["Paper Lanterns", "Juniper Hale"],
   ["Neon Orchard", "The Glass Foxes"],
   ["Quiet Engines", "Ottilie Marsh"],
@@ -56,7 +56,7 @@ const DEFAULT_ALBUMS: AlbumRailItem[] = [
   ["Northbound Lines", "Pine & Ash"],
   ["Echoes in Blue", "Theo Laurent"],
   ["Wild Signal", "Kite Season"],
-].map(([title, artist], index) => ({ title, artist, cover: `https://picsum.photos/seed/mewo-album-rail-${index + 1}/600/600` }))
+].map(([title, artist], index) => ({ title, artist, cover: `https://cataas.com/cat/${["JazIRPFqDYCXNJaA", "ngfJ6lSzEdJQ9GO8", "1wpap8yckt96vOoU", "2wfWxhA4oS7bGUFW", "2XYz3V6PILrrvZn6", "43hNBvUK9fAKsHv3", "4v9FDCzfJ9WkSn2V", "5RbMoA2duqnmB8ez", "98qvAp6CYXZMLztN", "SXLh7Co7iYYEVVgi"][index]}` }))
 
 // Fan geometry, in units of the sleeve edge. The first neighbour's centre sits SPREAD from the front one's,
 // the second sits STACK further out, and every gap after that is DECAY times the one before.

@@ -83,7 +83,7 @@ export interface PrismCarouselProps extends Omit<React.ComponentProps<"div">, "o
   children?: React.ReactNode
 }
 
-const DEFAULT_ITEMS: PrismCarouselItem[] = [
+export const DEFAULT_ITEMS: PrismCarouselItem[] = [
   ["Harbour Light", "Morning on the water"],
   ["Paper Moon", "A quiet night in the city"],
   ["Salt Road", "Across the flats at noon"],
@@ -93,7 +93,7 @@ const DEFAULT_ITEMS: PrismCarouselItem[] = [
   ["Copper Field", "Late sun on the grass"],
   ["Blue Hollow", "Cold air before dawn"],
 ].map(([title, subtitle], index) => ({
-  src: `https://picsum.photos/seed/mewo-prism-carousel-${index + 1}/1200/800`,
+  src: `https://cataas.com/cat/${["AZo9zQWvZFvOBdGF", "OcCyCN1wBhrCZAvP", "1DrcyohjhwcNaRIz", "4CGBn8ySN95C7cG6", "5ieh9ATqpWGGSpdH", "9BbLV02Aj1E3pJfV", "9pbDi3QZsDUt40ha", "AYKSorXzeDn2lVD7"][index]}`,
   alt: `Placeholder photograph for ${title}`,
   title,
   subtitle,

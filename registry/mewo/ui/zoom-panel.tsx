@@ -16,6 +16,8 @@ export interface ZoomPanelProps extends React.ComponentProps<"div"> {
   caption?: string
 }
 
+export const DEFAULT_SRC = "https://cataas.com/cat/UVu5vTLianSvI6Ju"
+
 /**
  * A document in the corner that opens into a large panel: the picture grows and slides with the panel, and two
  * shades leave one band of it clear, like a highlighted line in a ledger. Positioned in its nearest positioned
@@ -23,7 +25,7 @@ export interface ZoomPanelProps extends React.ComponentProps<"div"> {
  */
 export function ZoomPanel({
   state = "shown",
-  src = "https://picsum.photos/seed/mewo-zoom-panel-1/1600/1100",
+  src = DEFAULT_SRC,
   alt = "",
   caption = "A record, one line highlighted. Placeholder photograph.",
   className,

@@ -12,9 +12,11 @@ export interface PictureFigureProps extends Omit<React.ComponentProps<"figure">,
   caption?: React.ReactNode
 }
 
+export const DEFAULT_SRC = "https://cataas.com/cat/1si02A2ZNdeNH3yo"
+
 /** A picture at its proportions, its height set by className, with a caption hanging under it that takes no room. */
 export function PictureFigure({
-  src = "https://picsum.photos/seed/mewo-picture-figure-1/800/1000",
+  src = DEFAULT_SRC,
   ratio = 4 / 5,
   alt = "",
   caption,

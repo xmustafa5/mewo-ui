@@ -55,7 +55,7 @@ export interface DepthCardProps extends Omit<React.ComponentProps<"div">, "title
   spotlightColor?: string
 }
 
-const DEFAULT_IMAGE = "https://picsum.photos/seed/mewo-depth-card-1/480/640"
+export const DEFAULT_IMAGE = "https://cataas.com/cat/PRHr1MTVrPmV08W1"
 
 // The tilt covers 10% of the remaining distance per 60 fps frame. It is applied per elapsed second, so
 // the ease takes the same time at 30, 60 or 144 fps.

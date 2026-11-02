@@ -73,7 +73,8 @@ interface TextureEntry {
   released: boolean
 }
 
-const DEFAULT_IMAGES = Array.from({ length: 8 }, (_, index) => `https://picsum.photos/seed/mewo-parallax-carousel-${index + 1}/1200/800`)
+// placeholder cats, each a fixed one from cataas.com (served with CORS), so the strip shows the same pictures every time
+export const DEFAULT_IMAGES = ["7aqq2nCe7IiZEKjJ", "7U01QMCY91SvOpyk", "5n4MTAC6ld0bVeCe", "Tp3xHAlsE30nHEsC", "2R4fwl2tPwmSwvp1", "BbXEl9TskqkOjzyr", "tFhSg8kwne156Mj9", "pSvsRuMYzn3AoBGx"].map((id) => `https://cataas.com/cat/${id}`)
 
 // An image slides by this share of its drawn width, times the intensity, when its plane is half a view from the centre.
 const PARALLAX_SCALE = 0.5

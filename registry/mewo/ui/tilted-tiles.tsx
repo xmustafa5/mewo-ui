@@ -82,7 +82,8 @@ type TileLayout = {
   planeHeight: number
 }
 
-const DEFAULT_IMAGES = Array.from({ length: 10 }, (_, index) => `https://picsum.photos/seed/mewo-tilted-tiles-${index + 1}/500/500`)
+// placeholder cats, each a fixed one from cataas.com, so the wall shows the same pictures every time
+export const DEFAULT_IMAGES = ["Hf6aYSyQA6KvwdCC", "TurdNaGGOVB83svm", "B2n9aaCoiKybcCzZ", "7kM2cnX1djCXn0ut", "1CF7xZmlX0t8QpgP", "azOz9jKqE8UBIlec", "B4K5IPrryCO0jM1z", "3FFBdyyYOHKQQowl", "fp5E3gxmEf1Qxcbc", "nzb8sRlq6Zweozwx"].map((id) => `https://cataas.com/cat/${id}`)
 
 // The fade's measured stops: [share of the fade height, opacity]. The fade eases in slowly, then opens up.
 const FADE_STOPS: [number, number][] = [

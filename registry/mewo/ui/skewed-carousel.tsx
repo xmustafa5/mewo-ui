@@ -53,7 +53,7 @@ export interface SkewedCarouselProps extends Omit<React.ComponentProps<"div">, "
   onIndexChange?: (index: number) => void
 }
 
-const DEFAULT_ITEMS: SkewedCarouselItem[] = [
+export const DEFAULT_ITEMS: SkewedCarouselItem[] = [
   "Northern Light",
   "Paper Cranes",
   "Quiet Harbour",
@@ -64,7 +64,7 @@ const DEFAULT_ITEMS: SkewedCarouselItem[] = [
   "Night Market",
   "Still Water",
   "Long Shadow",
-].map((title, index) => ({ title, image: `https://picsum.photos/seed/mewo-skewed-${index + 1}/400/534` }))
+].map((title, index) => ({ title, image: `https://cataas.com/cat/${["dBaJIho0PvGiwVsm", "BswnFbCjndW2X9oO", "EMgyHa7PjTe3j9SE", "IN8bFy4SO9xHp4ib", "YHCa57fmqzJfBODT", "1si02A2ZNdeNH3yo", "37guCJ2aCCt3m360", "C5Ddbc1ilh45jiAk", "HTjBKfHqCZn9lkRt", "FAkFJCfYbZOF8aDI"][index]}` }))
 
 // Springs, in rad/s at speed 1 and as a damping ratio. The strip overshoots a little, the slides barely.
 const STRIP_SPRING = { omega: 11.25, zeta: 0.8 }

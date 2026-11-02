@@ -118,7 +118,7 @@ export interface DepthField {
   rg: Float32Array
 }
 
-const DEFAULT_IMAGE = "https://picsum.photos/seed/mewo-depth-image-1/1600/1000"
+const DEFAULT_IMAGE = "https://cataas.com/cat/Vw1PCxvyAshg1Cz7"
 
 // Resolution of the depth and detail map, in texels across. Its height follows the photo's aspect.
 const MAP_WIDTH = 512

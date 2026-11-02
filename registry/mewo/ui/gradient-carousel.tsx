@@ -39,7 +39,8 @@ export interface GradientCarouselProps extends Omit<React.ComponentProps<"div">,
 type Rgb = [number, number, number]
 type Palette = [Rgb, Rgb]
 
-const DEFAULT_IMAGES = Array.from({ length: 8 }, (_, index) => `https://picsum.photos/seed/mewo-carousel-${index + 1}/640/800`)
+// placeholder cats, each a fixed one from cataas.com, so the carousel shows the same pictures every time
+export const DEFAULT_IMAGES = ["1KeQpy7eHqi0SFmc", "1Y3dpssxcbHPEkfO", "2lnVocnpd25cUka7", "2xkeeR99sD9uaqre", "3B3hpEDNeHSVKii0", "AVCQprn27w2b4mLB", "bJCwfolcg9LYnc61", "5dXZ2o7tBtnsFIYH"].map((id) => `https://cataas.com/cat/${id}`)
 
 // Scale of the centre card; it reads larger than this because it also sits forward.
 const CENTRE_SCALE = 0.95

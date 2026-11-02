@@ -80,7 +80,6 @@ function scrollParent(node: HTMLElement): HTMLElement | null {
   return null
 }
 
-const pic = (n: number, w: number, h: number) => `https://picsum.photos/seed/mewo-names-duel-${n}/${w}/${h}`
 
 const PIECE = "absolute top-0 -translate-x-1/2 will-change-transform motion-reduce:static motion-reduce:translate-x-0 motion-reduce:will-change-auto"
 const NAME = "font-heading text-[length:min(14.375cqw,25cqh)] leading-none font-normal tracking-[-0.03em] whitespace-nowrap @max-[900px]:text-[length:min(14.93cqw,67px)]"
@@ -89,6 +88,8 @@ const HEIGHTS = [
   ["h-[45cqh] @max-[900px]:h-[min(80cqw,57cqh)]"],
   ["h-[37cqh] @max-[900px]:h-[min(55cqw,34.8cqh)]", "h-[31.4cqh] @max-[900px]:h-[min(46cqw,40cqh)]"],
 ]
+
+export const DEFAULT_PICTURES = [{ src: "https://cataas.com/cat/43hNBvUK9fAKsHv3", ratio: 800 / 747, credit: { title: "A carved disc", by: "c. 2300 BCE", line: "A museum somewhere. Placeholder photograph." } }]
 
 /**
  * Two huge names and the pictures between them, played by scroll on a pinned stage. The first name rises and rests at
@@ -99,7 +100,7 @@ const HEIGHTS = [
 export function NamesDuel({
   top = "First ruler",
   bottom = "Second ruler",
-  pictures = [{ src: pic(1, 1000, 978), ratio: 1000 / 978, credit: { title: "A carved disc", by: "c. 2300 BCE", line: "A museum somewhere. Placeholder photograph." } }],
+  pictures = DEFAULT_PICTURES,
   length = END - LEAD,
   className,
   style,

@@ -8,7 +8,7 @@ describe("ZoomPanel", () => {
     const root = container.querySelector('[data-slot="zoom-panel"]')
     expect(root).toHaveAttribute("data-state", "shown")
     expect(root).toHaveClass("absolute", "z-20")
-    expect(container.querySelector("img")).toHaveAttribute("src", expect.stringContaining("picsum.photos"))
+    expect(container.querySelector("img")).toHaveAttribute("src", expect.stringContaining("cataas.com/cat/"))
   })
 
   it("carries its state and caption", () => {
