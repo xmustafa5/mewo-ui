@@ -1,5 +1,6 @@
 "use client"
 
+import { SCROLL_MASK_SRC } from "@/components/demos/cats"
 import { ScrollBox } from "@/components/demos/scroll-box"
 import { ScrollMask, type ScrollMaskVariant } from "@/registry/mewo/ui/scroll-mask"
 import { Input, Select, Slider } from "./controls"
@@ -45,6 +46,7 @@ export default function ScrollMaskCustomize({ code }: CustomizeProps) {
         // into the reveal, as the demo does, the reveal being scrollLength box heights long
         <ScrollBox start={0.29 * values.scrollLength} className="h-[500px] w-full overflow-y-auto rounded-lg border">
           <ScrollMask
+            src={SCROLL_MASK_SRC}
             variant={values.variant as ScrollMaskVariant}
             word={values.word}
             columns={values.columns}

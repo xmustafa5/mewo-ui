@@ -1,5 +1,6 @@
 "use client"
 
+import { ORBIT_PICTURES } from "@/components/demos/cats"
 import { PictureOrbit } from "@/registry/mewo/ui/picture-orbit"
 import { Input, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -30,7 +31,7 @@ export default function PictureOrbitCustomize({ code }: CustomizeProps) {
       preview={
         // the box scrolls by itself: the stage pins in it and the cards rise around the title
         <div className="h-[500px] w-full overflow-y-auto rounded-xl border">
-          <PictureOrbit length={values.length} lean={values.lean} float={values.float}>
+          <PictureOrbit images={ORBIT_PICTURES} length={values.length} lean={values.lean} float={values.float}>
             {children}
           </PictureOrbit>
         </div>

@@ -1,4 +1,4 @@
-import { SkewedCarousel } from "@/registry/mewo/ui/skewed-carousel"
+import { SkewedCarouselCats as SkewedCarousel } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function SkewedCarouselDemo() {

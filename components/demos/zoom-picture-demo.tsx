@@ -1,4 +1,4 @@
-import { ZoomPicture } from "@/registry/mewo/ui/zoom-picture"
+import { ZoomPictureCats as ZoomPicture } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function ZoomPictureDemo() {

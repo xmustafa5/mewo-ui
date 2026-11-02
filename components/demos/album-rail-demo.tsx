@@ -1,4 +1,4 @@
-import { AlbumRail } from "@/registry/mewo/ui/album-rail"
+import { AlbumRailCats as AlbumRail } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function AlbumRailDemo() {

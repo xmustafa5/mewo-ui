@@ -1,4 +1,4 @@
-import { PortraitPair } from "@/registry/mewo/blocks/portrait-pair"
+import { PortraitPairCats as PortraitPair } from "./cats"
 import { ScrollBox } from "./scroll-box"
 import type { PropDoc } from "./types"
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { PORTRAIT_FIRST, PORTRAIT_SECOND, PORTRAIT_SKETCHES } from "@/components/demos/cats"
 import { ScrollBox } from "@/components/demos/scroll-box"
 import { PortraitPair } from "@/registry/mewo/blocks/portrait-pair"
 import { Input, Slider } from "./controls"
@@ -22,7 +23,7 @@ export function Framed() {
   return (
     // the frame is the window here: the box fills it, its edges the frame's
     <ScrollBox start={0.2} className="h-dvh w-full overflow-y-auto [container-type:inline-size]">
-      <PortraitPair line={values.line} text={values.text} length={values.length} />
+      <PortraitPair first={PORTRAIT_FIRST} second={PORTRAIT_SECOND} sketches={PORTRAIT_SKETCHES} line={values.line} text={values.text} length={values.length} />
     </ScrollBox>
   )
 }

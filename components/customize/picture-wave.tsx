@@ -1,5 +1,6 @@
 "use client"
 
+import { WAVE_PICTURES } from "@/components/demos/cats"
 import * as React from "react"
 import { PictureWave, type PictureWaveOrientation, type PictureWaveProps, type PictureWaveState } from "@/registry/mewo/ui/picture-wave"
 import { Input, Select, Slider, Switch } from "./controls"
@@ -38,7 +39,7 @@ function WaveCycle({ state, cycle, ...props }: { state: PictureWaveState; cycle:
     const id = window.setTimeout(() => setFlipped((value) => !value), shown === "field" ? 9000 : 3000)
     return () => window.clearTimeout(id)
   }, [cycle, shown])
-  return <PictureWave state={shown} {...props} />
+  return <PictureWave state={shown} images={WAVE_PICTURES} {...props} />
 }
 
 export default function PictureWaveCustomize({ code }: CustomizeProps) {

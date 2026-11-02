@@ -1,4 +1,5 @@
 import { PictureFigure } from "@/registry/mewo/ui/picture-figure"
+import { optimized } from "./cat-pictures"
 import type { PropDoc } from "./types"
 
 const caption = (text: string) => <p className="text-center text-[length:max(12px,calc(var(--story-u)*1.2))] text-muted-foreground">{text}</p>
@@ -6,8 +7,8 @@ const caption = (text: string) => <p className="text-center text-[length:max(12p
 export default function PictureFigureDemo() {
   return (
     <div className="[--story-u:min(2.6667cqw,12px)] flex flex-wrap items-start justify-center gap-[calc(var(--story-u)*6)] pt-12 pb-24">
-      <PictureFigure src="https://picsum.photos/seed/mewo-picture-figure-2/740/1000" ratio={740 / 1000} className="h-[calc(var(--story-u)*32)]" caption={caption("A portrait, about 3 : 4")} />
-      <PictureFigure src="https://picsum.photos/seed/mewo-picture-figure-3/1000/980" ratio={1000 / 980} className="h-[calc(var(--story-u)*24)]" caption={caption("A carved disc, nearly square")} />
+      <PictureFigure src={optimized("https://cataas.com/cat/C5Ddbc1ilh45jiAk", 1080)} ratio={810 / 1080} className="h-[calc(var(--story-u)*32)]" caption={caption("A portrait, about 3 : 4")} />
+      <PictureFigure src={optimized("https://cataas.com/cat/1wpap8yckt96vOoU", 1080)} ratio={1125 / 1095} className="h-[calc(var(--story-u)*24)]" caption={caption("A carved disc, nearly square")} />
     </div>
   )
 }

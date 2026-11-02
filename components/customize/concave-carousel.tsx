@@ -1,5 +1,6 @@
 "use client"
 
+import { CONCAVE_ITEMS } from "@/components/demos/cats"
 import { ConcaveCarousel, type ConcaveCarouselProps } from "@/registry/mewo/ui/concave-carousel"
 import { Select, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -47,7 +48,7 @@ export default function ConcaveCarouselCustomize({ code }: CustomizeProps) {
       onReset={reset}
       usage={{ name: "ConcaveCarousel", item: "concave-carousel", props: changedProps(values, defaults, DEMO_ONLY) }}
       fill
-      preview={<ConcaveCarousel className="h-[500px]" {...values} />}
+      preview={<ConcaveCarousel className="h-[500px]" items={CONCAVE_ITEMS} {...values} />}
     >
       <Select label="Autoplay" options={AUTOPLAY_OPTIONS} value={values.autoplay} onChange={(value) => set("autoplay", value)} />
       <Slider label="Aspect" min={0.6} max={2} step={0.05} value={values.aspect} onChange={(value) => set("aspect", value)} />

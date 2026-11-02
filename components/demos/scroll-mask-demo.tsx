@@ -1,4 +1,5 @@
-import { ScrollMask, type ScrollMaskVariant } from "@/registry/mewo/ui/scroll-mask"
+import type { ScrollMaskVariant } from "@/registry/mewo/ui/scroll-mask"
+import { ScrollMaskCats as ScrollMask } from "./cats"
 import { ScrollBox } from "./scroll-box"
 import type { PropDoc } from "./types"
 

@@ -1,4 +1,4 @@
-import { ParallaxCarousel } from "@/registry/mewo/ui/parallax-carousel"
+import { ParallaxCarouselCats as ParallaxCarousel } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function ParallaxCarouselDemo() {

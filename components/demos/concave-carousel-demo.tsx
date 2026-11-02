@@ -1,4 +1,4 @@
-import { ConcaveCarousel } from "@/registry/mewo/ui/concave-carousel"
+import { ConcaveCarouselCats as ConcaveCarousel } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function ConcaveCarouselDemo() {

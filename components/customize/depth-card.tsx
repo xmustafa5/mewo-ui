@@ -1,5 +1,6 @@
 "use client"
 
+import { DEPTH_CARD_IMAGE } from "@/components/demos/cats"
 import { DepthCard, type DepthCardProps } from "@/registry/mewo/ui/depth-card"
 import { Select, Slider, Switch } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -24,7 +25,7 @@ export default function DepthCardCustomize({ code }: CustomizeProps) {
       changed={changed}
       onReset={reset}
       usage={{ name: "DepthCard", item: "depth-card", props: changedProps(values, defaults, DEMO_ONLY) }}
-      preview={<DepthCard {...values} />}
+      preview={<DepthCard image={DEPTH_CARD_IMAGE} {...values} />}
     >
       <Slider label="Width" min={180} max={300} step={2} unit="px" value={values.width} onChange={(value) => set("width", value)} />
       <Slider label="Height" min={240} max={400} step={2} unit="px" value={values.height} onChange={(value) => set("height", value)} />

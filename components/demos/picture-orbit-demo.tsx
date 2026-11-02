@@ -1,4 +1,4 @@
-import { PictureOrbit } from "@/registry/mewo/ui/picture-orbit"
+import { PictureOrbitCats as PictureOrbit } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function PictureOrbitDemo() {
@@ -11,7 +11,7 @@ export default function PictureOrbitDemo() {
 }
 
 export const props: PropDoc[] = [
-  { name: "images", type: "{ src: string; aspect: number }[]", default: "72 picsum photos", description: "The pictures on the cards, with their proportions (width ÷ height), served with CORS; each depth layer cycles through them in its own order (up to 100)." },
+  { name: "images", type: "{ src: string; aspect: number }[]", default: "72 cat photos", description: "The pictures on the cards, with their proportions (width ÷ height), served with CORS; each depth layer cycles through them in its own order (up to 100)." },
   { name: "children", type: "ReactNode", default: "a two-line title", description: "Held still in the middle while the cards travel around it." },
   { name: "length", type: "number", default: "4.6", description: "View heights of scroll it stays pinned for, the cards rising all the while at their own pace." },
   { name: "lean", type: "number", default: "1", description: "How far the cards lean away from the pointer, the nearer ones more: 0 holds them still." },

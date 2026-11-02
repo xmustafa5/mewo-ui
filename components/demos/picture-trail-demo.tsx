@@ -1,4 +1,4 @@
-import { PictureTrail } from "@/registry/mewo/ui/picture-trail"
+import { PictureTrailCats as PictureTrail } from "./cats"
 import type { PropDoc } from "./types"
 
 export default function PictureTrailDemo() {
@@ -14,6 +14,6 @@ export const props: PropDoc[] = [
   { name: "top", type: "string", default: '"Conqueror"', description: "The huge name that crosses the view first, from the bottom to the top." },
   { name: "bottom", type: "string", default: '"Last ruler"', description: "The huge name that follows and stays, faded, behind the picture." },
   { name: "holders", type: "string[]", default: "six dynasties", description: "The holders, passing in turn beside the picture, left and right (six have room)." },
-  { name: "image", type: "{ src, alt?, credit: { title, by, line, href? } }", default: "a picsum photo", description: "The picture (about 9 : 10), with its credit under it." },
+  { name: "image", type: "{ src, alt?, credit: { title, by, line, href? } }", default: "a cat photo", description: "The picture (about 9 : 10), with its credit under it." },
   { name: "className", type: "string", description: "Merged onto the root: the tall section the stage pins in (six view heights)." },
 ]

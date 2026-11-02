@@ -10,7 +10,7 @@ export default function PictureWaveDemo() {
 }
 
 export const props: PropDoc[] = [
-  { name: "images", type: "{ src: string; aspect: number }[]", default: "72 picsum photos", description: "The pictures on the cards, with their proportions (width ÷ height), served with CORS; each depth layer of the field cycles through them in its own order (up to 100)." },
+  { name: "images", type: "{ src: string; aspect: number }[]", default: "72 cat photos", description: "The pictures on the cards, with their proportions (width ÷ height), served with CORS; each depth layer of the field cycles through them in its own order (up to 100)." },
   { name: "words", type: "string[]", default: '["Between", "Rivers"]', description: "The two words riding the wave's ends; an empty list leaves them out." },
   { name: "state", type: '"wave" | "field"', default: '"field"', description: "\"wave\": the cards fly in and hold one period of a sine between the words. \"field\": the wave then bursts into a field over the whole box. Back to \"wave\", it gathers again." },
   { name: "orientation", type: '"auto" | "horizontal" | "vertical"', default: '"auto"', description: "The wave's long axis. \"auto\" lays it across, and stands it up in a box narrower than 900px, as on a phone." },

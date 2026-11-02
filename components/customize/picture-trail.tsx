@@ -1,5 +1,7 @@
 "use client"
 
+import { cat, optimizedOne, pick, PICTURE_TRAIL_CATS } from "@/components/demos/cat-pictures"
+import { TRAIL_IMAGE } from "@/components/demos/cats"
 import { PictureTrail, type PictureTrailProps } from "@/registry/mewo/ui/picture-trail"
 import { Input, Slider } from "./controls"
 import { CustomizeFrame } from "./frame"
@@ -12,7 +14,7 @@ export const DEMO_ONLY = ["count", "picture"] as const
 
 const HOLDERS = ["First dynasty", "Second dynasty", "Third dynasty", "Fourth dynasty", "Fifth dynasty", "Sixth dynasty"]
 const CREDIT = { title: "The siege", by: "c. 1258 CE", line: "A museum somewhere. Placeholder photograph.", href: "#" }
-const srcOf = (picture: number) => `https://picsum.photos/seed/mewo-picture-trail-${picture}/1330/1478`
+const srcOf = (picture: number) => cat(pick(PICTURE_TRAIL_CATS, picture))
 
 export default function PictureTrailCustomize({ code }: CustomizeProps) {
   const { values, defaults, changed, run, set, reset, replay } = useCustomize(DEFAULTS)
@@ -32,7 +34,7 @@ export default function PictureTrailCustomize({ code }: CustomizeProps) {
       preview={
         // the stage pins to its nearest scroll container, so the preview scrolls inside this box
         <div className="h-[500px] w-full overflow-y-auto rounded-xl border [container-type:inline-size]">
-          <PictureTrail top={values.top} bottom={values.bottom} holders={holders} image={image} />
+          <PictureTrail top={values.top} bottom={values.bottom} holders={holders} image={image ? optimizedOne(image, 1200) : TRAIL_IMAGE} />
         </div>
       }
     >

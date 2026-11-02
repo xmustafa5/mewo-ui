@@ -2,7 +2,7 @@ import { TileReveal } from "@/registry/mewo/ui/tile-reveal"
 import type { PropDoc } from "./types"
 
 // Any image URLs work; these are placeholders.
-const IMAGES = Array.from({ length: 12 }, (_, index) => `https://picsum.photos/seed/mewo-tile-${index + 1}/480/480`)
+import { TILE_CATS as IMAGES } from "./cat-pictures"
 
 export default function TileRevealDemo() {
   return (

@@ -2,7 +2,7 @@ import { GradientCarousel } from "@/registry/mewo/ui/gradient-carousel"
 import type { PropDoc } from "./types"
 
 // Any image URLs work. The backdrop needs them served with CORS headers to read their colours.
-const IMAGES = Array.from({ length: 8 }, (_, index) => `https://picsum.photos/seed/mewo-carousel-${index + 1}/480/600`)
+import { GRADIENT_CATS as IMAGES } from "./cat-pictures"
 
 export default function GradientCarouselDemo() {
   return <GradientCarousel images={IMAGES} aria-label="Sample photographs" className="h-[420px] rounded-lg" />

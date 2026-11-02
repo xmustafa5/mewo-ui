@@ -1,5 +1,6 @@
 "use client"
 
+import { cat, optimized, pick, ZOOM_PICTURE_CATS } from "@/components/demos/cat-pictures"
 import { ZoomPicture } from "@/registry/mewo/ui/zoom-picture"
 import { cn } from "@/lib/utils"
 import { Input, Select, Slider, Switch } from "./controls"
@@ -19,7 +20,7 @@ const BOX_OPTIONS = [
   { value: "tall", label: "Tall" },
 ]
 const TEXT_CLASS = "max-w-[24ch] font-heading text-2xl leading-tight sm:text-4xl"
-const srcOf = (picture: number) => `https://picsum.photos/seed/mewo-zoom-picture-${picture}/1000/1200`
+const srcOf = (picture: number) => cat(pick(ZOOM_PICTURE_CATS, picture))
 
 export default function ZoomPictureCustomize({ code }: CustomizeProps) {
   const { values, defaults, changed, run, set, reset, replay } = useCustomize(DEFAULTS)
@@ -42,7 +43,7 @@ export default function ZoomPictureCustomize({ code }: CustomizeProps) {
       preview={
         // the box scrolls by itself: the picture pins in it, zooms in, pans down through itself and zooms back out
         <div key={values.box} className={cn("h-[500px] overflow-y-auto rounded-xl border", WIDTHS[values.box])}>
-          <ZoomPicture src={srcOf(values.picture)} alt={values.alt}>
+          <ZoomPicture src={optimized(srcOf(values.picture), 1200)} alt={values.alt}>
             {text ? <p className={TEXT_CLASS}>{text}</p> : null}
           </ZoomPicture>
         </div>
