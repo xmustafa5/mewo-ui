@@ -10,7 +10,8 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 
 export const metadata: Metadata = {
   title: { default: `${SITE_NAME} — animated components for React`, template: `%s — ${SITE_NAME}` },
-  description: "An open-source shadcn registry of animated React components and sections, powered by Motion and GSAP.",
+  description:
+    "An open-source shadcn registry of animated React components and page sections, each with a Customize panel, plus whole sites built from them and a Background Studio.",
 }
 
 export const viewport: Viewport = {

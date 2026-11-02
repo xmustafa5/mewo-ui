@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ArrowRight } from "lucide-react"
 import { ByTheme } from "@/components/demos/by-theme"
+import { useNearOnce } from "@/components/site/home/use-near-once"
 import { GitHubIcon } from "@/components/site/icons"
 import { GITHUB_URL } from "@/lib/site"
 import { DotGrid } from "@/registry/mewo/ui/dot-grid"
@@ -15,26 +16,6 @@ const subscribeReducedMotion = (onChange: () => void) => {
   const query = window.matchMedia(REDUCED_MOTION)
   query.addEventListener("change", onChange)
   return () => query.removeEventListener("change", onChange)
-}
-
-/** Becomes true the first time the element comes within `margin` of the viewport, and stays true. */
-function useNearOnce(margin: string) {
-  const [node, setNode] = React.useState<HTMLElement | null>(null)
-  const [near, setNear] = React.useState(false)
-
-  React.useEffect(() => {
-    if (!node || near) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) setNear(true)
-      },
-      { rootMargin: margin },
-    )
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [node, near, margin])
-
-  return [setNode, near] as const
 }
 
 /**

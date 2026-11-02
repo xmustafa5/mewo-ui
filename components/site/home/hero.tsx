@@ -12,6 +12,9 @@ import { SpotlightCard } from "@/registry/mewo/ui/spotlight-card"
 
 const SPOTLIGHT = "rgb(24 33 251 / 0.45)"
 
+/** The latest addition, named in the pill over the title. */
+export const LATEST = { name: "dream-cat", label: "Dream Cat: the mewo cat in 3D, reaching for your pointer" }
+
 // What the preview window renders, as it would appear in the reader's project.
 const SNIPPET = `import { SplitText } from "@/components/ui/split-text"
 import { SpotlightCard } from "@/components/ui/spotlight-card"
@@ -27,10 +30,13 @@ export function Hero() {
   )
 }`
 
-const TERMINAL_ITEMS = ["split-text", "spotlight-card", "text-shimmer", "marquee"]
+// The installs the terminal plays: one that pulls a package in, and ones that need nothing.
+const TERMINAL_ITEMS = ["dream-cat", "prism-carousel", "split-text", "text-shimmer"]
 
 export function Hero() {
-  const count = getItems().length
+  const items = getItems()
+  const count = items.length
+  const noDependencies = items.filter((item) => getDependencies(item).length === 0).length
   const runs: TerminalRun[] = TERMINAL_ITEMS.flatMap((name) => {
     const item = getItem(name)
     return item ? [{ name, dependencies: getDependencies(item) }] : []
@@ -43,13 +49,11 @@ export function Hero() {
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <Link
-              href="/docs/concave-carousel"
+              href={`/docs/${LATEST.name}`}
               className="group inline-flex items-center gap-2 rounded-full border bg-card/70 p-1 pr-3 text-xs backdrop-blur transition-colors hover:bg-card"
             >
               <span className="rounded-full bg-brand px-2 py-0.5 font-medium text-brand-foreground">New</span>
-              <span className="text-muted-foreground transition-colors group-hover:text-foreground">
-                Concave, Parallax and Prism carousels
-              </span>
+              <span className="text-muted-foreground transition-colors group-hover:text-foreground">{LATEST.label}</span>
               <ArrowRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
             <h1 className="mt-6 text-5xl leading-[1.04] font-semibold tracking-[-0.04em] text-balance sm:text-6xl lg:text-[4rem]">
@@ -76,8 +80,8 @@ export function Hero() {
             </div>
           </div>
           <p className="max-w-sm text-base leading-relaxed text-muted-foreground lg:pb-2">
-            {count} animated components and sections for shadcn. One command installs the source — with Motion or GSAP
-            only where an item needs it.
+            {count} animated components and sections for shadcn, every one with a Customize panel. One command copies
+            the source into your project, and {noDependencies} of them need no package at all.
           </p>
         </div>
 
