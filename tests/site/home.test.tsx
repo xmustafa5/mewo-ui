@@ -41,7 +41,20 @@ describe("Hero", () => {
 describe("Latest", () => {
   it("puts the newest items first and keeps the catalog order among a day's additions", () => {
     const entries = [entry("a", "2026-10-01"), entry("b", "2026-10-28"), entry("c", "2026-10-21"), entry("d", "2026-10-28")]
-    expect(latestEntries(entries, 3).map((item) => item.name)).toEqual(["b", "d", "c"])
+    expect(latestEntries(entries, 3, {}).map((item) => item.name)).toEqual(["b", "d", "c"])
+  })
+
+  it("swaps a newest item for another, in its place, unless the other is among the newest already", () => {
+    const entries = [entry("a", "2026-10-01"), entry("b", "2026-10-28"), entry("c", "2026-10-21"), entry("d", "2026-10-28")]
+    expect(latestEntries(entries, 3, { d: "a" }).map((item) => item.name)).toEqual(["b", "a", "c"])
+    expect(latestEntries(entries, 3, { d: "b" }).map((item) => item.name)).toEqual(["b", "d", "c"])
+    expect(latestEntries(entries, 3, { d: "nothing" }).map((item) => item.name)).toEqual(["b", "d", "c"])
+  })
+
+  it("gives Depth Image's card to Picture Orbit, since Depth Image runs live in the gallery", () => {
+    const names = latestEntries(getCatalogEntries()).map((item) => item.name)
+    expect(names).toContain("picture-orbit")
+    expect(names).not.toContain("depth-image")
   })
 
   it("shows the newest cards from the registry, each linking to its page", () => {

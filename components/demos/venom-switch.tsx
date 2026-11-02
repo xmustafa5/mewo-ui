@@ -19,15 +19,18 @@ function MewoSilhouette() {
   )
 }
 
-/** The Venom demo's body: one symbiote that switches between covering a word and covering an icon. */
-export function VenomSwitch() {
-  const [mode, setMode] = React.useState<"text" | "icon">("text")
+/**
+ * The Venom demo's body: one symbiote that switches between covering a word and covering an icon. `color` and
+ * `highlight` go to the symbiote, for a page it has to read on without its black.
+ */
+export function VenomSwitch({ initial = "text", color, highlight }: { initial?: "text" | "icon"; color?: string; highlight?: string }) {
+  const [mode, setMode] = React.useState<"text" | "icon">(initial)
   return (
     <>
       {mode === "text" ? (
-        <Venom className="absolute inset-0" text="VENOM" />
+        <Venom fontWeight={600} className="absolute inset-0" thickness={4} text="VENOM" color={color} highlight={highlight} />
       ) : (
-        <Venom className="absolute inset-0" scale={0.78}>
+        <Venom className="absolute inset-0" scale={0.6} thickness={5} color={color} highlight={highlight}>
           <MewoSilhouette />
         </Venom>
       )}

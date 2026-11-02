@@ -1,16 +1,41 @@
 import Link from "next/link"
 import { ArrowRight, ArrowUpRight } from "lucide-react"
 import { demos } from "@/components/demos"
+import { VenomSwitch } from "@/components/demos/venom-switch"
 import { GROUP_LABELS, getItem, type Group } from "@/lib/registry"
 import { cn } from "@/lib/utils"
+import { DepthImage } from "@/registry/mewo/ui/depth-image"
 
-/** The live demos on the home page, laid out two over three: a background, a card, two texts and a 3D card. */
-const TILES = [
+/** Venom over the mewo cat: the symbiote in its black, on a faint grey wash over the tile (the user's choice). */
+function VenomTile() {
+  return (
+    <div className="absolute inset-0 overflow-hidden bg-zinc-300/20">
+      <VenomSwitch initial="icon" />
+    </div>
+  )
+}
+
+// the photo Depth Image's demo relights
+const PHOTO = "https://6ae1ac4636a7426e66fa1541.imgix.net/sandbox/mewo.png?q=80&w=1740&auto=format&fit=crop"
+
+/** Depth Image in a box the size of Grainient's, so the two wide tiles match. */
+function DepthImageTile() {
+  return (
+    <div className="relative h-80 w-full overflow-hidden rounded-xl">
+      <DepthImage image={PHOTO} alt="A photograph relit by a moving light" />
+    </div>
+  )
+}
+
+/**
+ * The live demos on the home page, two rows of a wide tile and a narrow one: a background and the symbiote on the
+ * cat, then a rail of sleeves and a relit photo. A tile shows the item's demo unless it brings a `Tile` of its own.
+ */
+const TILES: { name: string; span: string; Tile?: React.ComponentType }[] = [
   { name: "grainient", span: "lg:col-span-7" },
-  { name: "spotlight-card", span: "lg:col-span-5" },
-  { name: "split-text", span: "lg:col-span-4" },
-  { name: "text-shimmer", span: "lg:col-span-4" },
-  { name: "depth-card", span: "lg:col-span-4" },
+  { name: "venom", span: "lg:col-span-5", Tile: VenomTile },
+  { name: "album-rail", span: "lg:col-span-5" },
+  { name: "depth-image", span: "lg:col-span-7", Tile: DepthImageTile },
 ]
 
 export async function Gallery() {
@@ -20,7 +45,7 @@ export async function Gallery() {
       const load = demos[tile.name]
       if (!item || !load) return null
       const { default: Demo } = await load()
-      return { ...tile, item, Demo }
+      return { ...tile, item, Demo: tile.Tile ?? Demo }
     })
   )
 
@@ -52,7 +77,7 @@ export async function Gallery() {
             const group = item.categories?.[0] as Group | undefined
             return (
               <div key={item.name} className={cn("flex flex-col rounded-2xl border bg-card/50 p-1.5", tile.span)}>
-                <div className="flex min-h-80 flex-1 items-center justify-center overflow-hidden rounded-xl border bg-background/60 bg-dots p-6">
+                <div className="relative flex min-h-80 flex-1 items-center justify-center overflow-hidden rounded-xl border bg-background/60 bg-dots p-6">
                   <Demo />
                 </div>
                 <Link href={`/docs/${item.name}`} className="group flex items-center justify-between gap-3 px-3 py-3.5">

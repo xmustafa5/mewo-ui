@@ -7,9 +7,19 @@ import { getCatalogEntries } from "@/lib/catalog"
 /** How many of the newest items the home page shows: two rows of four. */
 const COUNT = 8
 
-/** The newest items first; items added on the same day keep their catalog order. */
-export function latestEntries(entries: CatalogEntry[], count = COUNT): CatalogEntry[] {
-  return [...entries].sort((a, b) => b.added.localeCompare(a.added)).slice(0, count)
+/** A newest item that already runs live further down the page gives its card to another piece. */
+const SWAPS: Record<string, string> = { "depth-image": "picture-orbit" }
+
+/**
+ * The newest items first; items added on the same day keep their catalog order. An item in `swaps` is replaced,
+ * in its place, by the one it names, when the catalog has it and it is not among the newest already.
+ */
+export function latestEntries(entries: CatalogEntry[], count = COUNT, swaps = SWAPS): CatalogEntry[] {
+  const newest = [...entries].sort((a, b) => b.added.localeCompare(a.added)).slice(0, count)
+  return newest.map((entry) => {
+    const replacement = swaps[entry.name] ? entries.find((item) => item.name === swaps[entry.name]) : undefined
+    return replacement && !newest.some((item) => item.name === replacement.name) ? replacement : entry
+  })
 }
 
 /**
