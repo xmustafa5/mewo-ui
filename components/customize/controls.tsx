@@ -163,25 +163,32 @@ export function Select<T extends string>({ label, options, value, disabled = fal
             </SelectPrimitive.Icon>
           </span>
         </SelectPrimitive.Trigger>
-        <SelectPrimitive.Portal>
-          <SelectPrimitive.Positioner alignItemWithTrigger={false} sideOffset={4} className="z-50 outline-none">
-            <SelectPrimitive.Popup className="w-(--anchor-width) origin-top rounded-[7px] border bg-popover p-1 text-popover-foreground shadow-xl shadow-black/10 transition-[transform,opacity] duration-150 ease-out data-ending-style:scale-[0.96] data-ending-style:opacity-0 data-starting-style:scale-[0.96] data-starting-style:opacity-0">
-              <SelectPrimitive.List className="flex flex-col gap-0.5">
-                {items.map((item) => (
-                  <SelectPrimitive.Item
-                    key={item.value}
-                    value={item.value}
-                    className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-muted-foreground outline-none transition-colors data-highlighted:bg-accent data-highlighted:text-foreground data-selected:text-foreground"
-                  >
-                    <SelectPrimitive.ItemText>{item.label}</SelectPrimitive.ItemText>
-                  </SelectPrimitive.Item>
-                ))}
-              </SelectPrimitive.List>
-            </SelectPrimitive.Popup>
-          </SelectPrimitive.Positioner>
-        </SelectPrimitive.Portal>
+        <SelectPopup items={items} />
       </SelectPrimitive.Root>
     </div>
+  )
+}
+
+/** The list a select opens: the same popup under a Customize row and under the catalog's fields. Inside a `Select.Root`. */
+export function SelectPopup({ items }: { items: readonly { value: string; label: string }[] }) {
+  return (
+    <SelectPrimitive.Portal>
+      <SelectPrimitive.Positioner alignItemWithTrigger={false} sideOffset={4} className="z-50 outline-none">
+        <SelectPrimitive.Popup className="w-(--anchor-width) origin-top rounded-[7px] border bg-popover p-1 text-popover-foreground shadow-xl shadow-black/10 transition-[transform,opacity] duration-150 ease-out data-ending-style:scale-[0.96] data-ending-style:opacity-0 data-starting-style:scale-[0.96] data-starting-style:opacity-0">
+          <SelectPrimitive.List className="flex flex-col gap-0.5">
+            {items.map((item) => (
+              <SelectPrimitive.Item
+                key={item.value}
+                value={item.value}
+                className="cursor-pointer rounded-md px-3 py-2 text-[13px] text-muted-foreground outline-none transition-colors data-highlighted:bg-accent data-highlighted:text-foreground data-selected:text-foreground"
+              >
+                <SelectPrimitive.ItemText>{item.label}</SelectPrimitive.ItemText>
+              </SelectPrimitive.Item>
+            ))}
+          </SelectPrimitive.List>
+        </SelectPrimitive.Popup>
+      </SelectPrimitive.Positioner>
+    </SelectPrimitive.Portal>
   )
 }
 

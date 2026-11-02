@@ -88,7 +88,12 @@ describe("ComponentCatalog", () => {
 
   it("filters by category and search, and says when nothing matches", () => {
     render(<ComponentCatalog entries={entries} groups={groups} />)
-    fireEvent.change(screen.getByRole("combobox", { name: "Category" }), { target: { value: "layout" } })
+    fireEvent.click(screen.getByRole("combobox", { name: "Category" }))
+    // the list's items take a pointer press, not a bare click
+    const option = screen.getByRole("option", { name: "Layout" })
+    fireEvent.pointerDown(option, { pointerType: "mouse", button: 0 })
+    fireEvent.pointerUp(option, { pointerType: "mouse", button: 0 })
+    fireEvent.click(option)
     expect(screen.getAllByRole("heading", { level: 3 }).map((h) => h.textContent)).toEqual(["Marquee"])
     fireEvent.change(screen.getByRole("searchbox", { name: "Search components" }), { target: { value: "zzz" } })
     expect(screen.getByRole("status")).toHaveTextContent("No results")

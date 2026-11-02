@@ -2,7 +2,9 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { ChevronDown, Search, X } from "lucide-react"
+import { SelectPopup } from "@/components/customize/controls"
 import { cn } from "@/lib/utils"
 import { ALL_GROUPS, filterEntries, sortEntries, type CatalogEntry, type SortMode } from "./catalog-filter"
 import { PreviewCard } from "./preview-card"
@@ -11,6 +13,7 @@ import { useNewSinceLastVisit } from "./use-new-since-last-visit"
 const fieldClass =
   "h-9 rounded-xl border bg-card/60 text-sm outline-none transition-colors hover:bg-accent/60 focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30"
 
+/** One of a few, as a field in the toolbar: the pill opens the same list the Customize panel's rows do. */
 function SelectField({
   label,
   value,
@@ -25,24 +28,18 @@ function SelectField({
   className?: string
 }) {
   return (
-    <label className={cn("relative block", className)}>
-      <span className="sr-only">{label}</span>
-      <select
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className={cn(fieldClass, "w-full cursor-pointer appearance-none pr-8 pl-3 font-medium")}
+    <SelectPrimitive.Root items={options} value={value} onValueChange={(next) => next !== null && onChange(next)}>
+      <SelectPrimitive.Trigger
+        aria-label={label}
+        className={cn(fieldClass, "flex w-full cursor-pointer items-center justify-between gap-2 px-3 font-medium", className)}
       >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        aria-hidden
-        className="pointer-events-none absolute top-1/2 right-3 size-3.5 -translate-y-1/2 text-muted-foreground"
-      />
-    </label>
+        <SelectPrimitive.Value className="truncate" />
+        <SelectPrimitive.Icon className="shrink-0 text-muted-foreground transition-transform duration-200 data-popup-open:rotate-180">
+          <ChevronDown className="size-3.5" aria-hidden />
+        </SelectPrimitive.Icon>
+      </SelectPrimitive.Trigger>
+      <SelectPopup items={options} />
+    </SelectPrimitive.Root>
   )
 }
 
