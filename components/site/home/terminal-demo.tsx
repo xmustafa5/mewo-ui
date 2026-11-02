@@ -16,16 +16,45 @@ function outputFor(run: TerminalRun) {
 
 const commandFor = (run: TerminalRun) => `npx shadcn@latest add @mewo/${run.name}`
 
-/** Types an install command, prints the CLI's output, then moves on to the next item. */
+/**
+ * Types an install command, prints the CLI's output, then moves on to the next item. It holds while the
+ * terminal is off screen or the tab is hidden: typing no one sees would still re-render and repaint the
+ * window on every keystroke, wherever the reader is on the page.
+ */
 export function TerminalDemo({ runs }: { runs: TerminalRun[] }) {
   const reduceMotion = useReducedMotion()
   const [frame, setFrame] = React.useState({ index: 0, typed: 0, lines: 0 })
+  const root = React.useRef<HTMLDivElement>(null)
 
   React.useEffect(() => {
     if (reduceMotion || runs.length === 0) return
     let cancelled = false
     const timers: number[] = []
-    const wait = (ms: number) => new Promise<void>((resolve) => timers.push(window.setTimeout(resolve, ms)))
+
+    // the next step waits until the terminal can be seen
+    let onScreen = true
+    let resume: (() => void) | null = null
+    const canBeSeen = () => onScreen && !document.hidden
+    const wake = () => {
+      if (!canBeSeen() && !cancelled) return
+      resume?.()
+      resume = null
+    }
+    const element = root.current
+    const observer =
+      element && typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            ([entry]) => {
+              onScreen = entry.isIntersecting
+              wake()
+            },
+            { rootMargin: "100px" },
+          )
+        : null
+    if (element) observer?.observe(element)
+    document.addEventListener("visibilitychange", wake)
+    const seen = () => (canBeSeen() ? Promise.resolve() : new Promise<void>((resolve) => (resume = resolve)))
+    const wait = (ms: number) => new Promise<void>((resolve) => timers.push(window.setTimeout(resolve, ms))).then(seen)
 
     async function play() {
       let index = 0
@@ -51,6 +80,9 @@ export function TerminalDemo({ runs }: { runs: TerminalRun[] }) {
     return () => {
       cancelled = true
       timers.forEach(window.clearTimeout)
+      observer?.disconnect()
+      document.removeEventListener("visibilitychange", wake)
+      wake()
     }
   }, [reduceMotion, runs])
 
@@ -62,7 +94,7 @@ export function TerminalDemo({ runs }: { runs: TerminalRun[] }) {
   const typing = typed < command.length
 
   return (
-    <div className="space-y-1 p-4 font-mono text-[13px] leading-6" aria-label={`Terminal: ${command}`} role="img">
+    <div ref={root} className="space-y-1 p-4 font-mono text-[13px] leading-6" aria-label={`Terminal: ${command}`} role="img">
       <p className="whitespace-pre">
         <span className="text-brand-text">$ </span>
         {command.slice(0, typed)}

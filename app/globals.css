@@ -183,6 +183,12 @@
   background-size: 28px 28px;
 }
 
+/* A block far from the viewport (components/site/home/pause-away.tsx) holds its CSS animations: Chrome steps an
+   animation it has not painted on the main thread, every frame, for nothing anyone can see. */
+[data-away] * {
+  animation-play-state: paused !important;
+}
+
 @keyframes mewo-pixel-pulse {
   0%,
   100% {

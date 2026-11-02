@@ -1,5 +1,5 @@
-import { fireEvent, render, screen, within } from "@testing-library/react"
-import { describe, expect, it, vi } from "vitest"
+import { act, fireEvent, render, screen, within } from "@testing-library/react"
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import type { CatalogEntry } from "@/components/site/catalog/catalog-filter"
 import { getCatalogEntries } from "@/lib/catalog"
 import { getItems } from "@/lib/registry"
@@ -13,9 +13,12 @@ vi.mock("@/components/site/code-block", () => ({ CodeBlock: ({ code }: { code: s
 import { CustomizeDemo } from "@/components/site/home/customize-demo"
 import { Hero, LATEST } from "@/components/site/home/hero"
 import { Latest, latestEntries } from "@/components/site/home/latest"
+import { PauseAway } from "@/components/site/home/pause-away"
+import { PixelField } from "@/components/site/home/pixel-field"
 import { SitesSection } from "@/components/site/home/sites-section"
 import { StudioDemo } from "@/components/site/home/studio-demo"
 import { StudioSection } from "@/components/site/home/studio-section"
+import { TerminalDemo } from "@/components/site/home/terminal-demo"
 import { WhatsInside } from "@/components/site/home/whats-inside"
 
 const entry = (name: string, added: string): CatalogEntry => ({
@@ -148,5 +151,76 @@ describe("StudioDemo", () => {
     expect(within(track).getByRole("button", { name: "Landing page" })).toHaveAttribute("aria-pressed", "true")
     fireEvent.click(within(track).getByRole("button", { name: "Card" }))
     expect(within(track).getByRole("button", { name: "Card" })).toHaveAttribute("aria-pressed", "true")
+  })
+})
+
+/** An IntersectionObserver whose callback a test fires itself, to put a block on or off screen. */
+class ObserverStub {
+  static last: ObserverStub | null = null
+  observe = vi.fn()
+  unobserve = vi.fn()
+  disconnect = vi.fn()
+  takeRecords = vi.fn(() => [])
+  constructor(public callback: IntersectionObserverCallback) {
+    ObserverStub.last = this
+  }
+  see(isIntersecting: boolean) {
+    act(() => this.callback([{ isIntersecting } as IntersectionObserverEntry], this as unknown as IntersectionObserver))
+  }
+}
+
+describe("PixelField", () => {
+  it("draws every cell once and animates the pulsing cells' layers, never a cell itself", () => {
+    const { container } = render(<PixelField />)
+    const layers = [...container.querySelectorAll("svg")]
+    expect(container.querySelectorAll("rect")).toHaveLength(30 * 16)
+    expect(container.querySelector("rect[class*=animate]")).toBeNull()
+    const pulsing = layers.filter((svg) => svg.getAttribute("class")?.includes("mewo-pixel-pulse"))
+    expect(pulsing.length).toBeGreaterThan(1)
+    expect(pulsing).toHaveLength(layers.length - 1)
+    expect(new Set(pulsing.map((svg) => svg.style.animationDelay)).size).toBe(pulsing.length)
+    for (const svg of pulsing) expect(svg.querySelectorAll("rect").length).toBeGreaterThan(0)
+  })
+})
+
+describe("PauseAway", () => {
+  beforeEach(() => vi.stubGlobal("IntersectionObserver", ObserverStub))
+  afterEach(() => vi.unstubAllGlobals())
+
+  it("marks the block away while it is not near the viewport", () => {
+    const { container } = render(<PauseAway margin="50%">content</PauseAway>)
+    const block = container.firstElementChild as HTMLElement
+    expect(block).toHaveTextContent("content")
+    expect(block).not.toHaveAttribute("data-away")
+    ObserverStub.last!.see(false)
+    expect(block).toHaveAttribute("data-away")
+    ObserverStub.last!.see(true)
+    expect(block).not.toHaveAttribute("data-away")
+  })
+})
+
+describe("TerminalDemo", () => {
+  beforeEach(() => {
+    vi.stubGlobal("IntersectionObserver", ObserverStub)
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.useRealTimers()
+    vi.unstubAllGlobals()
+  })
+  const typed = () => (screen.getByRole("img").textContent ?? "").length
+
+  it("types only while it can be seen", async () => {
+    render(<TerminalDemo runs={[{ name: "text-shimmer", dependencies: [] }]} />)
+    await act(() => vi.advanceTimersByTimeAsync(700))
+    const seen = typed()
+    expect(seen).toBeGreaterThan(4)
+    ObserverStub.last!.see(false)
+    await act(() => vi.advanceTimersByTimeAsync(1000))
+    const away = typed()
+    expect(away - seen).toBeLessThanOrEqual(1)
+    ObserverStub.last!.see(true)
+    await act(() => vi.advanceTimersByTimeAsync(300))
+    expect(typed()).toBeGreaterThan(away + 3)
   })
 })
