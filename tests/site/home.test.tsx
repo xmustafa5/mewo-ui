@@ -4,7 +4,7 @@ import type { CatalogEntry } from "@/components/site/catalog/catalog-filter"
 import { getCatalogEntries } from "@/lib/catalog"
 import { getItems } from "@/lib/registry"
 import { getSites, sitePieces } from "@/lib/sites"
-import { CATALOG, DEFAULT_BACKGROUND } from "@/components/studio/catalog"
+import { DEFAULT_BACKGROUND } from "@/components/studio/catalog"
 
 vi.mock("next-themes", () => ({ useTheme: () => ({ resolvedTheme: "dark" }) }))
 // the hero's code window is highlighted on the server; here it is the code itself
@@ -16,7 +16,6 @@ import { Latest, latestEntries } from "@/components/site/home/latest"
 import { PauseAway } from "@/components/site/home/pause-away"
 import { PixelField } from "@/components/site/home/pixel-field"
 import { SitesSection } from "@/components/site/home/sites-section"
-import { StudioDemo } from "@/components/site/home/studio-demo"
 import { StudioSection } from "@/components/site/home/studio-section"
 import { TerminalDemo } from "@/components/site/home/terminal-demo"
 import { WhatsInside } from "@/components/site/home/whats-inside"
@@ -119,38 +118,21 @@ describe("StudioSection", () => {
     expect(screen.getByRole("heading", { name: /tune a background live/i })).toBeInTheDocument()
     expect(screen.getByRole("link", { name: /open the studio/i })).toHaveAttribute("href", "/studio")
   })
-})
 
-describe("StudioDemo", () => {
-  it("lists every studio background, starts on the studio's default, and carries the choice into the studio", () => {
-    render(<StudioDemo />)
-    const rail = within(screen.getByRole("navigation", { name: "Backgrounds" }))
-    expect(rail.getAllByRole("button")).toHaveLength(CATALOG.length)
-    const start = CATALOG.find((entry) => entry.id === DEFAULT_BACKGROUND)!
-    expect(rail.getByRole("button", { name: start.label })).toHaveAttribute("aria-current", "true")
-    expect(screen.getByRole("link", { name: /open in studio/i })).toHaveAttribute("href", `/studio?bg=${DEFAULT_BACKGROUND}`)
-
-    // another background, then one of its presets
-    const other = CATALOG.find((entry) => entry.id !== DEFAULT_BACKGROUND && entry.presets?.length)!
-    fireEvent.click(rail.getByRole("button", { name: other.label }))
-    expect(screen.getByRole("heading", { name: other.label })).toBeInTheDocument()
-    expect(screen.getByRole("link", { name: /open in studio/i })).toHaveAttribute("href", `/studio?bg=${other.id}`)
-    const preset = other.presets![0]
-    fireEvent.click(screen.getByRole("button", { name: preset.label }))
-    expect(screen.getByRole("button", { name: preset.label })).toHaveAttribute("aria-pressed", "true")
-    expect(screen.getByRole("link", { name: /open in studio/i })).toHaveAttribute("href", `/studio?bg=${other.id}&preset=${preset.value}`)
-
-    // reset drops the preset
-    fireEvent.click(screen.getByRole("button", { name: "Reset" }))
-    expect(screen.getByRole("link", { name: /open in studio/i })).toHaveAttribute("href", `/studio?bg=${other.id}`)
-  })
-
-  it("offers the sample content the studio does", () => {
-    render(<StudioDemo />)
-    const track = screen.getByRole("group", { name: "Sample content" })
-    expect(within(track).getByRole("button", { name: "Landing page" })).toHaveAttribute("aria-pressed", "true")
-    fireEvent.click(within(track).getByRole("button", { name: "Card" }))
-    expect(within(track).getByRole("button", { name: "Card" })).toHaveAttribute("aria-pressed", "true")
+  it("shows one background on the studio's stage as a picture that opens the studio on it", () => {
+    const { container } = render(<StudioSection />)
+    // the studio's default background on its Silk preset: the catalog's posters, nothing running
+    const example = screen.getByRole("link", { name: /open pattern waves in the studio/i })
+    expect(example).toHaveAttribute("href", `/studio?bg=${DEFAULT_BACKGROUND}&preset=silk`)
+    expect(example.querySelectorAll(`img[src*="/previews/${DEFAULT_BACKGROUND}-"]`)).toHaveLength(2)
+    expect(container.querySelector("canvas")).toBeNull()
+    expect(container.querySelector("video")).toBeNull()
+    // the panel drawn beside it: the presets with Silk chosen, three controls at the preset's values
+    expect(example).toHaveTextContent("Silk")
+    expect(example).toHaveTextContent("Spacing")
+    expect(example).toHaveTextContent("Depth")
+    expect(example).toHaveTextContent("Speed")
+    expect(screen.queryByRole("button")).toBeNull()
   })
 })
 
